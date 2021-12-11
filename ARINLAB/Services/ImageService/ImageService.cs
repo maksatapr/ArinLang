@@ -16,9 +16,9 @@ namespace ARINLAB.Services.ImageService
         {
             _appEnvironment = appEnvironment;
         }
-        public bool DeleteImage(string pictureName, string path)
+        public bool DeleteImage(string pictureName)
         {
-             path = _appEnvironment.WebRootPath + "/Sounds/"+path+"/" + pictureName;
+            string path = _appEnvironment.WebRootPath + "/"+pictureName;
 
             if (!File.Exists(path)) return false;
 
@@ -33,10 +33,10 @@ namespace ARINLAB.Services.ImageService
             }
         }
 
-        public  async Task<string> UploadImage(IFormFile formFile, string path)
+        public  async Task<string> UploadImage(IFormFile formFile, string path1)
         {
             var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(formFile.FileName);
-            path = _appEnvironment.WebRootPath + "/Sounds/" + path+"/";
+            string path = _appEnvironment.WebRootPath + "/Sounds/" + path1+"/";
 
             if (!Directory.Exists(path))
             {
@@ -48,7 +48,7 @@ namespace ARINLAB.Services.ImageService
                 await formFile.CopyToAsync(fileStream);
             }
 
-            return fileName;
+            return $"Sounds/{path1}/{fileName}";
         }
     }
 }

@@ -21,6 +21,8 @@ namespace ARINLAB.Extensions
             CreateMap<EditWordDto, WordDto>().ReverseMap();
             CreateMap<EditWordSentencesDto, WordSentences>().ReverseMap();
             CreateMap<CreateDictionaryDto, Dictionary>().ReverseMap();
+            CreateMap<CreateAudioFileDto, AudioFile>().ReverseMap();
+            CreateMap<CreateWordSentencesDto, WordSentences>().ReverseMap();
         }
     }
 }

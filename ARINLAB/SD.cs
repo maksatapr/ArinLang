@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace ARINLAB
+{
+    public static class SD
+    {
+        public static int pageSize = 3;
+        public static string wordFilePath = "Words";
+        public static string sentencesFilePath = "Sentences";
+    }
+}

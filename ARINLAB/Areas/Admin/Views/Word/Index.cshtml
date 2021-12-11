@@ -3,10 +3,7 @@
 }
 @using DAL.Models.Dto
 @model List<WordDto>
-@{
-    string text = ViewBag.text;
-    string text_del = ViewBag.text_del;
-}
+
 <link href="~/Admin/assets/css/plugins/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
 <h1>Words</h1>
@@ -49,7 +46,9 @@
                                     </div>
                                 </td>
                                 <td>
-                                   <a asp-area="Admin" asp-controller="Word" asp-action="EditWord" asp-route-id="@item.Id">  <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button></a>
+                                    <a asp-area="Admin" asp-controller="Word" asp-action="EditWord" asp-route-id="@item.Id">  <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button></a>
+                                    <a asp-area="Admin" asp-controller="Word" asp-action="EditVoice" asp-route-id="@item.Id">  <button type="button" class="btn btn-primary"><i class="fa fa-volume-up"></i></button></a>
+
                                     <a asp-area="Admin" asp-controller="Word" asp-action="Edit" asp-route-id="@item.Id"><button type="button" class="btn btn-success"><i class="fa fa-edit"></i></button></a>
                                     <button type="button" id="@(item.Id)" class="sweetalert sweetalert-multiple btn button-danger"><i class="fa fa-trash"></i></button>
                                 </td>
@@ -65,20 +64,24 @@
     <ul class="pagination justify-content-end" style="margin:20px 0">
         @{
             int pg = (int)ViewBag.page;
-            int totalPages = ((int)ViewBag.total / 15) + 1;
+            int totalPages = ((int)ViewBag.total / SD.pageSize) + 1;
         }
         @for (int i = 1; i <= totalPages; ++i)
         {
-            <li class="page-item"><a class="page-link" asp-area="Admin" asp-controller="Word" asp-action="List" asp-route-page="@i" asp-route-count="15">@i</a></li>
+            <li class="page-item"><a class="page-link" asp-area="Admin" asp-controller="Word" asp-action="List" asp-route-page="@i" asp-route-count="@SD.pageSize">@i</a></li>
         }
     </ul>
 </div>
 
 <!--Basic End-->
 
-<button class="sweetalert sweetalert-success button button-success" id="AlertButton" hidden></button>
+@{
+    string text = ViewBag.text;
+    string text_del = ViewBag.text_del;
+}
 
-@if (text != "")
+<button class="sweetalert sweetalert-success button button-success" id="AlertButton" hidden></button>
+@if (!string.IsNullOrEmpty(text))
 {
     <script type="text/javascript">
         window.onload = function () {

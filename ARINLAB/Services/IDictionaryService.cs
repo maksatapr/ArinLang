@@ -13,5 +13,6 @@ namespace ARINLAB.Services
         public Responce GetAllDictionaries();
         public Responce EditDictionary(DAL.Models.Dictionary edit);
         public Task<Responce> DeleteDictionaryAsync(int id);
+        public string GetDictionaryNameById(int id);
     }
 }

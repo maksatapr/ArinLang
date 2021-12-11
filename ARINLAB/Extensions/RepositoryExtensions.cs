@@ -1,5 +1,6 @@
 ﻿
 using ARINLAB.Services;
+using ARINLAB.Services.ImageService;
 using DAL.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ namespace ARINLAB.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddTransient<IEmailSender, MailKitEmailSender>();
+            services.AddSingleton<IImageService, ImageService>();
             services.Configure<MailKitEmailSenderOptions>(options =>
             {
                 options.Host_Address = "smtp.mail.ru";

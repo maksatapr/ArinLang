@@ -9,6 +9,6 @@ namespace ARINLAB.Services.ImageService
     public interface IImageService
     {
         public Task<string> UploadImage(IFormFile formFile, string pClass);
-        public bool DeleteImage(string pictureName,string pClass);
+        public bool DeleteImage(string pictureName);
     }
 }

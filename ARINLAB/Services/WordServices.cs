@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ARINLAB.Services.ImageService;
+using AutoMapper;
 using DAL.Data;
 using DAL.Models;
 using DAL.Models.Dto;
@@ -15,10 +16,12 @@ namespace ARINLAB.Services
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        public WordServices(ApplicationDbContext applicationDbContext, IMapper mapper)
+        private readonly IImageService _fileService; 
+        public WordServices(ApplicationDbContext applicationDbContext, IMapper mapper, IImageService imageService)
         {
             _dbContext = applicationDbContext;
             _mapper = mapper;
+            _fileService = imageService;
         }
         public async Task<Responce> addWordAsync(CreateWordDto word)
         {
@@ -71,13 +74,40 @@ namespace ARINLAB.Services
         public async Task<Responce> Delete(int id)
         {
             var res = await _dbContext.Words.FindAsync(id);
-            if (res!= null)
+            try
             {
-                _dbContext.Words.Remove(res);
+                if (res != null)
+                {
+                    var sentences = _dbContext.AudioFiles.Where(p => p.WordId == id).AsNoTracking();
+                    if (sentences != null)
+                    {
+                        foreach (var item in sentences)
+                        {
+                            _fileService.DeleteImage(item.ArabVoice);
+                            _fileService.DeleteImage(item.OtherVoice);
+                        }
+                    }
+                    _dbContext.Words.Remove(res);
+                    await _dbContext.SaveChangesAsync();
+                    return ResponceGenerator.GetResponceModel(true, "", res);
+                }
+                return ResponceGenerator.GetResponceModel(false, "Cannot delete", null);
+            }catch(Exception e)
+            {
+                return ResponceGenerator.GetResponceModel(false, "Some Error Accured", null);
+            }
+        }
+
+        public async Task<Responce> DeleteSentence(int id)
+        {            
+            var res = await _dbContext.WordSentences.FindAsync(id);
+            if (res != null)
+            {
+                _dbContext.WordSentences.Remove(res);
                 await _dbContext.SaveChangesAsync();
                 return ResponceGenerator.GetResponceModel(true, "", res);
             }
-            return ResponceGenerator.GetResponceModel(false, "Cannot delete", null);
+            return ResponceGenerator.GetResponceModel(false, "", null);
         }
 
         public async Task<Responce> EditWordApproveByIdAsync(int id, bool approve)
@@ -127,7 +157,20 @@ namespace ARINLAB.Services
             }
         }
 
-        public async Task<Responce> EditWordSentenceAsync(EditWordSentencesDto editWordSentence)
+        public async Task<Responce> EditWordSentenceApproveByIdAsync(int id, bool approve)
+        {
+            var res = await _dbContext.WordSentences.FindAsync(id);
+            if (res != null)
+            {
+                res.IsApproved = approve;
+                res = _dbContext.WordSentences.Update(res).Entity;
+                await _dbContext.SaveChangesAsync();
+                return ResponceGenerator.GetResponceModel(true, "Success", res);
+            }
+            return ResponceGenerator.GetResponceModel(false, "Error", res);
+        }
+
+        public async Task<Responce> EditWordSentenceAsync(WordSentencesDto editWordSentence)
         {
             try
             {
@@ -152,7 +195,7 @@ namespace ARINLAB.Services
         {
             try
             {
-                var result = _mapper.Map<List<WordDto>>(_dbContext.Words.OrderBy(p => p.Id).Include(p => p.AudioFiles).Include(p => p.WordSentences).Skip((pageNumber - 1) * count).Take(count).AsNoTracking());
+                var result = _mapper.Map<List<WordDto>>(_dbContext.Words.Skip((pageNumber - 1) * count).Take(count).AsNoTracking());
                 int n = 1 + (pageNumber - 1) * count;
                 foreach (var item in result)
                 {

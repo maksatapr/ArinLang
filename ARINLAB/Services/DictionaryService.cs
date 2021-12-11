@@ -82,5 +82,13 @@ namespace ARINLAB.Services
             var result = _dbContext.Dictionaries;
             return ResponceGenerator.GetResponceModel(true, "", new List<Dictionary>(result));
         }
+
+        public string GetDictionaryNameById(int id)
+        {
+            var dict = _dbContext.Dictionaries.Find(id);
+            if (dict != null)
+                return dict.Language;
+            return "";
+        }
     }
 }
