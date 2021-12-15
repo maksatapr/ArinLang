@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Index";
+
+    var dicts = (List<DAL.Models.Dictionary>)ViewBag.dict;
+       
+    var categories = ViewBag.categories;
+
+}
+@using DAL.Models.Dto
+@model List<WordClauseDto>
+<link href="~/Admin/assets/css/plugins/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+<h1>@SharedLocalizer["Words Sentences"]</h1>
+
+<!--Basic Start-->
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">@SharedLocalizer["#"]</th>
+                        <th scope="col">@SharedLocalizer["Arab Sentence"]</th>
+                        <th scope="col">@SharedLocalizer["Reads in Arab"]</th>
+                        <th scope="col">@SharedLocalizer["Sentence in other langugage"]</th>
+                        <th scope="col">@SharedLocalizer["Reads in Other Dictionary"] </th>
+                        <th scope="col">@SharedLocalizer["Dictionary"] </th>
+                        <th scope="col">@SharedLocalizer["Approved"]</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                    <tr>
+                        <th scope="row">@item.Id</th>
+
+                        <td>@item.ArabClause</td>
+                        <td>@item.ArabReader</td>
+                        <td>@item.OtherClause</td>
+                        <td>@item.OtherReader</td>
+                        <td>
+                            @{ var dictName = dicts.FirstOrDefault(p => p.Id == item.DictionaryId);}
+                            @(dictName!=null?dictName.Language:"")
+                        </td>
+                        <td>
+                            <div class="adomx-checkbox-radio-group inline">
+                                <label class="adomx-switch success">
+
+                                    <input id="approve@(item.Id)" type="checkbox" @(item.IsApproved ? "checked" : "")>
+                                    <i class="lever"></i>
+                                </label>
+
+                            </div>
+                        </td>
+                        <td>
+                            <a asp-area="Admin" asp-controller="Word" asp-action="EditWord" asp-route-id="@item.Id">  <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button></a>
+                            <a asp-area="Admin" asp-controller="Word" asp-action="EditVoice" asp-route-id="@item.Id">  <button type="button" class="btn btn-primary"><i class="fa fa-volume-up"></i></button></a>
+
+                            <a asp-area="Admin" asp-controller="Word" asp-action="Edit" asp-route-id="@item.Id"><button type="button" class="btn btn-success"><i class="fa fa-edit"></i></button></a>
+                            <button type="button" id="@(item.Id)" class="sweetalert sweetalert-wordclause btn button-danger"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ul class="pagination justify-content-end" style="margin:20px 0">
+        @{
+
+            int pg = 1;
+            if (ViewBag.page != null)
+                pg = (int)ViewBag.page;
+            int totalPages = ((int)ViewBag.total / SD.pageSize) + 1;
+        }
+        @for (int i = 1; i <= totalPages; ++i)
+        {
+            <li class="page-item"><a class="page-link" asp-area="Admin" asp-controller="WordClause" asp-action="List" asp-route-page="@i" asp-route-count="@SD.pageSize">@i</a></li>
+        }
+    </ul>
+</div>
+
+<!--Basic End-->
+
+@{
+    string text = ViewBag.text;
+    string text_del = ViewBag.text_del;
+}
+
+<button class="sweetalert sweetalert-success button button-success" id="AlertButton" hidden></button>
+@if (!string.IsNullOrEmpty(text))
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            document.getElementById("AlertButton").click();
+        }
+    </script>
+}
+
+@if (Model != null)
+{
+    @foreach (var item in Model)
+    {
+        <script>
+            const checkbox@(item.Id) = document.getElementById('approve@(item.Id)')
+            checkbox@(item.Id).addEventListener('change', (event) => {
+                if (event.currentTarget.checked) {
+                    window.location.href = "/Admin/WordClause/@item.Id/true/@pg";
+                } else {
+                    window.location.href = "/Admin/WordClause/@item.Id/false/@pg";
+                }
+            })
+        </script>
+    }
+}

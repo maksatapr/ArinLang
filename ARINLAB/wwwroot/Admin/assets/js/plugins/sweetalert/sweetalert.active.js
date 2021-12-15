@@ -138,11 +138,53 @@
                 },
             }).then((willDelete) => {
                 if (willDelete) {
-                    var res = fetch(`https://itunes.apple.com/search?term=LaLa&entity=movie`);
+                    
                     var id = $(this).attr('id');
                     if (id) {
 
                         window.location.href = "/Admin/Word/Delete/"+id;
+                    }
+                } else {
+                    swal({
+                        text: "Your imaginary file is safe!",
+                        button: {
+                            className: "button button-primary"
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    if ($('.sweetalert-wordclause').length) {
+        $('.sweetalert-wordclause').on('click', function () {
+            swal({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "Cancel",
+                        value: false,
+                        visible: true,
+                        className: "button button-primary",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Yes Delete It",
+                        value: true,
+                        visible: true,
+                        className: "button button-danger",
+                        closeModal: true
+                    }
+                },
+            }).then((willDelete) => {
+                if (willDelete) {
+
+                    var id = $(this).attr('id');
+                    if (id) {
+
+                        window.location.href = "/Admin/WordClause/Delete/" + id;
                     }
                 } else {
                     swal({

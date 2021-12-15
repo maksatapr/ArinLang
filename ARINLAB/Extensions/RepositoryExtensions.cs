@@ -27,6 +27,8 @@ namespace ARINLAB.Extensions
             services.AddScoped<IWordServices, WordServices>();
             services.AddScoped<IDictionaryService, DictionaryService>();
             services.AddScoped<FileServices>();
+            services.AddScoped<IWordClauseService, WordClauseService>();
+            services.AddScoped<ILanguageService, LanguageService>();
             //Add Scoped Services
 
 
