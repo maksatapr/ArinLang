@@ -3,6 +3,7 @@ using DAL.Data;
 using DAL.Models;
 using DAL.Models.Dto;
 using DAL.Models.ResponceModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,13 @@ namespace ARINLAB.Services
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        public WordClauseService(ApplicationDbContext dbContext, IMapper mapper)
+        private readonly UserManager<ApplicationUser> _useManager;
+
+        public WordClauseService(ApplicationDbContext dbContext, IMapper mapper, UserManager<ApplicationUser> userManager)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _useManager = userManager;
         }
         public async Task<Responce> CreateWordClause(CreateWordClauseDto model)
         {
@@ -141,7 +145,16 @@ namespace ARINLAB.Services
             var res = _dbContext.WordClauseCategories.Include(p=>p.WordClauseCategoryTranslates);
             if (res != null)
             {
-                return _mapper.Map<List<WordClauseCategoryDto>>(res);
+
+                var res1 = _mapper.Map<List<WordClauseCategoryDto>>(res);
+                foreach(var item in res1)
+                {
+                    item.CategoryName = _dbContext.WordClauseCategoryTranslates.FirstOrDefault(p => p.LanguageCulture == culture && p.WordClauseCategoryId == item.Id)?.CategoryName;
+                    item.ParenCategoryName = _dbContext.WordClauseCategoryTranslates.SingleOrDefault(p => p.LanguageCulture == culture && p.WordClauseCategoryId == item.ParentCategoryId)?.CategoryName ;
+                    if (item.ParenCategoryName == null)
+                        item.ParenCategoryName = "";
+                }
+                return res1;
             }
             return null;
         }
@@ -172,12 +185,26 @@ namespace ARINLAB.Services
             return null;
         }
 
-        public List<WordClauseDto> GetAllWordClauses()
+        public async Task<List<WordClauseDto>> GetAllWordClausesAsync()
         {
+            string culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
             var res = _dbContext.WordClauses;
+            List<WordClauseDto> result = new List<WordClauseDto>();
             if (res != null)
             {
-                return _mapper.Map<List<WordClauseDto>>(res);
+                foreach (var clause in res) {
+                    var userName = _useManager.FindByIdAsync(clause.UserId)?.Result.Email;
+                    var dto = _mapper.Map<WordClauseDto>(clause);
+                    dto.UserName = userName==null?"":userName;
+
+                    var catName = _dbContext.WordClauseCategories.Include(p => p.WordClauseCategoryTranslates).FirstOrDefault(p => p.Id == clause.CategoryId);
+                    dto.CategoryName = catName == null ? "" : catName.WordClauseCategoryTranslates.FirstOrDefault(p => p.LanguageCulture == culture)?.CategoryName;
+
+                    var dict = await _dbContext.Dictionaries.FindAsync(clause.DictionaryId);
+                    dto.DictionaryName = dict == null ? "" : dict.Language;
+                    result.Add(dto);
+                }
+                return result;
             }
             return null;
         }

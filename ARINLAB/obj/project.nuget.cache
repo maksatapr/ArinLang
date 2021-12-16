@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "N25YtJAWaIRQatF3hGz5TxdnsJa1MzPWx02WLX7BDpUNfC0+Dywst6uL2zdqP68mmM1sVxzEme3ChO8zxZNGaA==",
+  "dgSpecHash": "nmzfH0puavwknzYh2Y7ZN26kHx7weE1fjKB/WKbss1QGKMDLXE84LZ1OyU4WL0IKj5A8lD8URj4GeKBJ3goWUw==",
   "success": true,
   "projectFilePath": "D:\\Work\\ARINLAB\\ARINLAB\\ARINLAB\\ARINLAB.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\devextreme.aspnet.data\\2.8.6\\devextreme.aspnet.data.2.8.6.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\mailkit\\2.15.0\\mailkit.2.15.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.12\\microsoft.aspnetcore.cryptography.internal.5.0.12.nupkg.sha512",

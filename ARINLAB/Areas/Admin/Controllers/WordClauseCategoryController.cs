@@ -1,6 +1,7 @@
 ﻿using ARINLAB.Services;
 using AutoMapper;
 using DAL.Data;
+using DAL.Models;
 using DAL.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +19,13 @@ namespace ARINLAB.Areas.Admin.Controllers
         private readonly IWordClauseService _wordClauseServices;
         private readonly IMapper _mapper;
         private readonly ILanguageService _languageService;
-
-        public WordClauseCategoryController(IWordClauseService wordClause, IMapper mapper, ILanguageService languageService)
+        private readonly ApplicationDbContext _dbContext;
+        public WordClauseCategoryController(IWordClauseService wordClause, IMapper mapper, ILanguageService languageService, ApplicationDbContext dbContext)
         {
             _wordClauseServices = wordClause;
             _mapper = mapper;
             _languageService = languageService;
+            _dbContext = dbContext;
         }
 
         public IActionResult Index()
@@ -53,5 +55,44 @@ namespace ARINLAB.Areas.Admin.Controllers
             ViewBag.Categories = _wordClauseServices.GetAllWordClauseCategories();
             return View(cat);
         }
+
+        public async Task<IActionResult> EditAsync(int id)
+        {
+            ViewBag.Languages = _languageService.GetAllPublishLanguage().OrderBy(o => o.DisplayOrder);
+            WordClauseCategoryDto item = await _wordClauseServices.GetWordClauseCategoryByIdAsync(id);
+            if (item != null)
+            {
+                var it = _wordClauseServices.GetAllWordClauseCategories();
+                it.Remove(it.FirstOrDefault(p => p.Id == item.Id));
+                ViewBag.Categories = it;
+            }
+            int count = _wordClauseServices.GetAllWordClauseCategories().Count;
+            var res = _dbContext.WordClauseCategories.SingleOrDefault(p => p.Id == id);
+            if (res == null)
+                return RedirectToAction("Index");
+            return View(res);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAsync(WordClauseCategory editCat)
+        {
+            try
+            {
+                foreach (var item in editCat.WordClauseCategoryTranslates)
+                {
+                    if (string.IsNullOrEmpty(item.CategoryName))
+                        return RedirectToAction("Edit", new { id = editCat.Id });
+                }
+                _dbContext.WordClauseCategories.Update(editCat);
+                await _dbContext.SaveChangesAsync();
+            }catch(Exception e)
+            {
+                return RedirectToAction("Edit", new { id = editCat.Id });
+            }
+            return RedirectToAction("Index");
+            
+        }
+
     }
 }

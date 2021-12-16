@@ -43,7 +43,7 @@
                             <select class="form-control form-control-lg" asp-for="ParentCategoryId">
                                 @foreach (var item in (new List<WordClauseCategoryDto>(ViewBag.Categories)))
                                 {                                    
-                                    <option value="@item.Id">@item.WordClauseCategoryTranslates[0].CategoryName</option>
+                                    <option value="@item.Id">@item.CategoryName</option>
                                 }
                             </select>
                         </div>

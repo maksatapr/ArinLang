@@ -18,7 +18,7 @@ namespace ARINLAB.Services
         public Task<Responce> DeleteWordClause(int id);
         public Task<Responce> DeleteWordClauseCategory(int id);
 
-        public List<WordClauseDto> GetAllWordClauses();
+        public Task<List<WordClauseDto>> GetAllWordClausesAsync();
         public List<WordClauseCategoryDto> GetAllWordClauseCategories();
 
         public Task<WordClauseDto> GetWordClauseByIdAsync(int id);

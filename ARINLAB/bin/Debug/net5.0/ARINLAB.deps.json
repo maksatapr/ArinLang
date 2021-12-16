@@ -34,6 +34,7 @@
       "ARINLAB/1.0.0": {
         "dependencies": {
           "DAL": "1.0.0",
+          "DevExtreme.AspNet.Data": "2.8.6",
           "MailKit": "2.15.0",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "5.0.12",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.12",
@@ -359,6 +360,21 @@
         },
         "compile": {
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
+        }
+      },
+      "DevExtreme.AspNet.Data/2.8.6": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/DevExtreme.AspNet.Data.dll": {
+            "assemblyVersion": "2.8.6.0",
+            "fileVersion": "2.8.6.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/DevExtreme.AspNet.Data.dll": {}
         }
       },
       "Humanizer.Core/2.8.26": {
@@ -4000,6 +4016,13 @@
       "sha512": "sha512-xSWoVzOipuDU4PeZcUfaZQ+xqXU8QmGv5jrdlxt3MYm9xaOmrefqcfzGQ3SQ+D+8wfBa/ZwSuL0qKOVj080inA==",
       "path": "automapper.extensions.microsoft.dependencyinjection/8.1.1",
       "hashPath": "automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512"
+    },
+    "DevExtreme.AspNet.Data/2.8.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-i1yihftbQALysX/Sh5rm4XFVRKPXKwHcmfH8esD0fTH+RTPGpMmIUoYOg2oAAOxqJsi/F5IQ8Gkp60lDzOigRA==",
+      "path": "devextreme.aspnet.data/2.8.6",
+      "hashPath": "devextreme.aspnet.data.2.8.6.nupkg.sha512"
     },
     "Humanizer.Core/2.8.26": {
       "type": "package",

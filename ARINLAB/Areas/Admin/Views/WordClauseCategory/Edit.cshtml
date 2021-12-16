@@ -1,0 +1,24 @@
+﻿@model WordClauseCategory
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@using DAL.Models.Dto
+@using DAL.Models
+
+@{
+    ViewData["Title"] = SharedLocalizer["Create word category"];
+
+    int lngIndex = 0;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @SharedLocalizer["Create word category"]
+            </h1>
+        </div>
+    </div>
+    
+</div>
+
