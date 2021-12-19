@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using ARINLAB.Services.ImageService;
+using AutoMapper;
 using DAL.Data;
 using DAL.Models;
 using DAL.Models.Dto;
@@ -18,12 +19,15 @@ namespace ARINLAB.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _useManager;
+        private readonly IImageService _fileServices;
 
-        public WordClauseService(ApplicationDbContext dbContext, IMapper mapper, UserManager<ApplicationUser> userManager)
+        public WordClauseService(ApplicationDbContext dbContext, IMapper mapper, 
+                                UserManager<ApplicationUser> userManager, IImageService fileServices)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _useManager = userManager;
+            _fileServices = fileServices;
         }
         public async Task<Responce> CreateWordClause(CreateWordClauseDto model)
         {
@@ -211,7 +215,7 @@ namespace ARINLAB.Services
 
         public List<AudioFileForClauseDto> GetAudioFileForClausebyID(int id)
         {
-            var res = _dbContext.AudioFileForClauses.Where(p => p.Id == id);
+            var res = _dbContext.AudioFileForClauses.Where(p => p.ClauseId == id);
             if(res != null)
             {
                 return _mapper.Map<List<AudioFileForClauseDto>>(res);
@@ -249,20 +253,52 @@ namespace ARINLAB.Services
             return null;
         }
 
-        public Responce CreateAudiFileForClause(CreateAudioFileForClauseDto model)
+        public async Task<Responce> CreateAudiFileForClause(CreateAudioFileForClauseDto model)
         {
+            if (model.ArabVoiceFile == null && model.OtherVoiceFile== null)
+            {
+                return ResponceGenerator.GetResponceModel(false,"", null);
+            }
+            AudioFileForClause file = new AudioFileForClause
+            {
+                ClauseId = model.ClauseId
+            };
+
+            if (model.ArabVoiceFile != null)
+                file.ArabVoice = await _fileServices.UploadImage(model.ArabVoiceFile, SD.clausesFilePath);
+            if (model.OtherVoiceFile != null)
+                file.OtherVoice = await _fileServices.UploadImage(model.OtherVoiceFile, SD.clausesFilePath);
             try
             {
-                var res = _mapper.Map<AudioFileForClause>(model);
-                if (res != null) {
-                    _dbContext.AudioFileForClauses.Add(res);
-                    return ResponceGenerator.GetResponceModel(true, "", res);
-                }
-            }catch(Exception e)
-            {
+                var res = await _dbContext.AudioFileForClauses.AddAsync(file);
+                await _dbContext.SaveChangesAsync();
+                return ResponceGenerator.GetResponceModel(true, "", model);
+            }catch(Exception e) {
+                _fileServices.DeleteImage(file.ArabVoice);
+                _fileServices.DeleteImage(file.OtherVoice);
                 return ResponceGenerator.GetResponceModel(false, e.Message, model);
+            }           
+        }
+
+        public async Task<Responce> DeleteVoice(int id)
+        {
+            var res = await _dbContext.AudioFileForClauses.FindAsync(id);
+            if (res != null)
+            {
+                try
+                {
+                    _fileServices.DeleteImage(res.ArabVoice);
+                    _fileServices.DeleteImage(res.OtherVoice);
+                    _dbContext.AudioFileForClauses.Remove(res);
+                    await _dbContext.SaveChangesAsync();
+                    return ResponceGenerator.GetResponceModel(true, "", null);
+                }
+                catch (Exception e)
+                {
+                    return ResponceGenerator.GetResponceModel(false, e.Message, null);
+                }
             }
-            return ResponceGenerator.GetResponceModel(false, "Unknow error accured", model);
+            return ResponceGenerator.GetResponceModel(true, "", null);
         }
     }
 }

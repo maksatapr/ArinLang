@@ -31,7 +31,9 @@ namespace ARINLAB.Services
         public List<WordClauseCategoryDto> GetAllWordClauseCategoriesById_and_DictId(int id, int dictId);
         public List<AudioFileForClauseDto> GetAudioFileForClausebyID(int id);
 
-        public Responce CreateAudiFileForClause(CreateAudioFileForClauseDto model);
+        public Task<Responce> CreateAudiFileForClause(CreateAudioFileForClauseDto model);
+
+        public Task<Responce> DeleteVoice(int id);       
 
     }
 }

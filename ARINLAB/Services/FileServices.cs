@@ -49,7 +49,22 @@ namespace ARINLAB.Services
             {
                 return ResponceGenerator.GetResponceModel(false, e.Message, newFile);
             }
-        } 
+        }
+
+        public async Task<Responce> CreateClauseAudioFileAsync(CreateAudioFileForClauseDto newFile)
+        {
+            try
+            {
+                var newF = _mapper.Map<AudioFileForClause>(newFile);
+                await _dbContext.AudioFileForClauses.AddAsync(newF);
+                await _dbContext.SaveChangesAsync();
+                return ResponceGenerator.GetResponceModel(true, "", null);
+            }
+            catch (Exception e)
+            {
+                return ResponceGenerator.GetResponceModel(false, e.Message, newFile);
+            }
+        }
 
         public async Task<Responce> DeleteVoiceFile(int id)
         {
@@ -64,6 +79,27 @@ namespace ARINLAB.Services
                     await _dbContext.SaveChangesAsync();
                     return ResponceGenerator.GetResponceModel(true, "", null);
                 }catch(Exception e)
+                {
+                    return ResponceGenerator.GetResponceModel(false, e.Message, null);
+                }
+            }
+            return ResponceGenerator.GetResponceModel(true, "", null);
+        }
+
+        public async Task<Responce> DeleteClauseVoiceFile(int id)
+        {
+            var res = await _dbContext.AudioFileForClauses.FindAsync(id);
+            if (res != null)
+            {
+                try
+                {
+                    _fileService.DeleteImage(res.ArabVoice);
+                    _fileService.DeleteImage(res.OtherVoice);
+                    _dbContext.AudioFileForClauses.Remove(res);
+                    await _dbContext.SaveChangesAsync();
+                    return ResponceGenerator.GetResponceModel(true, "", null);
+                }
+                catch (Exception e)
                 {
                     return ResponceGenerator.GetResponceModel(false, e.Message, null);
                 }

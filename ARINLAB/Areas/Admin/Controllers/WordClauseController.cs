@@ -18,15 +18,18 @@ namespace ARINLAB.Areas.Admin.Controllers
     public class WordClauseController : Controller
     {
         private readonly IWordClauseService _wordClauseService;
-        private readonly IDictionaryService _dictService;        
+        private readonly IDictionaryService _dictService;
+       
         private readonly IMapper _mapper;
 
 
-        public WordClauseController(IWordClauseService wordClauseService, IMapper mapper, IDictionaryService dictionaryService)
+        public WordClauseController(IWordClauseService wordClauseService, IMapper mapper, 
+                                    IDictionaryService dictionaryService)
         {
             _wordClauseService = wordClauseService;
             _mapper = mapper;
             _dictService = dictionaryService;
+            
         }
         public IActionResult Index()
         {
@@ -101,7 +104,34 @@ namespace ARINLAB.Areas.Admin.Controllers
             model.ArabClause = arabClause;
             model.OtherClause = otherClause;
             model.DictName = dictName;
-            return View(model);
+            CreateAudioFileForClauseDto file = new CreateAudioFileForClauseDto();
+            ViewBag.Model = model;
+            return View(file);
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> CreateWordClauseVoice(CreateAudioFileForClauseDto model)
+        {
+            var res = await _wordClauseService.CreateAudiFileForClause(model);
+            if(res.IsSuccess)
+            {
+                return RedirectToAction("EditClauseVoice", new { id = model.ClauseId });
+            }
+            return View();
+        }
+
+        [HttpGet("/Admin/[controller]/DeleteVoice/{id}/{clauseId}")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> DeleteVoice(int id, int clauseId)
+        {
+            var res = await _wordClauseService.DeleteVoice(id);
+            if (res.IsSuccess)
+            {
+                return RedirectToAction("EditClauseVoice", new { id = clauseId });
+            }
+         
+            return View();
         }
 
     }

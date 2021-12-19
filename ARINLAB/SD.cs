@@ -9,6 +9,6 @@ namespace ARINLAB
     {
         public static int pageSize = 15;
         public static string wordFilePath = "Words";
-        public static string sentencesFilePath = "Sentences";
+        public static string clausesFilePath = "Clauses";
     }
 }
