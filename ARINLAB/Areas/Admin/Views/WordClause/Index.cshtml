@@ -138,6 +138,15 @@
                                     window.location = url + '?id=' + idString;
                                 }
                             },
+                             {
+                                hint: '@SharedLocalizer["Edit Voices"]',
+                                 icon: "fa fa-volume-up",
+                                onClick: function (e) {
+                                    var idString = e.row.data.id;
+                                    var url = `@Url.Action("EditClauseVoice", "WordClause", new { Area = "Admin" })`;
+                                    window.location = url + '?id=' + idString;
+                                }
+                            },
                             "delete"
                         ]
                     }

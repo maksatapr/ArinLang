@@ -12,7 +12,7 @@ namespace ARINLAB.Services
         public Task<Responce> CreateWordClause(CreateWordClauseDto model);
         public Task<Responce> CreateWordClauseCategory(CreateWordClauseCategoryDto model);
 
-        public Task<Responce> EditWordClause(WordClauseDto model);
+        public Task<Responce> EditWordClause(EditWordClauseDto model);
         public Task<Responce> EditWordClauseCategory(WordClauseCategoryDto model);
 
         public Task<Responce> DeleteWordClause(int id);
@@ -21,7 +21,7 @@ namespace ARINLAB.Services
         public Task<List<WordClauseDto>> GetAllWordClausesAsync();
         public List<WordClauseCategoryDto> GetAllWordClauseCategories();
 
-        public Task<WordClauseDto> GetWordClauseByIdAsync(int id);
+        public Task<EditWordClauseDto> GetWordClauseByIdAsync(int id);
         public Task<WordClauseCategoryDto> GetWordClauseCategoryByIdAsync(int id);
 
         public List<WordClauseDto> GetAllWordClauseByDictionaryId(int id);
@@ -29,6 +29,9 @@ namespace ARINLAB.Services
 
         public List<WordClauseCategoryDto> GetAllWordClauseCategoriesByDictID(int id);
         public List<WordClauseCategoryDto> GetAllWordClauseCategoriesById_and_DictId(int id, int dictId);
+        public List<AudioFileForClauseDto> GetAudioFileForClausebyID(int id);
+
+        public Responce CreateAudiFileForClause(CreateAudioFileForClauseDto model);
 
     }
 }

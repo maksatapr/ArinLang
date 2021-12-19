@@ -9,5 +9,6 @@ namespace ARINLAB.Areas.Admin.Utils
     {
         public static string GetAllWordClauseCategories { get; } = "/api/WordClauseCategoryAPI";
         public static string GetAllWordClauses { get; } = "/api/WordClauseAPI";
+        public static string GetAllWordClauseAudioFiles = "/api/WordClauseAudioAPI";
     }
 }

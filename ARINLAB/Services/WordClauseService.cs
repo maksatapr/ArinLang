@@ -89,7 +89,7 @@ namespace ARINLAB.Services
             }
         }
 
-        public async Task<Responce> EditWordClause(WordClauseDto model)
+        public async Task<Responce> EditWordClause(EditWordClauseDto model)
         {
             try
             {                
@@ -209,14 +209,33 @@ namespace ARINLAB.Services
             return null;
         }
 
-        public async Task<WordClauseDto> GetWordClauseByIdAsync(int id)
+        public List<AudioFileForClauseDto> GetAudioFileForClausebyID(int id)
         {
-            var res = await _dbContext.WordClauses.FindAsync(id);
-            if (res != null)
+            var res = _dbContext.AudioFileForClauses.Where(p => p.Id == id);
+            if(res != null)
             {
-                return _mapper.Map<WordClauseDto>(res);
+                return _mapper.Map<List<AudioFileForClauseDto>>(res);
             }
             return null;
+        }
+
+
+
+        public async Task<EditWordClauseDto> GetWordClauseByIdAsync(int id)
+        {            
+            try
+            {
+                var res = await _dbContext.WordClauses.FindAsync(id);
+                
+                if (res != null)
+                {
+                    return _mapper.Map<EditWordClauseDto>(res);
+                }
+                return null;
+            }catch(Exception e)
+            {
+                return null;
+            }
         }
 
         public async Task<WordClauseCategoryDto> GetWordClauseCategoryByIdAsync(int id)
@@ -228,6 +247,22 @@ namespace ARINLAB.Services
                 return _mapper.Map<WordClauseCategoryDto>(res);
             }
             return null;
+        }
+
+        public Responce CreateAudiFileForClause(CreateAudioFileForClauseDto model)
+        {
+            try
+            {
+                var res = _mapper.Map<AudioFileForClause>(model);
+                if (res != null) {
+                    _dbContext.AudioFileForClauses.Add(res);
+                    return ResponceGenerator.GetResponceModel(true, "", res);
+                }
+            }catch(Exception e)
+            {
+                return ResponceGenerator.GetResponceModel(false, e.Message, model);
+            }
+            return ResponceGenerator.GetResponceModel(false, "Unknow error accured", model);
         }
     }
 }

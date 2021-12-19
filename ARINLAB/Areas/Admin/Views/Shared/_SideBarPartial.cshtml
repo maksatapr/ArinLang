@@ -129,45 +129,16 @@
                         <li><a asp-area="Admin" asp-controller="WordClause" asp-action="Index"><span>@SharedLocalizer["All Word Clauses"]</span></a></li>
                         <li><a asp-area="Admin" asp-controller="WordClause" asp-action="Create">@SharedLocalizer["Create Category"]</a></li>
                     </ul>
-                </li>
+                </li>     
                 <li class="has-sub-menu">
-                    <a href="#"><i class="ti-shopping-cart"></i> <span>E-commerce</span></a>
+                    <a asp-area="Admin" asp-controller="User" asp-action="Index"><i class="fa fa-users"></i> <span>Authentication</span></a>
                     <ul class="side-header-sub-menu">
-                        <li><a href="add-product.html"><span>Add Product</span></a></li>
-                        <li><a href="edit-product.html"><span>Edit Product</span></a></li>
-                        <li><a href="invoice-list.html"><span>Invoice List</span></a></li>
-                        <li><a href="invoice-details.html"><span>Invoice Details</span></a></li>
-                        <li><a href="order-list.html"><span>Order List</span></a></li>
-                        <li><a href="order-details.html"><span>Order Details</span></a></li>
-                        <li><a href="manage-products.html"><span>Manage Products</span></a></li>
+                        <li><a href="login.html"><span>Statistics</span></a></li>
+                        <li><a href="register.html"><span>User control</span></a></li>                       
                     </ul>
                 </li>
-                <li class="has-sub-menu">
-                    <a href="#"><i class="ti-gift"></i> <span>Apps</span></a>
-                    <ul class="side-header-sub-menu">
-                        <li><a href="chat.html"><span>Chat</span></a></li>
-                        <li><a href="mail.html"><span>Mail</span></a></li>
-                        <li><a href="single-mail.html"><span>Single Mail</span></a></li>
-                        <li><a href="todo-list.html"><span>Todo List</span></a></li>
-                    </ul>
-                </li>
-                <li class="has-sub-menu">
-                    <a href="#"><i class="ti-lock"></i> <span>Authentication</span></a>
-                    <ul class="side-header-sub-menu">
-                        <li><a href="login.html"><span>login</span></a></li>
-                        <li><a href="register.html"><span>register</span></a></li>
-                        <li><a href="author-profile.html"><span>Profile</span></a></li>
-                    </ul>
-                </li>
-                <li class="has-sub-menu">
-                    <a href="#"><i class="ti-layers"></i> <span>Dictionaries</span></a>
-                    <ul class="side-header-sub-menu">
-                        <li><a asp-area="Admin" asp-controller="Dictionary" asp-action="Index"><span>@SharedLocalizer["All Dictionaries"]</span></a></li>
-                        <li><a href="timeline.html"><span>Timeline</span></a></li>
-                        <li><a href="pricing.html"><span>Pricing</span></a></li>
-                        <li><a href="error-1.html"><span>error-1</span></a></li>
-                        <li><a href="error-2.html"><span>error-2</span></a></li>
-                    </ul>
+                <li >
+                    <a asp-area="Admin" asp-controller="Dictionary" asp-action="Index"><i class="ti-layers"></i> <span>@SharedLocalizer["Dictionaries"]</span></a>                   
                 </li>
 
             </ul>

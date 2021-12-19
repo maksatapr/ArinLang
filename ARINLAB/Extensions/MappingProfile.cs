@@ -29,6 +29,8 @@ namespace ARINLAB.Extensions
             CreateMap<WordClauseCategory, CreateWordClauseCategoryDto>().ReverseMap();
             CreateMap<WordClauseCategoryDto, WordClauseCategory>().ReverseMap();
             CreateMap<Language, LanguageDto>().ReverseMap();
+            CreateMap<EditWordClauseDto, WordClause>().ReverseMap();
+            CreateMap<AudioFileForClause, AudioFileForClauseDto>().ReverseMap();
 
         }
     }
