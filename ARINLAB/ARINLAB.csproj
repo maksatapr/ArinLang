@@ -2050,7 +2050,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Components\" />
     <Folder Include="wwwroot\Admin\assets\js\plugins\plugins-related\" />
     <Folder Include="wwwroot\images\Advertisement\" />
     <Folder Include="wwwroot\images\Banner\" />

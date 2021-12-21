@@ -6,10 +6,33 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Adomx - Responsive Bootstrap 4 Admin Template</title>
+    <title>ARINLANG ADMIN PANEL</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="~/devextreme/css/dx.common.css" rel="stylesheet" />
+    <link href="~/devextreme/css/dx.light.css" rel="stylesheet" />
+
+    <script src="~/admin1/js/jquery.js"></script>
+    <script src="~/devextreme/js/dx-quill.min.js"></script>
+    <link rel="stylesheet" href="~/lib/jquery-ui/themes/base/theme.css" />
+    <link rel="stylesheet" href="~/lib/jquery-ui/themes/base/jquery-ui.css" />
+    <!-- Bootstrap Core CSS -->
+    <link href="~/admin1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="~/admin1/css/sb-admin.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="~/admin1/css/plugins/morris.css" rel="stylesheet">
+
+    <link href="~/css/mystyle.css" rel="stylesheet" />
+
+
+    <!-- Custom Fonts -->
+    <link href="~/admin1/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="~/Admin/assets/images/favicon.ico">
 
@@ -300,13 +323,18 @@
             </div>
         </div><!-- Footer Section End -->
     </div>
+
     <!-- JS
+
     ============================================ -->
     <!-- Global Vendor, plugins & Activation JS -->
     <script src="~/Admin/assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="~/Admin/assets/js/vendor/jquery-3.3.1.min.js"></script>
     <script src="~/Admin/assets/js/vendor/popper.min.js"></script>
     <script src="~/Admin/assets/js/vendor/bootstrap.min.js"></script>
+    <script src="~/devextreme/js/dx.all.js"></script>
+    <script src="~/devextreme/js/localization/dx.messages.ru.js"></script>
+    <script src="~/devextreme/js/dx.aspnet.data.js"></script>
     <!--Plugins JS-->
     <script src="~/Admin/assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="~/Admin/assets/js/plugins/tippy4.min.js.js"></script>
@@ -338,9 +366,6 @@
     <script src="~/Admin/assets/js/plugins/jsgrid/jsgrid.min.js"></script>
     <script src="~/Admin/assets/js/plugins/jsgrid/jsgrid-db.js"></script>
     <script src="~/Admin/assets/js/plugins/jsgrid/jsgrid.active.js"></script>
-    <script src="~/devextreme/js/dx.all.js"></script>
-    <script src="~/devextreme/js/localization/dx.messages.ru.js"></script>
-    <script src="~/devextreme/js/dx.aspnet.data.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

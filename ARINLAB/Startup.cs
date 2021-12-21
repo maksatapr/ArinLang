@@ -105,7 +105,7 @@ namespace ARINLAB
             {
                 options.Host_Address = "smtp.mail.ru";
                 options.Host_Port = 465;
-                options.Host_Username = "tazedowur@mail.ru";
+                options.Host_Username = "@mail.ru";
                 options.Host_Password = "tdta2020";
                 options.Sender_EMail = "tazedowur@mail.ru";
                 options.Sender_Name = "ARINLANG";

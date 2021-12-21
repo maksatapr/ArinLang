@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
 using DAL.Models;
 using DAL.Models.Dto;
+using DAL.Models.Dto.MenuModelDTO;
+using DAL.Models.Dto.NewsModelDTO;
+using DAL.Models.Menu;
+using DAL.Models.News;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +35,49 @@ namespace ARINLAB.Extensions
             CreateMap<Language, LanguageDto>().ReverseMap();
             CreateMap<EditWordClauseDto, WordClause>().ReverseMap();
             CreateMap<AudioFileForClause, AudioFileForClauseDto>().ReverseMap();
+
+            CreateMap<News, NewsDTO>();
+            CreateMap<NewsDTO, News>();
+            CreateMap<News, CreateNewsDTO>();
+            CreateMap<CreateNewsDTO, News>();
+            CreateMap<News, EditNewsDTO>();
+            CreateMap<EditNewsDTO, News>();
+
+            CreateMap<NewsTranslate, NewsTranslateDTO>();
+            CreateMap<NewsTranslateDTO, NewsTranslate>();
+
+            CreateMap<NewsCategory, NewsCategoryDTO>();
+            CreateMap<NewsCategoryDTO, NewsCategory>();
+            CreateMap<NewsCategory, CreateNewsCategoryDTO>();
+            CreateMap<CreateNewsCategoryDTO, NewsCategory>();
+            CreateMap<NewsCategory, EditNewsCategoryDTO>();
+            CreateMap<EditNewsCategoryDTO, NewsCategory>();
+
+            CreateMap<NewsCategoryTranslate, NewsCategoryTranslateDTO>();
+            CreateMap<NewsCategoryTranslateDTO, NewsCategoryTranslate>();
+
+            CreateMap<Pages, PagesDTO>();
+            CreateMap<PagesDTO, Pages>();
+            CreateMap<Pages, CreatePagesDTO>();
+            CreateMap<CreatePagesDTO, Pages>();
+            CreateMap<Pages, EditPageDTO>();
+            CreateMap<EditPageDTO, Pages>();
+
+            CreateMap<PagesTranslate, PagesTranslateDTO>();
+            CreateMap<PagesTranslateDTO, PagesTranslate>();
+
+            CreateMap<Menu, MenuDTO>();
+            CreateMap<MenuDTO, Menu>();
+            CreateMap<Menu, CreateMenuDTO>();
+            CreateMap<CreateMenuDTO, Menu>();
+            CreateMap<Menu, EditMenuDTO>();
+            CreateMap<EditMenuDTO, Menu>();
+
+            CreateMap<Menu, MenuHierarchyDTO>();
+            CreateMap<MenuHierarchyDTO, Menu>();
+
+            CreateMap<MenuTranslate, MenuTranslateDTO>();
+            CreateMap<MenuTranslateDTO, MenuTranslate>();
 
         }
     }

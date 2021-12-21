@@ -129,16 +129,39 @@
                         <li><a asp-area="Admin" asp-controller="WordClause" asp-action="Index"><span>@SharedLocalizer["All Word Clauses"]</span></a></li>
                         <li><a asp-area="Admin" asp-controller="WordClause" asp-action="Create">@SharedLocalizer["Create Category"]</a></li>
                     </ul>
-                </li>     
+                </li>
+                <li class="has-sub-menu">
+                    <a href="#"><i class="fa fa-navicon"></i> <span>@SharedLocalizer["Menu"]</span> </a>
+                    <ul class="side-header-sub-menu">
+
+                        <li>
+                            <a asp-area="Admin" asp-controller="Menu" asp-action="Index"> <span>@SharedLocalizer["Menu"]</span></a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Pages" asp-action="Index"> <span>@SharedLocalizer["Pages"]</span></a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-newspaper-o"></i> <span>@SharedLocalizer["News"]</span> </a>
+                    <ul class="side-header-sub-menu">
+                        <li>
+                            <a asp-area="Admin" asp-controller="NewsCategory" asp-action="Index"> <span>@SharedLocalizer["News category"]</span></a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="News" asp-action="Index"> <span>@SharedLocalizer["News"]</span></a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="has-sub-menu">
                     <a asp-area="Admin" asp-controller="User" asp-action="Index"><i class="fa fa-users"></i> <span>Authentication</span></a>
                     <ul class="side-header-sub-menu">
                         <li><a href="login.html"><span>Statistics</span></a></li>
-                        <li><a href="register.html"><span>User control</span></a></li>                       
+                        <li><a href="register.html"><span>User control</span></a></li>
                     </ul>
                 </li>
-                <li >
-                    <a asp-area="Admin" asp-controller="Dictionary" asp-action="Index"><i class="ti-layers"></i> <span>@SharedLocalizer["Dictionaries"]</span></a>                   
+                <li>
+                    <a asp-area="Admin" asp-controller="Dictionary" asp-action="Index"><i class="ti-layers"></i> <span>@SharedLocalizer["Dictionaries"]</span></a>
                 </li>
 
             </ul>

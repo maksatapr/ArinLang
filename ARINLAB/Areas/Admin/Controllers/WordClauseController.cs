@@ -134,5 +134,17 @@ namespace ARINLAB.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpGet("/Admin/[controller]/Approve/{id}/{approve}/{clauseId}")]
+        public async Task<IActionResult> Approve(int id, bool approve, int clauseId)
+        {
+            var res = await _wordClauseService.ApproveVoice(id, approve);
+            if (res.IsSuccess)
+            {
+                ViewBag.successs = "Success";
+                return RedirectToAction("EditClauseVoice", new { id = clauseId });
+            }
+            return RedirectToAction("EditClauseVoice", new { id = clauseId });
+        }
+
     }
 }

@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - @SharedLocalizer["UIET"]</title>
+    <title>@ViewData["Title"] - @SharedLocalizer["ARINLANG"]</title>
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
 
     <link rel="stylesheet" href="~/client/css/output.css" />
@@ -71,7 +71,7 @@
                 </div>
             </div>
 
-            @*@await Component.InvokeAsync("HeaderMenu")*@
+            @await Component.InvokeAsync("HeaderMenu")
 
             <!-- ******************** SEARCH ******************** -->
             <div id="search-container"
@@ -126,7 +126,7 @@
             @RenderBody()
         </main>
 
-        @*@await Component.InvokeAsync("FooterSettings")*@
+        @await Component.InvokeAsync("FooterSettings")
     </div>
 
     <script src="~/js/vue.js"></script>

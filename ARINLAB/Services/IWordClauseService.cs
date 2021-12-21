@@ -33,7 +33,9 @@ namespace ARINLAB.Services
 
         public Task<Responce> CreateAudiFileForClause(CreateAudioFileForClauseDto model);
 
-        public Task<Responce> DeleteVoice(int id);       
+        public Task<Responce> DeleteVoice(int id);
+
+        public Task<Responce> ApproveVoice(int id, bool approve);
 
     }
 }

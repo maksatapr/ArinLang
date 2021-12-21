@@ -6,7 +6,6 @@ D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\ARINLAB.GeneratedMSBuildEditorC
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\ARINLAB.AssemblyInfoInputs.cache
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\ARINLAB.AssemblyInfo.cs
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\ARINLAB.csproj.CoreCompileInputs.cache
-D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\ARINLAB.MvcApplicationPartsAssemblyInfo.cs
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\ARINLAB.MvcApplicationPartsAssemblyInfo.cache
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\ARINLAB.RazorAssemblyInfo.cache
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\ARINLAB.RazorAssemblyInfo.cs
@@ -515,3 +514,18 @@ D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\WordCla
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\WordClause\Edit.cshtml.g.cs
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\WordClause\CreateVoice.cshtml.g.cs
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\WordClause\EditClauseVoice.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\ARINLAB.MvcApplicationPartsAssemblyInfo.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Menu\Create.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Menu\Edit.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Menu\Index.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\NewsCategory\Create.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\NewsCategory\Edit.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\NewsCategory\Index.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\News\Create.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\News\Edit.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\News\Index.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Pages\Create.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Pages\Edit.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Pages\Index.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\Shared\Components\FooterSettings\Default.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\Shared\Components\HeaderMenu\Default.cshtml.g.cs

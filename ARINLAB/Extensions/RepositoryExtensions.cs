@@ -1,6 +1,11 @@
 ﻿
 using ARINLAB.Services;
 using ARINLAB.Services.ImageService;
+using ARINLAB.Services.Menu;
+using ARINLAB.Services.News;
+using ARINLAB.Services.NewsCategory;
+using ARINLAB.Services.Pages;
+using ARINLAB.Services.Settings;
 using DAL.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +34,11 @@ namespace ARINLAB.Extensions
             services.AddScoped<FileServices>();
             services.AddScoped<IWordClauseService, WordClauseService>();
             services.AddScoped<ILanguageService, LanguageService>();
+            services.AddTransient<IMenuService, MenuService>();
+            services.AddTransient<IPagesService, PagesService>();
+            services.AddTransient<INewsCategoryService, NewsCategoryService>();
+            services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<ISettingsService, SettingsService>();
             //Add Scoped Services
 
 

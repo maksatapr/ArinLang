@@ -300,5 +300,25 @@ namespace ARINLAB.Services
             }
             return ResponceGenerator.GetResponceModel(true, "", null);
         }
+
+        public async Task<Responce> ApproveVoice(int id, bool approve)
+        {
+            var res = await _dbContext.AudioFileForClauses.FindAsync(id);
+            try
+            {
+                if (res != null)
+                {
+                    res.IsApproved = approve;
+                    _dbContext.AudioFileForClauses.Update(res);
+                    await _dbContext.SaveChangesAsync();
+                    return ResponceGenerator.GetResponceModel(true, "", null);
+                }
+                return ResponceGenerator.GetResponceModel(false, "", null);
+            }
+            catch(Exception e)
+            {
+                return ResponceGenerator.GetResponceModel(false, e.Message, null);
+            }
+        }
     }
 }

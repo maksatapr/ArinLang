@@ -10,5 +10,8 @@ namespace ARINLAB.Services.ImageService
     {
         public Task<string> UploadImage(IFormFile formFile, string pClass);
         public bool DeleteImage(string pictureName);
+
+        public Task<string> _UploadImage(IFormFile formFile, string pClass);
+        public bool _DeleteImage(string pictureName, string pClass);
     }
 }
