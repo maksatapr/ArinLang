@@ -39,6 +39,7 @@ namespace ARINLAB.Extensions
             services.AddTransient<INewsCategoryService, NewsCategoryService>();
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<INamesService, NamesService>();
             //Add Scoped Services
 
 

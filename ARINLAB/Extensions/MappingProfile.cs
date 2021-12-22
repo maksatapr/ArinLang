@@ -2,6 +2,7 @@
 using DAL.Models;
 using DAL.Models.Dto;
 using DAL.Models.Dto.MenuModelDTO;
+using DAL.Models.Dto.NamesDTO;
 using DAL.Models.Dto.NewsModelDTO;
 using DAL.Models.Menu;
 using DAL.Models.News;
@@ -78,6 +79,11 @@ namespace ARINLAB.Extensions
 
             CreateMap<MenuTranslate, MenuTranslateDTO>();
             CreateMap<MenuTranslateDTO, MenuTranslate>();
+
+            CreateMap<Names, NamesDto>().ReverseMap();
+            CreateMap<CreateNamesDto, Names>().ReverseMap();
+            CreateMap<NameImages, NameImagesDto>().ReverseMap();
+            CreateMap<CreateNameImagesDto, NameImages>().ReverseMap();
 
         }
     }
