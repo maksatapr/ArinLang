@@ -153,6 +153,18 @@
                         </li>
                     </ul>
                 </li>
+                <li>
+                    <a href="#"><i class="fa fa-user-o"></i> <span>@SharedLocalizer["Names"]</span> </a>
+                    <ul class="side-header-sub-menu">
+                        <li>
+                            <a asp-area="Admin" asp-controller="Names" asp-action="Index"> <span>@SharedLocalizer["Names"]</span></a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="Names" asp-action="Create"> <span>@SharedLocalizer["Create Name"]</span></a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="has-sub-menu">
                     <a asp-area="Admin" asp-controller="User" asp-action="Index"><i class="fa fa-users"></i> <span>Authentication</span></a>
                     <ul class="side-header-sub-menu">

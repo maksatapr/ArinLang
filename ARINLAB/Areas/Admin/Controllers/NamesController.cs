@@ -1,12 +1,10 @@
 ﻿using ARINLAB.Models;
 using ARINLAB.Services;
 using DAL.Data;
+using DAL.Models;
 using DAL.Models.Dto.NamesDTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -31,7 +29,7 @@ namespace ARINLAB.Areas.Admin.Controllers
         public IActionResult Create()
         {
             ViewBag.Dictionaries = _dictService.GetAllDictionaries().Data;            
-            return View();
+            return View(new CreateNamesDto());
         }
 
         [HttpPost]
@@ -41,6 +39,7 @@ namespace ARINLAB.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.UserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                model.IsApproved = true;
                 var res = await _nameService.CreateNameAsync(model);
                 if (res.IsSuccess)
                 {
@@ -63,7 +62,7 @@ namespace ARINLAB.Areas.Admin.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Edit(NamesDto model)
+        public IActionResult Edit(NamesDto model)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +76,7 @@ namespace ARINLAB.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> EditImagesync(int id)
+        public async Task<IActionResult> EditImageAsync(int id)
         {
             var clause = await _nameService.GetNameByIdAsync(id);
             if (clause == null)
@@ -88,28 +87,49 @@ namespace ARINLAB.Areas.Admin.Controllers
             return View(voices);
         }
 
-        public async Task<IActionResult> AddImage(int id, string arabName, string otherName, string dictName)
+        [HttpGet("/Admin/[controller]/AddImage/{id}")]
+        public async Task<IActionResult> AddImageAsync(int id)
         {
+            var res = await _nameService.GetNameByIdAsync(id);
+            if (res == null)
+                return RedirectToAction("EditImage", new { id = id });
+
             NamesImagesViewModel model = new();
             model.Id = id;
-            model.ArabName= arabName;
-            model.OtherName= otherName;
-            model.DictName = dictName;
-            NameImagesDto file = new();
+            model.ArabName= res.ArabName;
+            model.OtherName= res.OtherName;
+            model.DictName = res.DictionaryName;
+            CreateNameImagesDto file = new();
             ViewBag.Model = model;
             return View(file);
         }
+
+
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AddImage(CreateNameImagesDto model)
         {
+            model.UserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;            
             var res = await _nameService.CreateImageforNameAsync(model);
             if (res.IsSuccess)
             {
-                return RedirectToAction("EditImage", new { id = model.NamesId });
+                return RedirectToAction("Edit", new { id = model.NamesId });
             }
-            return View();
+            return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> EditApprove(int id, bool approve)
+        {
+            var res = await _nameService.ApproveImage(id, approve);
+            if(res != null && res.IsSuccess)
+            {
+                return RedirectToAction("EditImageAsync", new { id = ((NameImages)res.Data).Id });
+            }
+            return View("Index");
+
+        }
+
+
     }
 }

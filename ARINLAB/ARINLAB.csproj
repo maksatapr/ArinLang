@@ -2054,6 +2054,7 @@
     <Folder Include="wwwroot\images\Advertisement\" />
     <Folder Include="wwwroot\images\Banner\" />
     <Folder Include="wwwroot\images\MembershipRequests\" />
+    <Folder Include="wwwroot\images\Names\" />
     <Folder Include="wwwroot\NewFolder\" />
     <Folder Include="wwwroot\Sounds\Words\" />
   </ItemGroup>

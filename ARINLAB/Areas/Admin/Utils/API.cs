@@ -14,5 +14,8 @@ namespace ARINLAB.Areas.Admin.Utils
         public static string GetAllNews { get; } = "/api/NewsAPI";
         public static string GetAllNewsCategory { get; } = "/api/NewsAPI/GetAllNewsCategories";
         public static string GetAllPages { get; } = "/api/PagesAPI";
+        public static string GetAllNames { get; } = "/api/NamesAPI";
+        public static string GetAllNamesImages { get; set; } = "/api/NamesAPI/GetImage";
+        public static string DeleteImage { get; set; } = "/api/NamesAPI";
     }
 }

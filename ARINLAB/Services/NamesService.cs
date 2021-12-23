@@ -17,13 +17,29 @@ namespace ARINLAB.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly IImageService _imageService;
         private readonly IMapper _mapper;
+        private readonly IDictionaryService _dictionaryService;
 
-        public NamesService(ApplicationDbContext applicationDb, IImageService imageService, IMapper mapper)
+        public NamesService(ApplicationDbContext applicationDb, IImageService imageService, IMapper mapper, IDictionaryService dict)
         {
             _dbContext = applicationDb;
             _imageService = imageService;
             _mapper = mapper;
+            _dictionaryService = dict;
         }
+
+        public async Task<Responce> ApproveImage(int image_id, bool approve)
+        {
+            var res = await _dbContext.NameImages.FindAsync(image_id);
+            if(res != null)
+            {
+                res.IsApproved = approve;
+                _dbContext.NameImages.Update(res);
+                await _dbContext.SaveChangesAsync();
+                return ResponceGenerator.GetResponceModel(true,"", res);
+            }
+            return ResponceGenerator.GetResponceModel(false);
+        }
+
         public async Task<Responce> CreateImageforNameAsync(CreateNameImagesDto image)
         {
             NameImages model = new();            
@@ -32,6 +48,8 @@ namespace ARINLAB.Services
                 if(image != null)
                 {
                     model.NamesId = image.NamesId;
+                    model.UserId = image.UserId;
+                    model.IsApproved = true;
                     if (image.ImageUri != null)
                     {
                         model.ImageUri = await _imageService._UploadImage(image.ImageUri, "Names");
@@ -81,11 +99,11 @@ namespace ARINLAB.Services
             {
                 var res = await _dbContext.Names.FindAsync(id);
                 if (res != null)
-                {
+                { 
+                    var images = _dbContext.NameImages.Where(p => p.NamesId == id);
                     _dbContext.Names.Remove(res);
                     await _dbContext.SaveChangesAsync();
-                    var images = _dbContext.NameImages.Where(p => p.NamesId == id);
-                    foreach(var image in images)
+                    foreach (var image in images)
                     {
                         _imageService._DeleteImage(image.ImageUri, "Names");
                         _dbContext.NameImages.Remove(image);                        
@@ -119,7 +137,13 @@ namespace ARINLAB.Services
         {
             try
             {
-                return _mapper.Map<List<NamesDto>>(_dbContext.Names.Include(p => p.NameImages));
+                var res = _mapper.Map<List<NamesDto>>(_dbContext.Names);
+                var dicts = new List<Dictionary>((IEnumerable<Dictionary>)_dictionaryService.GetAllDictionaries().Data);
+                foreach (var name in res)
+                {
+                    name.DictionaryName = dicts.SingleOrDefault(p => p.Id == name.DictionaryId)?.Language;
+                }
+                return res;
             }catch(Exception e)
             {
                 return null;
@@ -142,10 +166,12 @@ namespace ARINLAB.Services
         {
             try
             {
-                var res = _dbContext.Names.Include(p => p.NameImages).FirstOrDefault(p => p.Id == id);
+                var res = await _dbContext.Names.FindAsync(id);
                 if (res != null)
                 {
-                    return _mapper.Map<NamesDto>(res);
+                    var data = _mapper.Map<NamesDto>(res);
+                    data.DictionaryName = _dictionaryService.GetDictionaryNameById(data.DictionaryId);
+                    return data;
                 }
             }catch(Exception e)
             {

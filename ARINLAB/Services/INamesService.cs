@@ -18,5 +18,7 @@ namespace ARINLAB.Services
         public Task<NameImagesDto> GetNameImageByImageIdAsync(int id);
         public Task<Responce> DeleteImageforNameAsync(int id);
         public Task<Responce> CreateImageforNameAsync(CreateNameImagesDto image);
+
+        public  Task<Responce> ApproveImage(int image_id, bool approve);
     }
 }
