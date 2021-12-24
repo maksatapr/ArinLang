@@ -6,6 +6,7 @@ using ARINLAB.Services.News;
 using ARINLAB.Services.NewsCategory;
 using ARINLAB.Services.Pages;
 using ARINLAB.Services.Settings;
+using ARINLAB.Services.Statistic;
 using DAL.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +41,7 @@ namespace ARINLAB.Extensions
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<INamesService, NamesService>();
+            services.AddScoped<IStatisticsService, StatisticsService>();
             //Add Scoped Services
 
 

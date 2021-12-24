@@ -101,12 +101,14 @@
                 <li><a href="chart-sparkline.html"><span>Sparkline  Chart</span></a></li>
             </ul>
         </li>*@
+                <li >
+                    <a asp-area="Admin" asp-controller="Admin" asp-action="Index"><i class="ti-home"></i> <span>@SharedLocalizer["Words"]</span></a>  
+                </li>
                 <li class="has-sub-menu">
                     <a href="#"><i class="fa fa-file-word-o"></i> <span>@SharedLocalizer["Words"]</span></a>
                     <ul class="side-header-sub-menu">
                         <li><a asp-area="Admin" asp-controller="Word" asp-action="Index"><span>@SharedLocalizer["All Words"]</span></a></li>
                         <li><a asp-area="Admin" asp-controller="Word" asp-action="Create">@SharedLocalizer["Create New Word"]</a></li>
-
                     </ul>
                 </li>
                 <li class="has-sub-menu">

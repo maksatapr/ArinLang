@@ -5,115 +5,159 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+@model HomeViewModel
+
+
+@{
+    int totalUsers = Model.StatistiCards[0].Editers + Model.StatistiCards[1].Editers + Model.StatistiCards[2].Editers + Model.StatistiCards[3].Editers;
+}
 <div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
     <div class="xl:w-8/12 xl:px-0 px-4 flex-grow" style="margin-left:42%">
         <h1 class="md:text-4xl text-2xl font-semibold mb-10" style="font:900">@SharedLocalizer["WELCOME TO ARINLANG"] </h1>
     </div>
-    </div>
-    <div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
+</div>
+<div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
 
 
-        <!-- ******************** ADVERTISMENT LEFT  ********************-->
-        <div class="flex-grow xl:w-2/12 xl:mr-2 mb-10 xl:mb-0 relative adt-center overflow-hidden">
-            <div class="adv-slider-left adv-slider flex xl:w-full">
-                <img class="avdertisment-item advertisment-left img-center border-radius7 object-cover img-padding10"
-                     data-desk="../images/Безимени-3.gif"
-                     data-mobile="../images/Безимени-3.gif" />
-            </div>
+    <!-- ******************** ADVERTISMENT LEFT  ********************-->
+    <div class="flex-grow xl:w-2/12 xl:mr-2 mb-10 xl:mb-0 relative adt-center overflow-hidden">
+        <div class="adv-slider-left adv-slider flex xl:w-full">
+            <img class="avdertisment-item advertisment-left img-center border-radius7 object-cover img-padding10"
+                 data-desk="../images/Безимени-3.gif"
+                 data-mobile="../images/Безимени-3.gif" />
         </div>
-        <!-- ******************** ADVERTISMENT LEFT  ********************-->
-        <!-- ******************** ADVERTISMENT RIGHT  ********************-->
-        <div class="flex-grow xl:w-2/12 w-full mt-16 xl:mt-0 xl:ml-2 relative adt-center overflow-hidden">
-            <div class="adv-slider-right adv-slider flex xl:w-full">
-                <img class="avdertisment-item advertisment-right img-center border-radius7 object-cover img-padding10"
-                     data-desk="../images/Безимени-4.gif"
-                     data-mobile="../images/Безимени-4.gif" />
-            </div>
-        </div>
-        <!-- ******************** ADVERTISMENT RIGHT  ********************-->
-
     </div>
-    <!-- ******************** PRODUCTS SECTION  ********************-->
-    <div class="bg-gray-100 sm:py-16 py-10 md:py-20">
-        <div class="container relative">
-            <div class="prev">
-                <svg width="18" height="12" viewBox="0 0 18 12" class="transform rotate-180">
-                    <path id="path"
-                          d="M353.6,392.8v2H339.4l3.6,3.6-1.4,1.4-6-6,6-6,1.4,1.4-3.6,3.6Z"
-                          transform="translate(353.6 399.8) rotate(180)"
-                          fill="#5e5e77" />
-                </svg>
-            </div>
-            <div class="next">
-                <svg width="18" height="12" viewBox="0 0 18 12">
-                    <path id="path"
-                          d="M353.6,392.8v2H339.4l3.6,3.6-1.4,1.4-6-6,6-6,1.4,1.4-3.6,3.6Z"
-                          transform="translate(353.6 399.8) rotate(180)"
-                          fill="#5e5e77" />
-                </svg>
-            </div>
-            <div class="xl:container px-4 xl:px-0 relative overflow-hidden">
-                <h2 class="font-semibold md:mb-8 mb-6 text-2xl md:text-3xl">
-                    @SharedLocalizer["Latest News"]
-                </h2>
-                <div class="products-swiper-container swiper-container">
-                    <div class="swiper-wrapper pb-16">
-                        @for (int i = 0; i < 10; ++i)
-                        {
-                            <a asp-area="" asp-controller="NativeProduct" asp-action="Detail" asp-route-id="@i" class="swiper-slide">
-                                <div class="products-slider-card">
-                                    <div class="absolute w-full top-0 left-0 right-0 py-1 px-2 sm:p-3 z-10"
-                                         style="background: rgba(0, 0, 0, 0.5)">
-                                        <span class="text-white sm:text-lg font-semibold text-base block w-full">
-                                            Maksat
-                                        </span>
-                                    </div>
-                                    <img src="~/images/Declarations/1e1b9848792f4624b4e05e9889b61673.jpg" alt="" class="object-cover w-full" />
+    <!-- ******************** ADVERTISMENT LEFT  ********************-->
+    <!-- ******************** ADVERTISMENT RIGHT  ********************-->
+    <div class="flex-grow xl:w-2/12 w-full mt-16 xl:mt-0 xl:ml-2 relative adt-center overflow-hidden">
+        <div class="adv-slider-right adv-slider flex xl:w-full">
+            <img class="avdertisment-item advertisment-right img-center border-radius7 object-cover img-padding10"
+                 data-desk="../images/Безимени-4.gif"
+                 data-mobile="../images/Безимени-4.gif" />
+        </div>
+    </div>
+    <!-- ******************** ADVERTISMENT RIGHT  ********************-->
+
+</div>
+<!-- ******************** PRODUCTS SECTION  ********************-->
+<div class="bg-gray-100 sm:py-16 py-10 md:py-20">
+    <div class="container relative">
+        <div class="prev">
+            <svg width="18" height="12" viewBox="0 0 18 12" class="transform rotate-180">
+                <path id="path"
+                      d="M353.6,392.8v2H339.4l3.6,3.6-1.4,1.4-6-6,6-6,1.4,1.4-3.6,3.6Z"
+                      transform="translate(353.6 399.8) rotate(180)"
+                      fill="#5e5e77" />
+            </svg>
+        </div>
+        <div class="next">
+            <svg width="18" height="12" viewBox="0 0 18 12">
+                <path id="path"
+                      d="M353.6,392.8v2H339.4l3.6,3.6-1.4,1.4-6-6,6-6,1.4,1.4-3.6,3.6Z"
+                      transform="translate(353.6 399.8) rotate(180)"
+                      fill="#5e5e77" />
+            </svg>
+        </div>
+        <div class="xl:container px-4 xl:px-0 relative overflow-hidden">
+            <h2 class="font-semibold md:mb-8 mb-6 text-2xl md:text-3xl">
+                @SharedLocalizer["Latest News"]
+            </h2>
+            <div class="products-swiper-container swiper-container">
+                <div class="swiper-wrapper pb-16">
+                    @for (int i = 0; i < 10; ++i)
+                    {
+                        <a asp-area="" asp-controller="NativeProduct" asp-action="Detail" asp-route-id="@i" class="swiper-slide">
+                            <div class="products-slider-card">
+                                <div class="absolute w-full top-0 left-0 right-0 py-1 px-2 sm:p-3 z-10"
+                                     style="background: rgba(0, 0, 0, 0.5)">
+                                    <span class="text-white sm:text-lg font-semibold text-base block w-full">
+                                        Maksat
+                                    </span>
                                 </div>
-                            </a>
-                        }
-                    </div>
-
-                    <!-- Slider main container -->
+                                <img src="~/images/Declarations/1e1b9848792f4624b4e05e9889b61673.jpg" alt="" class="object-cover w-full" />
+                            </div>
+                        </a>
+                    }
                 </div>
+
+                <!-- Slider main container -->
             </div>
         </div>
     </div>
-    <!-- ******************** PRODUCTS SECTION  ********************-->
-    <!-- ******************** MAILING SECTION  ********************-->
-    <div class="bg-gray-100 lg:py-0 sm:py-4">
-        <div class="xl:container sm:px-4 xl:p-40 lg:p-24">
-            <div class="bg-white shadow-md md:p-16 px-4 py-10 rounded">
-                <h2 class="font-bold text-2xl md:text-3xl text-center text-primary font-roboto">
-                    @SharedLocalizer["Subscribe to the newsletter and events"]
-                </h2>
-                @*<h3 class="text-center text-lg mt-2 font-roboto sm:block hidden">
-                        и будьте в курсе всех новостей и событий Союза промышленников и предпринимателей
-                        Туркменистана. Все релизы будут своевременно отправляться на адрес указанный Вами.
-                    </h3>*@
-                <form asp-area="" asp-controller="Home" asp-action="Subscribe">
-                    <div class="relative px-4 mt-10 sm:bg-gray-100 rounded-sm overflow-hidden grid sm:block gap-y-2">
-                        <input type="email"
-                               name="email"
-                               placeholder="@SharedLocalizer["Enter your email address"]"
-                               class="sm:w-9/12 w-full bg-transparent p-4 outline-none sm:border-none border border-gray-200 rounded sm:rounded-none" required />
-                        <button type="submit"
-                                class="button sm:absolute flex items-center justify-center uppercase rounded sm:rounded-none right-0 top-0 btn w-full sm:w-auto bg-secondary h-full text-white">
-                            <span>@SharedLocalizer["Subscribe"]</span>
-                        </button>
-
-
+</div>
+<!-- ******************** PRODUCTS SECTION  ********************-->
+<!-- ******************** STATISTICS SECTION  ********************-->
+<div class="bg-white py-8">
+    <div class="xl:container xl:px-0 px-4">
+        <div class="grid lg:grid-cols-2 gap-y-8">
+            <div class="flex flex-col justify-evenly lg:h-auto lg:py-0 md:h-64 md:py-24">
+                <h2 class="font-semibold text-2xl lg:my-0 my-8">@SharedLocalizer["ARINLANG in Numbers"]</h2>
+                <div class="grid md:grid-cols-2 md:gap-y-10 gap-y-4 gap-x-6">
+                    <div>
+                        <div class="h-2 w-16 md:mb-2 mb-1 rounded-sm bg-secondary"></div>
+                        <span class="font-semibold text-lg">@SharedLocalizer["Total"] @totalUsers @SharedLocalizer[" Users"]</span>
                     </div>
-
-                </form>
-                <hr />
+                    <div>
+                        <div class="h-2 w-16 md:mb-2 mb-1 rounded-sm bg-secondary"></div>
+                        <span class="font-semibold text-lg">@SharedLocalizer["Total"] @Model.StatistiCards[0].totalCount @SharedLocalizer["Words"]</span>
+                    </div>
+                    <div>
+                        <div class="h-2 w-16 md:mb-2 mb-1 rounded-sm bg-secondary"></div>
+                        <span class="font-semibold text-lg">@Model.StatistiCards[1].totalCount  @SharedLocalizer["Sentences recorded"]</span>
+                    </div>
+                    <div>
+                        <div class="h-2 w-16 md:mb-2 mb-1 rounded-sm bg-secondary"></div>
+                        <span class="font-semibold text-lg">@Model.StatistiCards[2].totalCount @SharedLocalizer["Similar Names are registered"]</span>
+                    </div>
+                </div>
+                @*<div>
+                        <a asp-area="" asp-controller="Visitors" asp-action="Index"
+                           class="btn border-2 inline-flex sm:mt-10 md:mt-4 mt-8 text-secondary border-secondary rounded hover:bg-secondary hover:text-white">
+                            @SharedLocalizer["More details"]
+                        </a>
+                    </div>*@
             </div>
+            <img src="~/images/giphy-63.gif"
+                 alt=""
+                 class="object-cover w-100 rounded row-start-1 lg:col-start-2 h-25 " style="margin-left: 30%;"/>
         </div>
     </div>
-    <!-- ******************** MAILING SECTION  ********************-->
+</div>
+<!-- ******************** STATISTICS SECTION  ********************-->
+<!-- ******************** MAILING SECTION  ********************-->
+<div class="bg-gray-100 lg:py-0 sm:py-4">
+    <div class="xl:container sm:px-4 xl:p-40 lg:p-24">
+        <div class="bg-white shadow-md md:p-16 px-4 py-10 rounded">
+            <h2 class="font-bold text-2xl md:text-3xl text-center text-primary font-roboto">
+                @SharedLocalizer["Subscribe to the newsletter and events"]
+            </h2>
+            @*<h3 class="text-center text-lg mt-2 font-roboto sm:block hidden">
+                    и будьте в курсе всех новостей и событий Союза промышленников и предпринимателей
+                    Туркменистана. Все релизы будут своевременно отправляться на адрес указанный Вами.
+                </h3>*@
+            <form asp-area="" asp-controller="Home" asp-action="Subscribe">
+                <div class="relative px-4 mt-10 sm:bg-gray-100 rounded-sm overflow-hidden grid sm:block gap-y-2">
+                    <input type="email"
+                           name="email"
+                           placeholder="@SharedLocalizer["Enter your email address"]"
+                           class="sm:w-9/12 w-full bg-transparent p-4 outline-none sm:border-none border border-gray-200 rounded sm:rounded-none" required />
+                    <button type="submit"
+                            class="button sm:absolute flex items-center justify-center uppercase rounded sm:rounded-none right-0 top-0 btn w-full sm:w-auto bg-secondary h-full text-white">
+                        <span>@SharedLocalizer["Subscribe"]</span>
+                    </button>
+
+
+                </div>
+
+            </form>
+            <hr />
+        </div>
+    </div>
+</div>
+<!-- ******************** MAILING SECTION  ********************-->
 
 
 
-    @section Scripts{
-        <script src="~/client/js/advertisment.js" defer></script>
-    }
+@section Scripts{
+    <script src="~/client/js/advertisment.js" defer></script>
+}

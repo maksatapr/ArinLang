@@ -1,4 +1,5 @@
 ﻿using ARINLAB.Models;
+using ARINLAB.Services.Statistic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,15 +15,17 @@ namespace ARINLAB.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IStatisticsService _statService;
+        public HomeController(ILogger<HomeController> logger, IStatisticsService statisticsService)
         {
             _logger = logger;
+            _statService = statisticsService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            HomeViewModel model = new HomeViewModel() { StatistiCards = _statService.GetStatisticsCard() };
+            return View(model);
         }
 
         public IActionResult Privacy()

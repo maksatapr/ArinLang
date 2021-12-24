@@ -104,8 +104,6 @@ namespace ARINLAB.Areas.Admin.Controllers
             return View(file);
         }
 
-
-
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AddImage(CreateNameImagesDto model)

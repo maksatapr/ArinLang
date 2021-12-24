@@ -6,46 +6,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - @SharedLocalizer["ARINLANG"]</title>
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
-
+   
     <link rel="stylesheet" href="~/client/css/output.css" />
     <link rel="stylesheet" href="~/client/css/pickmeup.css" />
     <link rel="stylesheet" href="~/client/css/swiper.bundle.min.css" />
     <link rel="stylesheet" href="~/client/css/Video.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 
+
     @RenderSection("Css", required: false)
-
-    <style>
-
-        .button span {
-            cursor: pointer;
-            display: inline-block;
-            position: relative;
-            transition: 0.5s;
-        }
-
-            .button span:after {
-                content: '\00bb';
-                position: absolute;
-                opacity: 0;
-                top: 0;
-                right: -20px;
-                transition: 0.5s;
-            }
-
-        .button:hover span {
-            padding-right: 25px;
-        }
-
-            .button:hover span:after {
-                opacity: 1;
-                right: 0;
-            }
-    </style>
 
 </head>
 <body>
