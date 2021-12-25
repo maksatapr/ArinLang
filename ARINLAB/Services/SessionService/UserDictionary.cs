@@ -9,7 +9,7 @@ namespace ARINLAB.Services.SessionService
     public  class UserDictionary
     {
         private const string SessionKeyName = "_Dictionary";
-        private const int DefaultDictionary = 1;
+        private const int DefaultDictionary = -1;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ISession _session;
         public UserDictionary(IHttpContextAccessor httpContextAccessor)
@@ -23,7 +23,6 @@ namespace ARINLAB.Services.SessionService
             {
                 try
                 {
-
                     return int.Parse(_session.GetString(SessionKeyName));
 
                 }catch(Exception e)
@@ -34,7 +33,7 @@ namespace ARINLAB.Services.SessionService
             return DefaultDictionary;
         }
 
-        public void SerDictionary(int dictId)
+        public void SetDictionary(int dictId)
         {
             _session.SetString(SessionKeyName, $"{dictId}");
         }

@@ -85,6 +85,7 @@ const closeSearchBar = () => {
 window.addEventListener('keydown', e => {
 	if (e.keyCode === 27 && isOpen) {
 		closeSearchBar();
+		
 	}
 	if (e.keyCode === 83 && e.shiftKey && !isOpen) {
 		openSearchBar();
@@ -100,6 +101,8 @@ searchBtn.addEventListener('click', () => {
 		gsap.set(body, { height: 'auto', overflow: 'auto' });
 	}
 });
+
+
 
 // SEARCH SECTION
 

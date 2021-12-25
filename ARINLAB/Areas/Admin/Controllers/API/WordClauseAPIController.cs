@@ -30,6 +30,12 @@ namespace ARINLAB.Areas.Admin.Controllers.API
             return DataSourceLoader.Load<WordClauseDto>((await _wordClauseServices.GetAllWordClausesAsync()).AsQueryable(), loadOptions);
         }
 
+        [HttpGet("RandomWordClauses")]
+        public object RandomWordClauses(DataSourceLoadOptions loadOptions)
+        {
+            return DataSourceLoader.Load<WordClauseDto>(_wordClauseServices.GetRandomWordClauses(SD.Home_table_Count).AsQueryable(), loadOptions);
+        }
+
         [HttpDelete("{id}")]
         [Authorize(Roles = Roles.Admin)]
         public async Task DeleteAsync(int id)

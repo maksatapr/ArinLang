@@ -1,4 +1,5 @@
 ﻿using ARINLAB.Services.ImageService;
+using ARINLAB.Services.SessionService;
 using AutoMapper;
 using DAL.Data;
 using DAL.Models;
@@ -20,14 +21,17 @@ namespace ARINLAB.Services
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _useManager;
         private readonly IImageService _fileServices;
+        private readonly UserDictionary _userDicts;
 
         public WordClauseService(ApplicationDbContext dbContext, IMapper mapper, 
-                                UserManager<ApplicationUser> userManager, IImageService fileServices)
+                                UserManager<ApplicationUser> userManager, IImageService fileServices,
+                                UserDictionary userDictionary)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _useManager = userManager;
             _fileServices = fileServices;
+            _userDicts = userDictionary;
         }
         public async Task<Responce> CreateWordClause(CreateWordClauseDto model)
         {
@@ -318,6 +322,29 @@ namespace ARINLAB.Services
             catch(Exception e)
             {
                 return ResponceGenerator.GetResponceModel(false, e.Message, null);
+            }
+        }
+
+        public List<WordClauseDto> GetRandomWordClauses(int n)
+        {
+            try
+            {
+                var dictId = _userDicts.GetDictionaryId();
+                Random rnd = new Random(DateTime.UtcNow.Millisecond);
+                int rn = rnd.Next();
+                var res = _dbContext.WordClauses.Where(p => p.DictionaryId == dictId).OrderBy(p => rn).Take(n).ToList();
+                if (res != null)
+                {
+                    return _mapper.Map<List<WordClauseDto>>(res);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
     }

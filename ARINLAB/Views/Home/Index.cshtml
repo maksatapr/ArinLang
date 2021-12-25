@@ -1,24 +1,28 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using ARINLAB.Areas.Admin.Utils
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedResource> SharedLocalizer
 @inject IViewLocalizer localizer
+
+@model HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
+    var dicts = ViewBag.Dictionaries;
 }
-@model HomeViewModel
+@using ARINLAB.Services.SessionService;
+
 
 
 @{
     int totalUsers = Model.StatistiCards[0].Editers + Model.StatistiCards[1].Editers + Model.StatistiCards[2].Editers + Model.StatistiCards[3].Editers;
 }
-<div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
+<div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog" style="padding-bottom:0rem;">
     <div class="xl:w-8/12 xl:px-0 px-4 flex-grow" style="margin-left:42%">
         <h1 class="md:text-4xl text-2xl font-semibold mb-10" style="font:900">@SharedLocalizer["WELCOME TO ARINLANG"] </h1>
     </div>
 </div>
+
 <div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
-
-
     <!-- ******************** ADVERTISMENT LEFT  ********************-->
     <div class="flex-grow xl:w-2/12 xl:mr-2 mb-10 xl:mb-0 relative adt-center overflow-hidden">
         <div class="adv-slider-left adv-slider flex xl:w-full">
@@ -28,6 +32,21 @@
         </div>
     </div>
     <!-- ******************** ADVERTISMENT LEFT  ********************-->
+    <!-- ******************** Start Words Section ********************-->
+    <div class="xl:w-8/12 xl:px-0 px-4 flex-grow">
+        <h2 class="md:text-4xl text-2xl font-semibold mb-10" style="font:900">@SharedLocalizer["Words Collection"] </h2>
+        <div class="row">
+            <div id="gridContainer">
+            </div>
+            <div class="row">
+                <h2 class="md:text-4xl text-2xl font-semibold mb-10" style="font:900; padding-top:4rem;">@SharedLocalizer["Words Clauses Collection"] </h2>
+                <div id="gridContainer1">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ******************** End Words Section ********************-->
+   
     <!-- ******************** ADVERTISMENT RIGHT  ********************-->
     <div class="flex-grow xl:w-2/12 w-full mt-16 xl:mt-0 xl:ml-2 relative adt-center overflow-hidden">
         <div class="adv-slider-right adv-slider flex xl:w-full">
@@ -119,7 +138,7 @@
             </div>
             <img src="~/images/giphy-63.gif"
                  alt=""
-                 class="object-cover w-100 rounded row-start-1 lg:col-start-2 h-25 " style="margin-left: 30%;"/>
+                 class="object-cover w-100 rounded row-start-1 lg:col-start-2 h-25 " style="margin-left: 30%;" />
         </div>
     </div>
 </div>
@@ -160,4 +179,212 @@
 
 @section Scripts{
     <script src="~/client/js/advertisment.js" defer></script>
+    <script>
+        $(function () {
+            let url = `@API.GetRandomWords`;
+            var returnUrl = '@Context.Request.Path@Context.Request.QueryString';
+            $("#gridContainer").dxDataGrid({
+                dataSource: DevExpress.data.AspNet.createStore({
+                    key: "id",
+                    loadUrl: url,
+                    insertUrl: url,
+                    updateUrl: url,
+                    deleteUrl: url,
+                    onBeforeSend: function (method, ajaxOptions) {
+                        ajaxOptions.xhrFields = { withCredentials: true };
+                    }
+                }),
+                onInitNewRow: function(e) {
+                    var url = `@Url.Action("Create", "WordClause", new { Area = "Admin" })`;
+                    window.location = url;
+                },
+                selection: {
+                    mode: "multiple"
+                },
+                "export": {
+                    enabled: false,
+                    fileName: "arabWords",
+                    allowExportSelectedData: true
+                },
+                filterPanel: {
+                    visible: false
+                },
+                filterRow: { visible: false },
+                remoteOperations: true,
+                onRowUpdating: function (e) {
+                    e.newData = Object.assign(e.oldData, e.newData)
+                },
+                scrolling: {
+                    mode: "virtual",
+                    rowRenderingMode: "virtual"
+                },
+                paging: {
+                    pageSize: 100
+                },
+                editing: {
+                    useIcons: true,
+                    allowUpdating: true,
+                    allowDeleting: false,
+                    allowAdding: false
+                },
+                headerFilter: {
+                    visible: true
+                },
+                wordWrapEnabled: true,
+                showColumnLines: true,
+                showRowLines: true,
+                rowAlternationEnabled: true,
+                showBorders: true,
+                searchPanel: {
+                    visible: false
+                },
+                stateStoring: {
+                    enabled:false,
+                    type: "localStorage",
+                    storageKey: "WordClauseAdmin"
+                },
+                columns: [
+                    {
+                        caption: '@SharedLocalizer["Arab Words"]',
+                        dataField: "arabWord",
+                        allowHeaderFiltering: false,
+                    },{
+                        caption: '@SharedLocalizer["Other Language read"]',
+                        dataField: "otherWord",
+                        allowHeaderFiltering: false,
+                   },
+
+                    {
+                        type: "buttons",
+                        width: 110,
+                        buttons: [
+                            {
+                                hint: '@SharedLocalizer["Edit"]',
+                                icon: "edit",
+                                onClick: function (e) {
+                                    var idString = e.row.data.id;
+                                    var url = `@Url.Action("Edit", "WordClause", new { Area = "Admin" })`;
+                                    window.location = url + '?id=' + idString;
+                                }
+                            },
+                             
+                        ]
+                    }
+                ]
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            let url = `@API.GetAllWordClauses`;
+            var returnUrl = '@Context.Request.Path@Context.Request.QueryString';
+            $("#gridContainer1").dxDataGrid({
+                dataSource: DevExpress.data.AspNet.createStore({
+                    key: "id",
+                    loadUrl: url,
+                    insertUrl: url,
+                    updateUrl: url,
+                    deleteUrl: url,
+                    onBeforeSend: function (method, ajaxOptions) {
+                        ajaxOptions.xhrFields = { withCredentials: true };
+                    }
+                }),
+                onInitNewRow: function(e) {
+                    var url = `@Url.Action("Create", "WordClause", new { Area = "Admin" })`;
+                    window.location = url;
+                },
+                selection: {
+                    mode: "multiple"
+                },
+                "export": {
+                    enabled: false,
+                    fileName: "WordClause",
+                    allowExportSelectedData: false
+                },
+                filterPanel: {
+                    visible: false
+                },
+                filterRow: { visible: false },
+                remoteOperations: true,
+                onRowUpdating: function (e) {
+                    e.newData = Object.assign(e.oldData, e.newData)
+                },
+                scrolling: {
+                    mode: "virtual",
+                    rowRenderingMode: "virtual"
+                },
+                paging: {
+                    pageSize: 100
+                },
+                editing: {
+                    useIcons: true,
+                    allowUpdating: true,
+                    allowDeleting: false,
+                    allowAdding: false
+                },
+                headerFilter: {
+                    visible: true
+                },
+                wordWrapEnabled: true,
+                showColumnLines: true,
+                showRowLines: true,
+                rowAlternationEnabled: true,
+                showBorders: false,
+                searchPanel: {
+                    visible: false
+                },
+                stateStoring: {
+                    enabled:false,
+                    type: "localStorage",
+                    storageKey: "WordClauseAdmin"
+                },
+                columns: [
+                    {
+                        caption: '@SharedLocalizer["Arab CLause"]',
+                        dataField: "arabClause",
+                        allowHeaderFiltering: false,
+                    },{
+                        caption: '@SharedLocalizer["Other Language read"]',
+                                    dataField: "otherReader",
+                        allowHeaderFiltering: false,
+                    },
+
+                     {
+                        caption: '@SharedLocalizer["Other Language clause"]',
+                         dataField: "otherClause",
+                        allowHeaderFiltering: false,
+                    },{
+                        caption: '@SharedLocalizer["Arab read"]',
+                        dataField: "arabReader",
+                        allowHeaderFiltering: false,
+                    },
+                    
+                     {
+                        caption: '@SharedLocalizer["Category"]',
+                        dataField: "categoryName",
+                        allowHeaderFiltering: true,
+                    },
+                    
+                    
+                    {
+                        type: "buttons",
+                        width: 110,
+                        buttons: [
+                            {
+                                hint: '@SharedLocalizer["Edit"]',
+                                icon: "edit",
+                                onClick: function (e) {
+                                    var idString = e.row.data.id;
+                                    var url = `@Url.Action("Edit", "WordClause", new { Area = "Admin" })`;
+                                    window.location = url + '?id=' + idString;
+                                }
+                            },
+                             
+                        ]
+                    }
+                ]
+            });
+        });
+    </script>
 }

@@ -5,6 +5,7 @@ using ARINLAB.Services.Menu;
 using ARINLAB.Services.News;
 using ARINLAB.Services.NewsCategory;
 using ARINLAB.Services.Pages;
+using ARINLAB.Services.SessionService;
 using ARINLAB.Services.Settings;
 using ARINLAB.Services.Statistic;
 using DAL.Models;
@@ -33,6 +34,7 @@ namespace ARINLAB.Extensions
             services.AddScoped<IWordServices, WordServices>();
             services.AddScoped<IDictionaryService, DictionaryService>();
             services.AddScoped<FileServices>();
+            services.AddTransient<UserDictionary>();
             services.AddScoped<IWordClauseService, WordClauseService>();
             services.AddScoped<ILanguageService, LanguageService>();
             services.AddTransient<IMenuService, MenuService>();

@@ -36,6 +36,7 @@ namespace ARINLAB.Services
         public Task<Responce> DeleteVoice(int id);
 
         public Task<Responce> ApproveVoice(int id, bool approve);
+        public List<WordClauseDto> GetRandomWordClauses(int n);
 
     }
 }

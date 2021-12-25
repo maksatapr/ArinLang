@@ -1,4 +1,6 @@
 ﻿using ARINLAB.Models;
+using ARINLAB.Services;
+using ARINLAB.Services.SessionService;
 using ARINLAB.Services.Statistic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
@@ -16,18 +18,34 @@ namespace ARINLAB.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IStatisticsService _statService;
-        public HomeController(ILogger<HomeController> logger, IStatisticsService statisticsService)
+        private readonly UserDictionary _userDict;
+        private readonly IDictionaryService _dictService;
+        private readonly IWordServices _wordServices;
+        public HomeController(ILogger<HomeController> logger, IStatisticsService statisticsService, 
+                              UserDictionary userDictionary, IDictionaryService dictionaryService,
+                              IWordServices wordServices)
         {
             _logger = logger;
             _statService = statisticsService;
+            _userDict = userDictionary;
+            _dictService = dictionaryService;
+            _wordServices = wordServices;
         }
 
         public IActionResult Index()
         {
+            var dicts = _dictService.GetAllDictionaries();
+            ViewBag.Dictionaries = dicts;
             HomeViewModel model = new HomeViewModel() { StatistiCards = _statService.GetStatisticsCard() };
+            model.RandomWords = _wordServices.GetRandom_N_Words(SD.Home_table_Count);
             return View(model);
         }
 
+        public IActionResult SetDictionary(int dictId)
+        {
+            _userDict.SetDictionary(dictId);
+            return RedirectToAction("Index");
+        }
         public IActionResult Privacy()
         {
             return View();

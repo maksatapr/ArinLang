@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.Models.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,5 +15,6 @@ namespace ARINLAB.Models
     public class HomeViewModel
     {
         public List<StatisticCard> StatistiCards { get; set; }
+        public List<WordDto> RandomWords { get; set; }
     }
 }

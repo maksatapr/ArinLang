@@ -1,4 +1,5 @@
 ﻿using ARINLAB.Services.ImageService;
+using ARINLAB.Services.SessionService;
 using AutoMapper;
 using DAL.Data;
 using DAL.Models;
@@ -16,12 +17,16 @@ namespace ARINLAB.Services
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        private readonly IImageService _fileService; 
-        public WordServices(ApplicationDbContext applicationDbContext, IMapper mapper, IImageService imageService)
+        private readonly IImageService _fileService;
+        private readonly UserDictionary _userDict;
+        public WordServices(ApplicationDbContext applicationDbContext, IMapper mapper, IImageService imageService
+                            , UserDictionary u
+            )
         {
             _dbContext = applicationDbContext;
             _mapper = mapper;
             _fileService = imageService;
+            _userDict = u;
         }
         public async Task<Responce> addWordAsync(CreateWordDto word)
         {
@@ -267,6 +272,28 @@ namespace ARINLAB.Services
         public List<WordDto> GetWordsWithApproval(bool isApproved)
         {
             return _mapper.Map<List<WordDto>>(_dbContext.Words.Where(p => p.IsApproved == true).Include(p => p.AudioFiles).Include(p => p.WordSentences));
+        }
+
+        public List<WordDto> GetRandom_N_Words(int n)
+        {
+            try
+            {
+                var dictId = _userDict.GetDictionaryId();
+                Random rnd = new Random(DateTime.UtcNow.Millisecond);
+                int rn = rnd.Next();
+                var res = _dbContext.Words.Where(p => p.DictionaryId == dictId).OrderBy(p => rn).Take(n).ToList();
+                if (res != null)
+                {
+                    return _mapper.Map<List<WordDto>>(res);
+                }
+                else
+                {
+                    return null;
+                }
+            }catch(Exception e)
+            {
+                return null;
+            }
         }
 
     }

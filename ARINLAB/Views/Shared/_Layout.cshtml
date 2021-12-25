@@ -1,8 +1,19 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @using System.Globalization;
+@using ARINLAB.Services.SessionService
+@using ARINLAB.Services
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedResource> SharedLocalizer
-
+@inject UserDictionary _userDict
+@inject IDictionaryService _dictService; 
+@{ 
+    var dictService = _dictService.GetAllDictionaries().Data;
+    List<DAL.Models.Dictionary> dicts = new List<DAL.Models.Dictionary>();
+    if (dictService != null)
+    {
+        dicts = (List<DAL.Models.Dictionary>)(dictService);
+    }
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,13 +22,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - @SharedLocalizer["ARINLANG"]</title>
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
-   
+
     <link rel="stylesheet" href="~/client/css/output.css" />
     <link rel="stylesheet" href="~/client/css/pickmeup.css" />
     <link rel="stylesheet" href="~/client/css/swiper.bundle.min.css" />
     <link rel="stylesheet" href="~/client/css/Video.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/client/js/vendor/gsap/gsap.min.js"></script>
 
+
+    <!-- Bootstrap CSS -->
+    @*<link rel="stylesheet" href="~/Admin/assets/css/vendor/bootstrap.min.css">*@
+
+    <!-- Icon Font CSS -->
+    <link rel="stylesheet" href="~/Admin/assets/css/vendor/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="~/Admin/assets/css/vendor/font-awesome.min.css">
+    <link rel="stylesheet" href="~/Admin/assets/css/vendor/themify-icons.css">
+    <link rel="stylesheet" href="~/Admin/assets/css/vendor/cryptocurrency-icons.css">
+
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="~/Admin/assets/css/plugins/plugins.css">
+
+    <!-- Helper CSS -->
+    <link rel="stylesheet" href="~/Admin/assets/css/helper.css">
+
+
+    <link href="~/devextreme/css/dx.common.css" rel="stylesheet" />
+    <link href="~/devextreme/css/dx.light.css" rel="stylesheet" />
+    <script src="~/devextreme/js/dx-quill.min.js"></script>
 
     @RenderSection("Css", required: false)
 
@@ -37,13 +69,19 @@
 
                         <span class="block text-gray-200 hover:text-white"> @SharedLocalizer["Search"] </span>
                     </div>
+                    <div class="mr-10 cursor-pointer select-none flex items-center" id="dict-btn">
 
+                        <a>
+                            <span class="block text-gray-200 hover:text-white"> @SharedLocalizer["Dictionary"] </span>
+                        </a>
+                    </div>
                     @await Html.PartialAsync("_SelectLanguagePartial")
-                    
+
                     @await Html.PartialAsync("_LoginPartial")
 
                 </div>
             </div>
+
 
             @await Component.InvokeAsync("HeaderMenu")
 
@@ -66,28 +104,34 @@
                             </div>
                         </form>
 
+                    </div>
+                </div>
+            </div>
+            <!-- ******************** SEARCH ******************** -->
+            <!-- ******************** Dictionary ******************** -->
+            <div id="dictionary-container"
+                 class="sm:h-screen h-full w-screen bg-gray-100 fixed z-20 top-0 left-0">
+                <div class="container flex items-center justify-center h-full">
+                    <div class="sm:w-8/12 sm:px-0 px-4 mx-auto w-full">
+                        <form asp-area="" asp-controller="Home" asp-action="SetDictionary" method="get">
+                            <div class="sm:search-box grid gap-y-8 relative sm:overflow-hidden sm:rounded">
+                                <select name="dictId"
+                                        class="h-12 w-full sm:w-10/12 outline-none px-4 sm:border-none border border-gray-200 rounded sm:rounded-none"
+                                        id="dictionary-input">
+                                    @foreach (var dictItem in dicts)
+                                    {
+                                        <option value="@dictItem.Id">@dictItem.Language</option>
 
-                        @*<div class="content py-10 sm:block hidden">
-                                <h2 class="mb-8">Часто ищут:</h2>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="bg-white hover:shadow-md flex flex-col p-4 rounded cursor-pointer">
-                                        <h3 class="text-3xl font-semibold">Устав</h3>
-                                        <span class="text-gray-200"> страница </span>
-                                    </div>
-                                    <div class="bg-white hover:shadow-md flex flex-col p-4 rounded cursor-pointer">
-                                        <h3 class="text-3xl font-semibold">Устав</h3>
-                                        <span class="text-gray-200"> страница </span>
-                                    </div>
-                                    <div class="bg-white hover:shadow-md flex flex-col p-4 rounded cursor-pointer">
-                                        <h3 class="text-3xl font-semibold">Устав</h3>
-                                        <span class="text-gray-200"> страница </span>
-                                    </div>
-                                    <div class="bg-white hover:shadow-md flex flex-col p-4 rounded cursor-pointer">
-                                        <h3 class="text-3xl font-semibold">Устав</h3>
-                                        <span class="text-gray-200"> страница </span>
-                                    </div>
+                                    }
+                                </select>
+                                <div class="sm:absolute right-0 top-0 h-12 z-10 flex items-center sm:w-2/12 box-border">
+                                    <button type="submit" class="bg-secondary text-white sm:rounded-none rounded w-full px-8 py-3 font-semibold text-center cursor-pointer select-none">
+                                        @SharedLocalizer["To find"]
+                                    </button>
                                 </div>
-                            </div>*@
+                            </div>
+                        </form>
+
                     </div>
                 </div>
             </div>
@@ -125,17 +169,91 @@
                 }
             }
         });
+
+
     </script>
 
 
-    <script src="~/client/js/vendor/gsap/gsap.min.js" defer></script>
+    <script src="~/Admin/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="~/Admin/assets/js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="~/Admin/assets/js/vendor/popper.min.js"></script>
+   
+
+    <script src="~/devextreme/js/dx.all.js"></script>
+    <script src="~/devextreme/js/localization/dx.messages.ru.js"></script>
+    <script src="~/devextreme/js/dx.aspnet.data.js"></script>
+
     <script src="~/client/js/vendor/swiper.min.js"></script>
     <script src="~/client/js/slider.js" defer></script>
     <script src="~/client/js/header.js" defer></script>
     <script src="~/client/js/Video.js" defer></script>
 
+    <script>
+        const body1 = document.getElementsByTagName('body');
+        const dictContainer = document.getElementById('dictionary-container');
+        const dictBtn = document.getElementById('dict-btn');
+        let isOpen1 = false;
+        let isDictAnimationEnd = true;
 
+        gsap.set(dictContainer, {
+            y: '-100%',
+        });
+        const openDictBar = () => {
+            if (!isDictAnimationEnd) return;
+            isDictAnimationEnd  = false;
+            gsap.to(dictContainer, {
+                duration: 0.7,
+                ease: 'power1.out',
+                y: 0,
+                onComplete: () => {
+                    isOpen1 = true;
+                    isDictAnimationEnd  = true;
+                },
+            });
+        };
+        const closeDictBar = () => {
+            if (!isDictAnimationEnd ) return;
+            isDictAnimationEnd  = false;
+            gsap.to(dictContainer, {
+                duration: 0.5,
+                ease: 'power1.in',
+                y: '-100%',
+                onComplete: () => {
+                    isOpen1 = false;
+                    isDictAnimationEnd  = true;
+                },
+            });
+        }; closeDictBar();
+
+        if(@(_userDict.GetDictionaryId()) == -1) {
+                    openDictBar();
+                    gsap.set(body1, { height: '100vh', overflow: 'hidden' });
+        }else
+        {
+            closeDictBar();
+            gsap.set(body1, { height: 'auto', overflow: 'auto' });
+        }
+
+        dictBtn.addEventListener('click', () => {
+            if (!isOpen1) {
+                openDictBar();
+                gsap.set(body1, { height: '100vh', overflow: 'hidden' });
+            } else {
+                closeDictBar();
+                gsap.set(body1, { height: 'auto', overflow: 'auto' });
+            }
+        });
+
+        window.addEventListener('keydown', e => {
+            if (e.keyCode === 27 && isOpen1) {
+                closeDictBar();
+            }            
+        });
+
+    </script>
 
     @RenderSection("Scripts", required: false)
+
+
 </body>
 </html>
