@@ -25,6 +25,7 @@ namespace ARINLAB.Services
         public Task<WordSentencesDto>   GetWordSentencesById(int id);
         public Task<Responce>           EditWordSentenceApproveByIdAsync(int id, bool approve);
         public List<WordDto>            GetRandom_N_Words(int n);
+        public List<WordDto>            GetAllWordsWithDictId(int id);
 
 
 

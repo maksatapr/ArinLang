@@ -51,6 +51,12 @@
     <link href="~/devextreme/css/dx.light.css" rel="stylesheet" />
     <script src="~/devextreme/js/dx-quill.min.js"></script>
 
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="~/client/assets/style/style.css">
+    <link rel="stylesheet" href="~/client/assets/style/responsive.css">
     @RenderSection("Css", required: false)
 
 </head>
@@ -198,7 +204,7 @@
         gsap.set(dictContainer, {
             y: '-100%',
         });
-        const openDictBar = () => {
+        const openDictBar = () => {            
             if (!isDictAnimationEnd) return;
             isDictAnimationEnd  = false;
             gsap.to(dictContainer, {
@@ -223,9 +229,9 @@
                     isDictAnimationEnd  = true;
                 },
             });
-        }; closeDictBar();
-
-        if(@(_userDict.GetDictionaryId()) == -1) {
+        }; 
+       
+        if('@(_userDict.GetDictionaryId())' === '-1') {
                     openDictBar();
                     gsap.set(body1, { height: '100vh', overflow: 'hidden' });
         }else

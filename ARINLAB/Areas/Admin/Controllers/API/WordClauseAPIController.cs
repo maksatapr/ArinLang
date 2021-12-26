@@ -42,5 +42,11 @@ namespace ARINLAB.Areas.Admin.Controllers.API
         {
             await _wordClauseServices.DeleteWordClause(id);
         }
+
+        [HttpGet("GetAllWordsClausesWithDict/{dictId}")]
+        public object GetAllWordClausesWithDict(DataSourceLoadOptions loadOptions, int dictId)
+        {
+            return DataSourceLoader.Load<WordClauseDto>(_wordClauseServices.GetAllWordClausesWithDictId(dictId).AsQueryable(), loadOptions);
+        }
     }
 }

@@ -129,7 +129,7 @@ namespace ARINLAB.Services
 
         public List<WordClauseDto> GetAllWordClauseByDictionaryId(int id)
         {
-            var res = _dbContext.WordClauses.Select(p => p.DictionaryId == id);
+            var res = _dbContext.WordClauses.Where(p => p.DictionaryId == id);
             if (res != null)
             {
                 return _mapper.Map<List<WordClauseDto>>(res);
@@ -332,7 +332,7 @@ namespace ARINLAB.Services
                 var dictId = _userDicts.GetDictionaryId();
                 Random rnd = new Random(DateTime.UtcNow.Millisecond);
                 int rn = rnd.Next();
-                var res = _dbContext.WordClauses.Where(p => p.DictionaryId == dictId).OrderBy(p => rn).Take(n).ToList();
+                var res = _dbContext.WordClauses.Where(p => p.DictionaryId == dictId && p.IsApproved == true).OrderBy(p => rn).Take(n).ToList();
                 if (res != null)
                 {
                     return _mapper.Map<List<WordClauseDto>>(res);
@@ -346,6 +346,29 @@ namespace ARINLAB.Services
             {
                 return null;
             }
+        }
+
+        public List<WordClauseDto> GetAllWordClausesWithDictId(int id)
+        {
+            string culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+            var res = _dbContext.WordClauses.Where(p => p.DictionaryId == id && p.IsApproved == true);
+            List<WordClauseDto> result = new List<WordClauseDto>();
+            if (res != null)
+            {
+                foreach (var clause in res)
+                {
+                    var userName = _useManager.FindByIdAsync(clause.UserId)?.Result.Email;
+                    var dto = _mapper.Map<WordClauseDto>(clause);
+                    dto.UserName = userName == null ? "" : userName;
+
+                    var catName = _dbContext.WordClauseCategories.Include(p => p.WordClauseCategoryTranslates).FirstOrDefault(p => p.Id == clause.CategoryId);
+                    dto.CategoryName = catName == null ? "" : catName.WordClauseCategoryTranslates.FirstOrDefault(p => p.LanguageCulture == culture)?.CategoryName;
+                    
+                    result.Add(dto);
+                }
+                return result;
+            }
+            return null;
         }
     }
 }

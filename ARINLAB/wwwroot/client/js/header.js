@@ -84,8 +84,7 @@ const closeSearchBar = () => {
 };
 window.addEventListener('keydown', e => {
 	if (e.keyCode === 27 && isOpen) {
-		closeSearchBar();
-		
+		closeSearchBar();		
 	}
 	if (e.keyCode === 83 && e.shiftKey && !isOpen) {
 		openSearchBar();

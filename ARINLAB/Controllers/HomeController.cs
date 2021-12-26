@@ -37,7 +37,7 @@ namespace ARINLAB.Controllers
             var dicts = _dictService.GetAllDictionaries();
             ViewBag.Dictionaries = dicts;
             HomeViewModel model = new HomeViewModel() { StatistiCards = _statService.GetStatisticsCard() };
-            model.RandomWords = _wordServices.GetRandom_N_Words(SD.Home_table_Count);
+            //model.RandomWords = _wordServices.GetRandom_N_Words(SD.Home_table_Count);
             return View(model);
         }
 

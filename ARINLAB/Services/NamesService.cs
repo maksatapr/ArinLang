@@ -1,4 +1,5 @@
 ﻿using ARINLAB.Services.ImageService;
+using ARINLAB.Services.SessionService;
 using AutoMapper;
 using DAL.Data;
 using DAL.Models;
@@ -18,13 +19,16 @@ namespace ARINLAB.Services
         private readonly IImageService _imageService;
         private readonly IMapper _mapper;
         private readonly IDictionaryService _dictionaryService;
+        private readonly UserDictionary _userDict;
 
-        public NamesService(ApplicationDbContext applicationDb, IImageService imageService, IMapper mapper, IDictionaryService dict)
+        public NamesService(ApplicationDbContext applicationDb, IImageService imageService, 
+                            IMapper mapper, IDictionaryService dict, UserDictionary userDictionary)
         {
             _dbContext = applicationDb;
             _imageService = imageService;
             _mapper = mapper;
             _dictionaryService = dict;
+            _userDict = userDictionary;
         }
 
         public async Task<Responce> ApproveImage(int image_id, bool approve)
@@ -162,6 +166,18 @@ namespace ARINLAB.Services
             
         }
 
+        public List<NamesDto> GetAllNamesWithDictId(int id)
+        {
+            try
+            {
+                var res = _dbContext.Names.Where(p => p.DictionaryId == id && p.IsApproved == true);
+                return _mapper.Map<List<NamesDto>>(res);
+            }catch(Exception e)
+            {
+                return new List<NamesDto>();
+            }
+        }
+
         public async Task<NamesDto> GetNameByIdAsync(int id)
         {
             try
@@ -194,6 +210,28 @@ namespace ARINLAB.Services
                 return null;
             }
             return null;
+        }
+
+        public List<NamesDto> GetRandom_N_Names(int n)
+        {
+            try
+            {
+                var dictId = _userDict.GetDictionaryId();
+                Random rnd = new Random(DateTime.UtcNow.Millisecond);
+                int rn = rnd.Next();
+                var res = _dbContext.Names.Where(p => p.DictionaryId == dictId && p.IsApproved == true).OrderBy(p => rn).Take(n).ToList();
+                if (res != null)
+                {
+                    return _mapper.Map<List<NamesDto>>(res);
+                }
+                else
+                {
+                    return null;
+                }
+            }catch(Exception e)
+            {
+                return null;
+            }
         }
     }
 }

@@ -23,5 +23,11 @@ namespace ARINLAB.Areas.Admin.Controllers.API
         {
             return DataSourceLoader.Load<WordDto>(_wordService.GetRandom_N_Words(SD.Home_table_Count).AsQueryable(), loadOptions);
         }
+
+        [HttpGet("GetAllWordsWithDict/{dictId}")]
+        public object GetAllNamesWithDict(DataSourceLoadOptions loadOptions, int dictId)
+        {
+            return DataSourceLoader.Load<WordDto>(_wordService.GetAllWordsWithDictId(dictId).AsQueryable(), loadOptions);
+        }
     }
 }

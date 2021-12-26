@@ -39,5 +39,19 @@ namespace ARINLAB.Areas.Admin.Controllers.API
         {
             await _namesService.DeleteImageforNameAsync(id);
         }
+
+        [HttpGet("GetRandomNames")]
+        public object GetRandomNames(DataSourceLoadOptions loadOptions)
+        {
+            return DataSourceLoader.Load<NamesDto>(_namesService.GetRandom_N_Names(SD.Home_table_Count).AsQueryable(), loadOptions);
+        }
+
+        [HttpGet("GetAllNamesWithDict/{dictId}")]
+        public object GetAllNamesWithDict(DataSourceLoadOptions loadOptions, int dictId)
+        {
+            return DataSourceLoader.Load<NamesDto>(_namesService.GetAllNamesWithDictId(dictId).AsQueryable(), loadOptions);
+        }
+
+
     }
 }

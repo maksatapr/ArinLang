@@ -20,5 +20,9 @@ namespace ARINLAB.Services
         public Task<Responce> CreateImageforNameAsync(CreateNameImagesDto image);
 
         public  Task<Responce> ApproveImage(int image_id, bool approve);
+
+        public List<NamesDto> GetRandom_N_Names(int n);
+
+        public List<NamesDto> GetAllNamesWithDictId(int id);
     }
 }

@@ -281,7 +281,7 @@ namespace ARINLAB.Services
                 var dictId = _userDict.GetDictionaryId();
                 Random rnd = new Random(DateTime.UtcNow.Millisecond);
                 int rn = rnd.Next();
-                var res = _dbContext.Words.Where(p => p.DictionaryId == dictId).OrderBy(p => rn).Take(n).ToList();
+                var res = _dbContext.Words.Where(p => p.DictionaryId == dictId && p.IsApproved == true).OrderBy(p => rn).Take(n).ToList();
                 if (res != null)
                 {
                     return _mapper.Map<List<WordDto>>(res);
@@ -293,6 +293,19 @@ namespace ARINLAB.Services
             }catch(Exception e)
             {
                 return null;
+            }
+        }
+
+        public List<WordDto> GetAllWordsWithDictId(int id)
+        {
+            try
+            {
+                var res = _dbContext.Words.Where(p => p.DictionaryId == id && p.IsApproved == true);
+                return _mapper.Map<List<WordDto>>(res);
+            }
+            catch (Exception e)
+            {
+                return new List<WordDto>();
             }
         }
 

@@ -1,5 +1,4 @@
-﻿@using TSTB.Web.Areas.Admin.Utilities;
-@using TSTB.Web
+﻿
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedResource> SharedLocalizer
@@ -8,7 +7,7 @@
     ViewData["Title"] = SharedLocalizer["News categories"];
 
 }
-
+@using ARINLAB.Areas.Admin.Utils
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
