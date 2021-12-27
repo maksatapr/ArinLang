@@ -152,6 +152,7 @@ namespace ARINLAB
                               name: "areas",
                               areaName: "Search",
                               pattern: "Search/{controller=Search}/{action=Index}/{id?}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

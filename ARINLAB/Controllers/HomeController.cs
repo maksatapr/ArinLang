@@ -1,7 +1,9 @@
 ﻿using ARINLAB.Models;
 using ARINLAB.Services;
+using ARINLAB.Services.News;
 using ARINLAB.Services.SessionService;
 using ARINLAB.Services.Statistic;
+using DAL.Models.Dto.NewsModelDTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,15 +23,17 @@ namespace ARINLAB.Controllers
         private readonly UserDictionary _userDict;
         private readonly IDictionaryService _dictService;
         private readonly IWordServices _wordServices;
+        private readonly INewsService _newsService;
         public HomeController(ILogger<HomeController> logger, IStatisticsService statisticsService, 
                               UserDictionary userDictionary, IDictionaryService dictionaryService,
-                              IWordServices wordServices)
+                              IWordServices wordServices, INewsService newsService)
         {
             _logger = logger;
             _statService = statisticsService;
             _userDict = userDictionary;
             _dictService = dictionaryService;
             _wordServices = wordServices;
+            _newsService = newsService;
         }
 
         public IActionResult Index()
@@ -37,7 +41,8 @@ namespace ARINLAB.Controllers
             var dicts = _dictService.GetAllDictionaries();
             ViewBag.Dictionaries = dicts;
             HomeViewModel model = new HomeViewModel() { StatistiCards = _statService.GetStatisticsCard() };
-            //model.RandomWords = _wordServices.GetRandom_N_Words(SD.Home_table_Count);
+            ViewBag.News = (List<NewsDTO>)(_newsService.GetFourPublishNews().ToList());
+
             return View(model);
         }
 
@@ -66,7 +71,7 @@ namespace ARINLAB.Controllers
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
             );
 
-            return LocalRedirect(returnUrl);
+            return RedirectToAction("Index");
         }
     }
 }

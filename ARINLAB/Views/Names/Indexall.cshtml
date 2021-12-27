@@ -38,9 +38,7 @@
                     var url = `@Url.Action("Create", "Names", new { Area = "Admin" })`;
                     window.location = url;
                 },
-                selection: {
-                    mode: "multiple"
-                },
+                
                 "export": {
                     enabled: true,
                     fileName: "Documents",
@@ -87,7 +85,7 @@
                 },
 
                 stateStoring: {
-                    enabled: true,
+                    enabled: false,
                     type: "localStorage",
                     storageKey: "partnersAdmin"
                 },
@@ -113,11 +111,10 @@
                                 icon: "arrowright",
                                 onClick: function (e) {
                                     var idString = e.row.data.id;
-                                    var url = `@Url.Action("Edit", "Names", new { Area = "Admin" })`;
+                                    var url = `@Url.Action("Details", "Names", new { Area = "" })`;
                                     window.location = url + '?id=' + idString;
                                 }
-                            },
-                            "delete"
+                            },                          
                         ]
                     }
                 ]

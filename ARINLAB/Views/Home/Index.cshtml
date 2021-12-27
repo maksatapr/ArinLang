@@ -7,7 +7,9 @@
 @model HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
+    List<DAL.Models.Dto.NewsModelDTO.NewsDTO> news = (List<DAL.Models.Dto.NewsModelDTO.NewsDTO>)ViewBag.News;    
     var dicts = ViewBag.Dictionaries;
+
 }
 @using ARINLAB.Services.SessionService;
 
@@ -16,24 +18,27 @@
 @{
     int totalUsers = Model.StatistiCards[0].Editers + Model.StatistiCards[1].Editers + Model.StatistiCards[2].Editers + Model.StatistiCards[3].Editers;
 }
-<div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog" style="padding-bottom:0rem;">
+@*<div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog" style="padding-bottom:0rem;">
     <div class="xl:w-8/12 xl:px-0 px-4 flex-grow" style="margin-left:42%">
         <h1 class="md:text-4xl text-2xl font-semibold mb-10" style="font:900">@SharedLocalizer["WELCOME TO ARINLANG"] </h1>
     </div>
-</div>
+</div>*@
 
 <div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
     <!-- ******************** ADVERTISMENT LEFT  ********************-->
-    <div class="flex-grow xl:w-2/12 xl:mr-2 mb-10 xl:mb-0 relative adt-center overflow-hidden">
+    <div class="flex-grow xl:w-2/12 xl:mr-2 mb-16 xl:mb-0 relative adt-center overflow-hidden">
         <div class="adv-slider-left adv-slider flex xl:w-full">
             <img class="avdertisment-item advertisment-left img-center border-radius7 object-cover img-padding10"
                  data-desk="../images/Безимени-3.gif"
-                 data-mobile="../images/Безимени-3.gif" />
+                 data-mobile="" />
         </div>
     </div>
     <!-- ******************** ADVERTISMENT LEFT  ********************-->
     <!-- ******************** Start Words Section ********************-->
     <div class="xl:w-8/12 xl:px-0 px-4 flex-grow">
+        <div class="xl:w-8/12 xl:px-0 px-4 flex-grow" style="margin-left:35%">
+            <h1 class="md:text-4xl text-2xl font-semibold mb-10" style="font:900">@SharedLocalizer["WELCOME TO ARINLANG"] </h1>
+        </div>
         <h2 class="md:text-4xl text-2xl font-semibold mb-10" style="font:900">@SharedLocalizer["Words Collection"] </h2>
 
         <a class="e-link" style="font:600;color:darkgreen;font-size:24px;" asp-area="" asp-controller="Words" asp-action="Indexall">@SharedLocalizer["View all"] </a>
@@ -48,7 +53,7 @@
             </div>
             <div class="row">
                 <h2 class="md:text-4xl text-2xl font-semibold mb-10" style="font:900; padding-top:4rem;">@SharedLocalizer["Names Collection"] </h2>
-                <a class="e-link" style="font:600;color:darkgreen;font-size:24px"; asp-area="" asp-controller="Names" asp-action="Indexall">@SharedLocalizer["View all"] </a>
+                <a class="e-link" style="font:600;color:darkgreen;font-size:24px" ; asp-area="" asp-controller="Names" asp-action="Indexall">@SharedLocalizer["View all"] </a>
                 <div id="gridContainer3">
                 </div>
             </div>
@@ -62,7 +67,7 @@
         <div class="adv-slider-right adv-slider flex xl:w-full">
             <img class="avdertisment-item advertisment-right img-center border-radius7 object-cover img-padding10"
                  data-desk="../images/Безимени-4.gif"
-                 data-mobile="../images/Безимени-4.gif" />
+                 data-mobile="" />
         </div>
     </div>
     <!-- ******************** ADVERTISMENT RIGHT  ********************-->
@@ -93,17 +98,17 @@
             </h2>
             <div class="products-swiper-container swiper-container">
                 <div class="swiper-wrapper pb-16">
-                    @for (int i = 0; i < 10; ++i)
+                    @foreach(var item in news)
                     {
-                        <a asp-area="" asp-controller="NativeProduct" asp-action="Detail" asp-route-id="@i" class="swiper-slide">
+                        <a asp-area="" asp-controller="News" asp-action="Details" asp-route-id="@item.Id" class="swiper-slide">
                             <div class="products-slider-card">
                                 <div class="absolute w-full top-0 left-0 right-0 py-1 px-2 sm:p-3 z-10"
                                      style="background: rgba(0, 0, 0, 0.5)">
                                     <span class="text-white sm:text-lg font-semibold text-base block w-full">
                                         Maksat
                                     </span>
-                                </div>
-                                <img src="~/images/Declarations/1e1b9848792f4624b4e05e9889b61673.jpg" alt="" class="object-cover w-full" />
+                                </div>                                
+                                <img src="~/images/News/@item.Image" alt="" class="object-cover w-full" />
                             </div>
                         </a>
                     }
@@ -265,7 +270,7 @@
                     },
                     {
                         type: "buttons",
-                        width: 110,
+                        width: 55,
                         caption: '@SharedLocalizer["Details"]',
                         buttons: [
                             {
@@ -274,7 +279,7 @@
                                 icon: "arrowright",
                                 onClick: function (e) {
                                     var idString = e.row.data.id;
-                                    var url = `@Url.Action("Edit", "Names", new { Area = "Admin" })`;
+                                    var url = `@Url.Action("Details", "Words", new { Area = "" })`;
                                     window.location = url + '?id=' + idString;
                                 }
                             },
@@ -377,7 +382,7 @@
                     },
                      {
                         type: "buttons",
-                        width: 110,
+                        width: 55,
                         caption: '@SharedLocalizer["Details"]',
                         buttons: [
                             {
@@ -386,7 +391,7 @@
                                 icon: "arrowright",
                                 onClick: function (e) {
                                     var idString = e.row.data.id;
-                                    var url = `@Url.Action("Edit", "Names", new { Area = "Admin" })`;
+                                   var url = `@Url.Action("Details", "WordClauses", new { Area = "" })`;
                                     window.location = url + '?id=' + idString;
                                 }
                             },
@@ -459,7 +464,7 @@
                 },
 
                 stateStoring: {
-                    enabled: true,
+                    enabled: false,
                     type: "localStorage",
                     storageKey: "partnersAdmin"
                 },
@@ -477,7 +482,7 @@
                     },
                       {
                         type: "buttons",
-                        width: 110,
+                        width: 55,
                         caption: '@SharedLocalizer["Details"]',
                         buttons: [
                             {
@@ -486,7 +491,7 @@
                                 icon: "arrowright",
                                 onClick: function (e) {
                                     var idString = e.row.data.id;
-                                    var url = `@Url.Action("Edit", "Names", new { Area = "Admin" })`;
+                                    var url = `@Url.Action("Details", "Names", new { Area = "" })`;
                                     window.location = url + '?id=' + idString;
                                 }
                             },

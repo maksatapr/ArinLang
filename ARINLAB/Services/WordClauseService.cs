@@ -217,6 +217,17 @@ namespace ARINLAB.Services
             return null;
         }
 
+
+        public List<AudioFileForClauseDto> GetAudioFileForClausebyID(int id, bool approve)
+        {
+            var res = _dbContext.AudioFileForClauses.Where(p => p.ClauseId == id && p.IsApproved == approve);
+            if (res != null)
+            {
+                return _mapper.Map<List<AudioFileForClauseDto>>(res);
+            }
+            return null;
+        }
+
         public List<AudioFileForClauseDto> GetAudioFileForClausebyID(int id)
         {
             var res = _dbContext.AudioFileForClauses.Where(p => p.ClauseId == id);

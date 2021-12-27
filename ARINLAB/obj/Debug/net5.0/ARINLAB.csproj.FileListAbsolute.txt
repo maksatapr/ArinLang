@@ -537,3 +537,8 @@ D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\Names\Indexall.csht
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\Words\Indexall.cshtml.g.cs
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\WordClauses\Indexall.cshtml.g.cs
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\Words\Details.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\WordClauses\Details.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\Names\Details.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\News\Details.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\News\Index.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\PressReleases\Layout.cshtml.g.cs

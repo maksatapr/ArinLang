@@ -4480,7 +4480,7 @@
       if (this.user) {
         handleError(e, vm, ("getter for watcher \"" + (this.expression) + "\""));
       } else {
-        throw e
+          throw e;
       }
     } finally {
       // "touch" every property so they are all tracked as

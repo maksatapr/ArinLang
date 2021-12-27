@@ -285,7 +285,7 @@ namespace ARINLAB.Services.News
         public IEnumerable<NewsDTO> GetFourPublishNews()
         {
             string culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-            var news = _dbContext.News.Where(k => k.IsPublish == true).OrderByDescending(o => o.Id).Take(4);
+            var news = _dbContext.News.Where(k => k.IsPublish == true).OrderByDescending(o => o.Id).Take(8);
             var result = _dbContext.NewsTranslates
                 .Where(p => p.LanguageCulture == culture).Join(news, p => p.NewsId, k => k.Id,
                     (p, k) => new NewsDTO

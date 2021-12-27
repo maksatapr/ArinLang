@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Index";
+
+}
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@using DAL.Models.Dto.NamesDTO
+@using ARINLAB.Models
+@model List<DAL.Models.Dto.NamesDTO.NameImagesDto>
+@{
+    NamesImagesViewModel mod = (NamesImagesViewModel)ViewBag.Model;
+}
+<div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
+    <div class="h-full xl:container xl:px-0 px-4">
+        <div class="row" style="margin-left:35%">
+            <div class="col-2"></div>
+            <div class="col-4 items-center">
+                <label style="font-size:24px; font-weight:600">@SharedLocalizer["Name in Arab"] </label>
+                <label class="text-success" style="font-size:30px; font-weight:600">@mod.ArabName</label>
+            </div>
+            <div class=" col-4">
+                <label style="font-size:24px; font-weight:600">@SharedLocalizer["Name in"] @mod.DictName: </label>
+                <label class="text-success" style="font-size:30px; font-weight:600">@mod.OtherName</label>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="mt-8 mb-16">
+            <div class="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-y-8 sm:gap-4 pb-8">
+                @foreach (var name in Model)
+                {
+                    <div class="rounded flex flex-col max-w-xs relative overflow-hidden">
+                        <img src="~/images/Names/@name.ImageUri" alt="" class="object-cover">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
