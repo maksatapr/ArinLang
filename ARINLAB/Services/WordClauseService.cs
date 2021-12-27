@@ -19,12 +19,12 @@ namespace ARINLAB.Services
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        private readonly UserManager<ApplicationUser> _useManager;
+        private readonly UserManager<DAL.Models.ApplicationUser> _useManager;
         private readonly IImageService _fileServices;
         private readonly UserDictionary _userDicts;
 
         public WordClauseService(ApplicationDbContext dbContext, IMapper mapper, 
-                                UserManager<ApplicationUser> userManager, IImageService fileServices,
+                                UserManager<DAL.Models.ApplicationUser> userManager, IImageService fileServices,
                                 UserDictionary userDictionary)
         {
             _dbContext = dbContext;

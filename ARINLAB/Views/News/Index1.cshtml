@@ -28,10 +28,10 @@
     @foreach (DAL.Models.Dto.NewsModelDTO.NewsCategoryDTO newsCategoryDTO in ViewBag.NewsCategories)
     {
         <span class="tag" id="@newsCategoryDTO.Id+'_'">
-            <a asp-area="" asp-controller="News" asp-action="Index" asp-route-catId="@newsCategoryDTO.Id" asp-route-filterDate="@currentDateFilter.ToShortDateString()" class="lg:mr-8 mr-3 hover:text-link">@newsCategoryDTO.Name</a>
+            <a asp-area="" asp-controller="News" asp-action="Index1" asp-route-catId="@newsCategoryDTO.Id" asp-route-filterDate="@currentDateFilter.ToShortDateString()" class="lg:mr-8 mr-3 hover:text-link">@newsCategoryDTO.Name</a>
         </span>
     }
-    <form asp-area="" asp-controller="News" asp-action="Index" asp-route-catId="@CurrentCatId">
+    <form asp-area="" asp-controller="News" asp-action="Index1" asp-route-catId="@CurrentCatId">
         <span>
             <input id="filterDate"
                    class="datepicker date-input"

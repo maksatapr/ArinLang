@@ -101,8 +101,8 @@
                 <li><a href="chart-sparkline.html"><span>Sparkline  Chart</span></a></li>
             </ul>
         </li>*@
-                <li >
-                    <a asp-area="Admin" asp-controller="Admin" asp-action="Index"><i class="ti-home"></i> <span>@SharedLocalizer["Words"]</span></a>  
+                <li>
+                    <a asp-area="Admin" asp-controller="Admin" asp-action="Index"><i class="ti-home"></i> <span>@SharedLocalizer["Dashboard"]</span></a>
                 </li>
                 <li class="has-sub-menu">
                     <a href="#"><i class="fa fa-file-word-o"></i> <span>@SharedLocalizer["Words"]</span></a>
@@ -126,12 +126,12 @@
                     </ul>
                 </li>
                 @*<li class="has-sub-menu">
-                    <a href="#"><i class="fa fa-file-word-o"></i> <span>@SharedLocalizer["Word Clauses"]</span></a>
-                    <ul class="side-header-sub-menu">
-                        <li><a asp-area="Admin" asp-controller="WordClause" asp-action="Index"><span>@SharedLocalizer["All Word Clauses"]</span></a></li>
-                        <li><a asp-area="Admin" asp-controller="WordClause" asp-action="Create">@SharedLocalizer["Create Word Clause"]</a></li>
-                    </ul>
-                </li>*@
+            <a href="#"><i class="fa fa-file-word-o"></i> <span>@SharedLocalizer["Word Clauses"]</span></a>
+            <ul class="side-header-sub-menu">
+                <li><a asp-area="Admin" asp-controller="WordClause" asp-action="Index"><span>@SharedLocalizer["All Word Clauses"]</span></a></li>
+                <li><a asp-area="Admin" asp-controller="WordClause" asp-action="Create">@SharedLocalizer["Create Word Clause"]</a></li>
+            </ul>
+        </li>*@
                 <li class="has-sub-menu">
                     <a href="#"><i class="fa fa-navicon"></i> <span>@SharedLocalizer["Menu"]</span> </a>
                     <ul class="side-header-sub-menu">
@@ -166,7 +166,11 @@
                         </li>
                     </ul>
                 </li>
-
+                <li class="has-sub-menu">
+                <li>
+                    <a asp-area="Admin" asp-controller="Email" asp-action="Index"><i class="zmdi zmdi-mail-send zmdi-hc-fw"></i> <span>Send Emails</span></a>
+                    </li>
+                </li>
                 <li class="has-sub-menu">
                     <a asp-area="Admin" asp-controller="User" asp-action="Index"><i class="fa fa-users"></i> <span>Authentication</span></a>
                     <ul class="side-header-sub-menu">

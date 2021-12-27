@@ -25,7 +25,7 @@ namespace TSTB.Web.Controllers
             All = allPublishNews.OrderByDescending(o => o.Id).ToList();
         }
 
-        public IActionResult Index(int catId, string filterDate)
+        public IActionResult Index1(int catId, string filterDate)
         {
             DateTime filter = new DateTime();
             if (filterDate != null)

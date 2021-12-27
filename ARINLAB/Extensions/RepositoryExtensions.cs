@@ -1,5 +1,7 @@
 ﻿
 using ARINLAB.Services;
+using ARINLAB.Services.ApplicationUser;
+using ARINLAB.Services.Email;
 using ARINLAB.Services.ImageService;
 using ARINLAB.Services.Menu;
 using ARINLAB.Services.News;
@@ -8,6 +10,7 @@ using ARINLAB.Services.Pages;
 using ARINLAB.Services.SessionService;
 using ARINLAB.Services.Settings;
 using ARINLAB.Services.Statistic;
+using ARINLAB.Services.Subscribe;
 using DAL.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,6 +47,9 @@ namespace ARINLAB.Extensions
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<INamesService, NamesService>();
             services.AddScoped<IStatisticsService, StatisticsService>();
+            services.AddScoped<ISubscribeService, SubscribeService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddTransient<IApplicationUserService, ApplicationUserService>();
             //Add Scoped Services
 
 

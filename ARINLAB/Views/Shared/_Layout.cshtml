@@ -97,14 +97,14 @@
                 <div class="container flex items-center justify-center h-full">
                     <div class="sm:w-8/12 sm:px-0 px-4 mx-auto w-full">
                         <form asp-area="" asp-controller="Search" asp-action="Search" method="get">
-                            <div class="sm:search-box grid gap-y-8 relative sm:overflow-hidden sm:rounded">
+                            <div class="sm:search-box grid gap-y-8 relative sm:overflow-hidden sm:rounded" style="width:70%">
                                 <input name="text" type="text"
                                        class="h-12 w-full sm:w-10/12 outline-none px-4 sm:border-none border border-gray-200 rounded sm:rounded-none"
                                        id="search-input"
                                        placeholder="@SharedLocalizer["What do you want to find?"]" />
                                 <div class="sm:absolute right-0 top-0 h-12 z-10 flex items-center sm:w-2/12 box-border">
                                     <button type="submit" class="bg-secondary text-white sm:rounded-none rounded w-full px-8 py-3 font-semibold text-center cursor-pointer select-none">
-                                        @SharedLocalizer["To find"]
+                                        @SharedLocalizer["Search"]
                                     </button>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                 <div class="container flex items-center justify-center h-full">
                     <div class="sm:w-8/12 sm:px-0 px-4 mx-auto w-full">
                         <form asp-area="" asp-controller="Home" asp-action="SetDictionary" method="get">
-                            <div class="sm:search-box grid gap-y-8 relative sm:overflow-hidden sm:rounded">
+                            <div class="sm:search-box grid gap-y-8 relative sm:overflow-hidden sm:rounded" style="width:70%">
                                 <select name="dictId"
                                         class="h-12 w-full sm:w-10/12 outline-none px-4 sm:border-none border border-gray-200 rounded sm:rounded-none"
                                         id="dictionary-input">
@@ -132,7 +132,7 @@
                                 </select>
                                 <div class="sm:absolute right-0 top-0 h-12 z-10 flex items-center sm:w-2/12 box-border">
                                     <button type="submit" class="bg-secondary text-white sm:rounded-none rounded w-full px-8 py-3 font-semibold text-center cursor-pointer select-none">
-                                        @SharedLocalizer["To find"]
+                                        @SharedLocalizer["Select Dictionary"]
                                     </button>
                                 </div>
                             </div>

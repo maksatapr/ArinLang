@@ -1,12 +1,19 @@
 ﻿using ARINLAB.Models;
 using ARINLAB.Services;
+using ARINLAB.Services.Email;
 using ARINLAB.Services.News;
 using ARINLAB.Services.SessionService;
+using ARINLAB.Services.Settings;
 using ARINLAB.Services.Statistic;
+using ARINLAB.Services.Subscribe;
+using DAL.Models;
+using DAL.Models.Dto.EmailsModelDTO;
 using DAL.Models.Dto.NewsModelDTO;
+using DAL.Models.Email;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -24,9 +31,14 @@ namespace ARINLAB.Controllers
         private readonly IDictionaryService _dictService;
         private readonly IWordServices _wordServices;
         private readonly INewsService _newsService;
+        private readonly IStringLocalizer<SharedResource> _localizer;
+        private readonly ISubscribeService _subscriberService;
+        private readonly ISettingsService _settings;
+        private readonly IEmailService _emailService;
         public HomeController(ILogger<HomeController> logger, IStatisticsService statisticsService, 
                               UserDictionary userDictionary, IDictionaryService dictionaryService,
-                              IWordServices wordServices, INewsService newsService)
+                              IWordServices wordServices, INewsService newsService, IStringLocalizer<SharedResource> localizer,
+                              ISettingsService settingsService, ISubscribeService subscribeService, IEmailService emailService)
         {
             _logger = logger;
             _statService = statisticsService;
@@ -34,6 +46,10 @@ namespace ARINLAB.Controllers
             _dictService = dictionaryService;
             _wordServices = wordServices;
             _newsService = newsService;
+            _localizer = localizer;
+            _settings = settingsService;
+            _subscriberService = subscribeService;
+            _emailService = emailService;
         }
 
         public IActionResult Index()
@@ -73,5 +89,63 @@ namespace ARINLAB.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public ActionResult Unsubscribe()
+        {
+            return View();
+        }
+
+
+
+        public async Task<IActionResult> Unsubscribed(string email)
+        {
+            List<Settings> settings = new List<Settings>(_settings.GetAllSettings());
+
+            string UnsubLink = settings.Find(x => x.Name == "UnsubLink").Value;
+            string AdminEmail = settings.Find(x => x.Name == "AdminEmail").Value;
+            string AdminEmailPassword = settings.Find(x => x.Name == "AdminEmailPassword").Value;
+            string id = _subscriberService.GetEmail(email);
+            if (id.Length > 0)
+            {
+                SingleEmailDTO sEmail = new SingleEmailDTO();
+                sEmail.Header = _localizer["TSTB Unsubscribe"];
+                sEmail.Message = _localizer["Please Follow the link below to unsubscribe from TSTB : "] + UnsubLink + "?id=" + id;
+                sEmail.Password = AdminEmailPassword;
+                sEmail.AdminEmail = AdminEmail;
+                sEmail.EmailTo = email;
+                sEmail.Subject = _localizer["Unsubscribe Link from TSTB Web Site"];
+                bool isSend = await _emailService.SendSingleEmail(sEmail);
+                if (isSend)
+                    ViewBag.Email = _localizer["Dateiled instructions was send to "] + email + _localizer[" email to unsubscribed."];
+                else
+                    ViewBag.Email = _localizer["Some thing went wrong, Please try again later !"];
+            }
+            else
+            {
+                ViewBag.Email = email + _localizer[" email does not subscribed"];
+            }
+            return View();
+            //return View(email + "does not subscribes");
+        }
+        public IActionResult UnsubLink(string id)
+        {
+            _subscriberService.DeleteSubscriber(id);
+            ViewBag.UnSub = _localizer["You have succeffully unsubscribed"];
+            return View();
+        }
+
+        public async Task<ActionResult> Subscribe(string email)
+        {
+            Subscribers sub = new Subscribers();
+            sub.Email = email;
+            sub.Id = Guid.NewGuid().ToString();
+            bool isSub = await _subscriberService.AddSubscriber(sub);
+            if (isSub)
+                ViewBag.Sub = email + " " + _localizer["Email successfully subscribed"];
+            else
+                ViewBag.Sub = email + " " + _localizer["Email is already subscribed ! "];
+            return View();
+        }
+       
     }
 }

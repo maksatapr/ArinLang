@@ -350,12 +350,12 @@
         align-items: center;
     }
 
-    .container {
+   /* .container {
         width: 500px;
         margin: 40px auto 0 65px ;
         justify-content: center;
         align-items: center;
-      }
+      }*/
 
       #close {
         width: 120px;
@@ -525,12 +525,12 @@
         transform: translate(-50%, -60%);
     }
 
-    .container {
+    /*.container {
         width: 500px;
         margin: 40px auto 0 90px ;
         justify-content: center;
         align-items: center;
-      }
+      }*/
 
       #close {
         width: 120px;
