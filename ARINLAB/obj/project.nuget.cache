@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "nmzfH0puavwknzYh2Y7ZN26kHx7weE1fjKB/WKbss1QGKMDLXE84LZ1OyU4WL0IKj5A8lD8URj4GeKBJ3goWUw==",
+  "dgSpecHash": "/6qYaIn6W3oOTyoSFBzeWw69+tPFSfE9x42L2eb09Gz1I3lKOm4o85r0StYc416ddiObz5npriNtUsTRnNxipg==",
   "success": true,
   "projectFilePath": "D:\\Work\\ARINLAB\\ARINLAB\\ARINLAB\\ARINLAB.csproj",
   "expectedPackageFiles": [
@@ -97,6 +97,7 @@
     "C:\\Users\\User\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\mimekit\\2.15.0\\mimekit.2.15.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\mysqlconnector\\2.1.2\\mysqlconnector.2.1.2.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\portable.bouncycastle\\1.8.10\\portable.bouncycastle.1.8.10.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",

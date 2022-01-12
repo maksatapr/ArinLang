@@ -6,6 +6,7 @@
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedResource> SharedLocalizer
 @inject IViewLocalizer localizer
+@using System.Globalization
 @using ARINLAB.Models
 @model WordSentencesViewModel
 @{
@@ -20,6 +21,112 @@
     }
 
 }
+@if (CultureInfo.CurrentCulture.Name.StartsWith("ar"))
+{
+    <div dir="rtl" class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
+        <div class="xl:w-8/12 xl:px-0 px-4 flex-grow">
+            <div class="row" style="margin-right:35%">
+                <div class="col-2"></div>
+                <div class="col-4 items-center">
+                    <label style="font-size:24px; font-weight:600">Arab Word : </label>
+                    <label class="text-success" style="font-size:30px; font-weight:600">@Model.Word.ArabWord</label>
+                </div>
+                <div class=" col-4">
+                    <label style="font-size:24px; font-weight:600">@dictName Word : </label>
+                    <label class="text-success" style="font-size:30px; font-weight:600">@Model.Word.OtherWord</label>
+                </div>
+                <div class="col-2"></div>
+            </div>
+
+            <div class="row">
+                <div class="wrapper_green">
+                    <div class="green_table">
+                        <div class="row_green header green">
+                            <div class="cell">
+                                @SharedLocalizer["Arab sentence"]
+                            </div>
+                            <div class="cell">
+                                @SharedLocalizer["Transcription"]
+                            </div>
+                            <div class="cell">
+                                @dictName @SharedLocalizer["sentence"]
+                            </div>
+                            <div class="cell">
+                                @SharedLocalizer["Transcription"]
+                            </div>
+                        </div>
+                        @foreach (var item in Model.WordSentences)
+                        {
+                            <div class="row_green">
+                                <div class="cell" data-title=" @SharedLocalizer["Arab sentence"]">
+                                    @item.ArabSentence
+                                </div>
+                                <div class="cell" data-title=" @SharedLocalizer["Transcription"]">
+                                    @item.ArabReader
+                                </div>
+                                <div class="cell" data-title=" @dictName @SharedLocalizer["sentence"]">
+                                    @item.OtherSentence
+                                </div>
+                                <div class="cell" data-title="@SharedLocalizer["Transcription"]">
+                                    @item.OtherReader
+                                </div>
+                            </div>
+                        }
+
+
+                    </div>
+                </div>
+                <hr />
+            </div>
+            <div class="row" style="margin-right:35%">
+                <div class="col-2"></div>
+                <div class="col-8 items-center">
+                    <label class="text-success" style="font-size:30px; font-weight:600">@SharedLocalizer["Voices"]</label>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div class="wrapper_green">
+                <div class="green_table">
+                    <div class="row_green header green">
+                        <div class="cell">
+                            @SharedLocalizer["Arab Voice"]
+                        </div>
+                        <div class="cell">
+                            @dictName @SharedLocalizer["Voice"]
+                        </div>
+                    </div>
+                    @if (Model.AudioFiles != null)
+                    {
+                        @foreach (var item in Model.AudioFiles)
+                        {
+                            <div class="row_green">
+
+                                <div class="cell" data-title="Audio">
+                                    <audio id="myAudio@(item.Id)">
+                                        <source src="~/@item.ArabVoice" type="audio/mpeg">
+                                    </audio>
+                                    <button class="btn btn-success" style="background-color: green; padding: 20px; border-radius: 15px;" onclick="playAudio('myAudio@(item.Id)')">PLAY</button>
+                                    <button class="btn btn-success" style="background-color: red; padding: 20px; border-radius: 15px;" onclick="pauseAudio('myAudio@(item.Id)')">STOP</button>
+                                </div>
+                                <div class="cell" data-title="Audio">
+                                    <audio id="myAudio@(item.Id)_o">
+                                        <source src="~/@item.OtherVoice" type="audio/mpeg">
+                                    </audio>
+                                    <button class="btn btn-success" style="background-color: green; padding: 20px; border-radius: 15px;" onclick="playAudio('myAudio@(item.Id)_o')">PLAY</button>
+                                    <button class="btn btn-success" style="background-color: red; padding: 20px; border-radius: 15px;" onclick="pauseAudio('myAudio@(item.Id)_o')">STOP</button>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+else
+{
 <div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
     <div class="xl:w-8/12 xl:px-0 px-4 flex-grow">
         <div class="row" style="margin-left:35%">
@@ -55,31 +162,31 @@
                     @foreach (var item in Model.WordSentences)
                     {
                         <div class="row_green">
-                            <div class="cell" data-title="Turkmen">
+                            <div class="cell" data-title=" @SharedLocalizer["Arab sentence"]">
                                 @item.ArabSentence
                             </div>
-                            <div class="cell" data-title="Audio">
+                            <div class="cell" data-title=" @SharedLocalizer["Transcription"]">
                                 @item.ArabReader
                             </div>
-                            <div class="cell" data-title="Arabic">
+                            <div class="cell" data-title=" @dictName @SharedLocalizer["sentence"]">
                                 @item.OtherSentence
                             </div>
-                            <div class="cell" data-title="Audio">
+                            <div class="cell" data-title="@SharedLocalizer["Transcription"]">
                                 @item.OtherReader
                             </div>
                         </div>
                     }
 
 
-                    </div>
+                </div>
             </div>
             <hr />
         </div>
         <div class="row" style="margin-left:35%">
             <div class="col-2"></div>
-            <div class="col-8 items-center">                
+            <div class="col-8 items-center">
                 <label class="text-success" style="font-size:30px; font-weight:600">@SharedLocalizer["Voices"]</label>
-            </div>       
+            </div>
             <div class="col-2"></div>
         </div>
         <div class="wrapper_green">
@@ -90,38 +197,50 @@
                     </div>
                     <div class="cell">
                         @dictName @SharedLocalizer["Voice"]
-                    </div>                                  
+                    </div>
                 </div>
                 @if (Model.AudioFiles != null)
                 {
                     @foreach (var item in Model.AudioFiles)
                     {
-                <div class="row_green">
+                        <div class="row_green">
 
-                    <div class="cell" data-title="Audio">
-                        <audio id="myAudio@(item.Id)">
-                            <source src="~/@item.ArabVoice" type="audio/mpeg">
-                        </audio>
-                        <button class="btn btn-success" style="background-color: green; padding: 20px; border-radius: 15px;" onclick="playAudio('myAudio@(item.Id)')">PLAY</button>
-                        <button class="btn btn-success" style="background-color: red; padding: 20px; border-radius: 15px;" onclick="pauseAudio('myAudio@(item.Id)')">STOP</button>
-                    </div>
-                    <div class="cell" data-title="Audio">
-                        <audio id="myAudio@(item.Id)_o">
-                            <source src="~/@item.OtherVoice" type="audio/mpeg">
-                        </audio>
-                        <button class="btn btn-success" style="background-color: green; padding: 20px; border-radius: 15px;" onclick="playAudio('myAudio@(item.Id)_o')">PLAY</button>
-                        <button class="btn btn-success" style="background-color: red; padding: 20px; border-radius: 15px;" onclick="pauseAudio('myAudio@(item.Id)_o')">STOP</button>
-                    </div>
-                </div>
-                        }
+                            <div class="cell" data-title="Audio">
+                                <audio id="myAudio@(item.Id)">
+                                    <source src="~/@item.ArabVoice" type="audio/mpeg">
+                                </audio>
+                                <button class="btn btn-success" style="background-color: green; padding: 20px; border-radius: 15px;" onclick="playAudio('myAudio@(item.Id)')">PLAY</button>
+                                <button class="btn btn-success" style="background-color: red; padding: 20px; border-radius: 15px;" onclick="pauseAudio('myAudio@(item.Id)')">STOP</button>
+                            </div>
+                            <div class="cell" data-title="Audio">
+                                <audio id="myAudio@(item.Id)_o">
+                                    <source src="~/@item.OtherVoice" type="audio/mpeg">
+                                </audio>
+                                <button class="btn btn-success" style="background-color: green; padding: 20px; border-radius: 15px;" onclick="playAudio('myAudio@(item.Id)_o')">PLAY</button>
+                                <button class="btn btn-success" style="background-color: red; padding: 20px; border-radius: 15px;" onclick="pauseAudio('myAudio@(item.Id)_o')">STOP</button>
+                            </div>
+                        </div>
                     }
+                }
+            </div>
+            <div style="margin-top:20px;">
+                <form asp-controller="Words" asp-action="SetRating" method="post">
+                    <input id="kartik" name="Rating" class="rating" data-stars="5" data-step="0.1" title="" />
+                    <input type="hidden" value="@Model.Word.Id" name="WordId" />
+                    <div class="form-group" style="margin-top:10px">
+                        <button type="submit" class="bg-secondary text-white sm:rounded-none rounded px-8 py-3 font-semibold text-center cursor-pointer select-none">@SharedLocalizer["Submit your Rating"]</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+    
 
-    </div>
-   
-   
+</div>
+}
+
+
+@section Scripts{
     <script>
         function playAudio(id) {
 
@@ -135,3 +254,68 @@
             x.pause();
         }
     </script>
+    <script>
+        jQuery(document).ready(function () {
+            $("#input-21f").rating({
+                starCaptions: function (val) {
+                    if (val < 3) {
+                        return val;
+                    } else {
+                        return 'high';
+                    }
+                },
+                starCaptionClasses: function (val) {
+                    if (val < 3) {
+                        return 'label label-danger';
+                    } else {
+                        return 'label label-success';
+                    }
+                },
+                hoverOnClear: false
+            });
+            var $inp = $('#rating-input');
+
+            $inp.rating({
+                min: 0,
+                max: 5,
+                step: 1,
+                size: 'lg',
+                showClear: false
+            });
+
+            $('#btn-rating-input').on('click', function () {
+                $inp.rating('refresh', {
+                    showClear: true,
+                    disabled: !$inp.attr('disabled')
+                });
+            });
+
+
+            $('.btn-danger').on('click', function () {
+                $("#kartik").rating('destroy');
+            });
+
+            $('.btn-success').on('click', function () {
+                $("#kartik").rating('create');
+            });
+
+            $inp.on('rating.change', function () {
+                alert($('#rating-input').val());
+            });
+
+
+            $('.rb-rating').rating({
+                'showCaption': true,
+                'stars': '3',
+                'min': '0',
+                'max': '3',
+                'step': '1',
+                'size': 'xs',
+                'starCaptions': { 0: 'status:nix', 1: 'status:wackelt', 2: 'status:geht', 3: 'status:laeuft' }
+            });
+            $("#input-21c").rating({
+                min: 0, max: 8, step: 0.5, size: "xl", stars: "8"
+            });
+        });
+    </script>
+}

@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Trusted\**" />
+    <Content Remove="Areas\Trusted\**" />
+    <EmbeddedResource Remove="Areas\Trusted\**" />
+    <None Remove="Areas\Trusted\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\client\assets\account.svg" />
     <None Include="wwwroot\client\assets\arrow-down.svg" />
     <None Include="wwwroot\client\Chart\Chart.bundle.js" />
@@ -41,6 +48,37 @@
     <None Include="wwwroot\client\js\vendor\pickmeup.js" />
     <None Include="wwwroot\client\js\vendor\swiper.min.js" />
     <None Include="wwwroot\client\js\Video.js" />
+    <None Include="wwwroot\client\rating\js\locales\ar.js" />
+    <None Include="wwwroot\client\rating\js\locales\bn.js" />
+    <None Include="wwwroot\client\rating\js\locales\de.js" />
+    <None Include="wwwroot\client\rating\js\locales\es.js" />
+    <None Include="wwwroot\client\rating\js\locales\fa.js" />
+    <None Include="wwwroot\client\rating\js\locales\fr.js" />
+    <None Include="wwwroot\client\rating\js\locales\gr.js" />
+    <None Include="wwwroot\client\rating\js\locales\it.js" />
+    <None Include="wwwroot\client\rating\js\locales\kk.js" />
+    <None Include="wwwroot\client\rating\js\locales\ko.js" />
+    <None Include="wwwroot\client\rating\js\locales\LANG.js" />
+    <None Include="wwwroot\client\rating\js\locales\nl.js" />
+    <None Include="wwwroot\client\rating\js\locales\pl.js" />
+    <None Include="wwwroot\client\rating\js\locales\pt-BR.js" />
+    <None Include="wwwroot\client\rating\js\locales\ro.js" />
+    <None Include="wwwroot\client\rating\js\locales\ru.js" />
+    <None Include="wwwroot\client\rating\js\locales\tr.js" />
+    <None Include="wwwroot\client\rating\js\locales\ua.js" />
+    <None Include="wwwroot\client\rating\js\locales\zh.js" />
+    <None Include="wwwroot\client\rating\js\star-rating.js" />
+    <None Include="wwwroot\client\rating\js\star-rating.min.js" />
+    <None Include="wwwroot\client\rating\themes\krajee-fas\theme.js" />
+    <None Include="wwwroot\client\rating\themes\krajee-fas\theme.min.js" />
+    <None Include="wwwroot\client\rating\themes\krajee-fa\theme.js" />
+    <None Include="wwwroot\client\rating\themes\krajee-fa\theme.min.js" />
+    <None Include="wwwroot\client\rating\themes\krajee-gly\theme.js" />
+    <None Include="wwwroot\client\rating\themes\krajee-gly\theme.min.js" />
+    <None Include="wwwroot\client\rating\themes\krajee-svg\theme.js" />
+    <None Include="wwwroot\client\rating\themes\krajee-svg\theme.min.js" />
+    <None Include="wwwroot\client\rating\themes\krajee-uni\theme.js" />
+    <None Include="wwwroot\client\rating\themes\krajee-uni\theme.min.js" />
     <None Include="wwwroot\css\elfinder\themes\bootstrap-LibreICONS\img\libre-archive.svg" />
     <None Include="wwwroot\css\elfinder\themes\bootstrap-LibreICONS\img\libre-arrow-left.svg" />
     <None Include="wwwroot\css\elfinder\themes\bootstrap-LibreICONS\img\libre-arrow-right.svg" />
@@ -2031,6 +2069,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="MySqlConnector" Version="2.1.2" />
   </ItemGroup>
 
   <ItemGroup>

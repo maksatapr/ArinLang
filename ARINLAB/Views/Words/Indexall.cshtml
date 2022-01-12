@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@using System.Globalization
 @{
     ViewData["Title"] = SharedLocalizer["Words"];
 
@@ -10,8 +11,16 @@
 @model UserDictionaryModel;
 <div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
     <div class="xl:w-8/12 xl:px-0 px-4 flex-grow">
-        <h2 class="md:text-4xl text-2xl font-semibold mb-10" style="font:900">@SharedLocalizer["Words Collection"] </h2>
-        <div class="row">
+        @if (CultureInfo.CurrentCulture.Name.StartsWith("ar"))
+        {
+            <h2 dir="rtl" class="md:text-4xl text-2xl font-semibold mb-10" style="font:900; padding-right:10%">@SharedLocalizer["Words Collection"] </h2>
+        }
+        else
+        {
+            <h2 class="md:text-4xl text-2xl font-semibold mb-10" style="font:900; padding-left:10%">@SharedLocalizer["Words Collection"] </h2>
+
+        }
+        <div class="row" style="padding-left: 10%; padding-right: 10%;">
             <div id="gridContainer">
             </div>
         </div>
@@ -107,7 +116,7 @@
 
                     {
                         type: "buttons",
-                        width: 110,
+                        width: 60,
                         buttons: [
                             {
                                 hint: '@SharedLocalizer["View Details"]',

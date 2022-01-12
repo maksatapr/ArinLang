@@ -10,6 +10,7 @@ namespace ARINLAB.Services
     public interface INamesService 
     {
         public Task<NamesDto> GetNameByIdAsync(int id);
+        public Task<NamesDto> GetNameByIdAsync(string userId, int id);
         public List<NamesDto> GetAllNames();
         public Task<Responce> DeleteNameAsync(int id);
         public Responce EditName(NamesDto name);

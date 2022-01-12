@@ -549,3 +549,4 @@ D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Email\E
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Email\Index.cshtml.g.cs
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\News\Index1.cshtml.g.cs
 D:\Work\ARINLAB\ARINLAB\ARINLAB\obj\Debug\net5.0\Razor\Views\Page\Detail.cshtml.g.cs
+D:\Work\ARINLAB\ARINLAB\ARINLAB\bin\Debug\net5.0\MySqlConnector.dll

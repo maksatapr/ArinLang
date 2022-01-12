@@ -72,5 +72,11 @@ namespace ARINLAB.Controllers
                 return RedirectToAction("Indexall");
             }
         }
+
+        [HttpPost]
+        public IActionResult SetRating(float Rating, int WordId)
+        {
+            return RedirectToAction("Details", WordId);
+        }
     }
 }

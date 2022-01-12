@@ -9,6 +9,7 @@ namespace ARINLAB.Services.Statistic
     public interface IStatisticsService
     {
         public List<StatisticCard> GetStatisticsCard();
+        public List<StatisticCard> GetMyStatisticsCard(string userId);
 
     }
 }

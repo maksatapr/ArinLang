@@ -65,13 +65,21 @@
         </div>
     </div>*@
 
-<div class="wrapper bg-gray-100 w-screen h-screen flex items-center justify-center flex-col">
-    <div class="p-10 bg-white shadow-md rounded" style="width:40%; align-items:center">
+<div class="wrapper bg-gray-100 w-screen h-screen flex items-center justify-center flex-col" style="margin-bottom: 50px; margin-top: 50px;">
+    <div class="p-10 bg-white shadow-md rounded reg" style="align-items:center">
         <div class="items-center text-xl max-w-xs px-10 text-center font-bold">
             @SharedLocalizer["Registration Form"]
         </div>
         <span class="max-w-xs block text-center text-sm mt-2 text-gray-400"> </span>
+        <style>
 
+            .reg {
+                width: 100%;
+            }
+            @@media only screen and (min-width: 768px) {
+                .reg { width:65%;}
+            }
+        </style>
         @if (Model.emailInUse)
         {
             <span class="text-danger" style="color:red">@SharedLocalizer["Email already in use"]</span>
@@ -135,4 +143,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
 }

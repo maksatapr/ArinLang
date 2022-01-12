@@ -70,28 +70,24 @@ namespace TSTB.Web.Controllers
         public JsonResult GetData(int pageSize, int pageCount,int catId, string filterDate)
         {
             DateTime filter = new DateTime();
-            if (filterDate != null)
-                filter = DateTime.Parse(filterDate.Substring(0,8));
-           
+            try
+            {
+                if (filterDate != null)
+                    filter = DateTime.Parse(filterDate.Substring(0, 8));
+            }catch(Exception e)
+            {
+
+            }
             ViewBag.NewsCategories = _newsCategoryService.GetAllNewsCategory();
             ViewBag.CatId = catId;
             ViewBag.DateFilter = filter;
             //  List<NewsDTO> AllbyCat;
             if (catId > 0)
             {
-                if (filter.Year > 2001)
-                {
-                    All = new List<NewsDTO>(_newsService.GetNewsByDateAndCategory(filter, catId)).OrderByDescending(p => p.DatePublished).ToList();
-                }
-                else
-                {
-                    All = new List<NewsDTO>(_newsService.GetNewsByCategory(catId)).OrderByDescending(p => p.DatePublished).ToList();
-                }              
+               
+                    All = new List<NewsDTO>(_newsService.GetNewsByCategory(catId)).OrderByDescending(p => p.DatePublished).ToList();                             
             }
-            else if (filter.Year > 2001)
-            {
-                All = new List<NewsDTO>(_newsService.GetNewsByDate(filter));              
-            }
+            
 
             List<NewsDTO> list = new List<NewsDTO>();
 

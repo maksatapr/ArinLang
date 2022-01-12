@@ -196,6 +196,27 @@ namespace ARINLAB.Services
             return null;
         }
 
+        public async Task<NamesDto> GetNameByIdAsync(string userId, int id)
+        {
+            try
+            {
+                var res = await _dbContext.Names.FindAsync(id);                
+                if (res != null)
+                {
+                    if (res.UserId != userId)
+                        return null;
+                    var data = _mapper.Map<NamesDto>(res);
+                    data.DictionaryName = _dictionaryService.GetDictionaryNameById(data.DictionaryId);
+                    return data;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            return null;
+        }
+
         public async Task<NameImagesDto> GetNameImageByImageIdAsync(int id)
         {
             try

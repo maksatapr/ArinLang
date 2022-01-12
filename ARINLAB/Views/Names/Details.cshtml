@@ -2,6 +2,7 @@
     ViewData["Title"] = "Index";
 
 }
+@using System.Globalization
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedResource> SharedLocalizer
@@ -11,29 +12,135 @@
 @{
     NamesImagesViewModel mod = (NamesImagesViewModel)ViewBag.Model;
 }
-<div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
-    <div class="h-full xl:container xl:px-0 px-4">
-        <div class="row" style="margin-left:35%">
-            <div class="col-2"></div>
-            <div class="col-4 items-center">
-                <label style="font-size:24px; font-weight:600">@SharedLocalizer["Name in Arab"] </label>
-                <label class="text-success" style="font-size:30px; font-weight:600">@mod.ArabName</label>
+@if (CultureInfo.CurrentCulture.Name.StartsWith("ar"))
+{
+    <div dir="rtl" class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
+        <div class="h-full xl:container xl:px-0 px-4">
+            <div class="row" style="margin-right:35%">
+                <div class="col-2"></div>
+                <div class="col-4 items-center">
+                    <label style="font-size:24px; font-weight:600">@SharedLocalizer["Name in Arab"]: </label>
+                    <label class="text-success" style="font-size:30px; font-weight:600">@mod.ArabName</label>
+                </div>
+                <div class=" col-4">
+                    <label style="font-size:24px; font-weight:600">@SharedLocalizer["Name in"] @mod.DictName: </label>
+                    <label class="text-success" style="font-size:30px; font-weight:600">@mod.OtherName</label>
+                </div>
+                <div class="col-2"></div>
             </div>
-            <div class=" col-4">
-                <label style="font-size:24px; font-weight:600">@SharedLocalizer["Name in"] @mod.DictName: </label>
-                <label class="text-success" style="font-size:30px; font-weight:600">@mod.OtherName</label>
-            </div>
-            <div class="col-2"></div>
-        </div>
-        <div class="mt-8 mb-16">
-            <div class="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-y-8 sm:gap-4 pb-8">
-                @foreach (var name in Model)
-                {
-                    <div class="rounded flex flex-col max-w-xs relative overflow-hidden">
-                        <img src="~/images/Names/@name.ImageUri" alt="" class="object-cover">
-                    </div>
-                }
+            <div class="mt-8 mb-16">
+                <div class="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-y-8 sm:gap-4 pb-8">
+                    @foreach (var name in Model)
+                    {
+                        <div class="rounded flex flex-col max-w-xs relative overflow-hidden">
+                            <img src="~/images/Names/@name.ImageUri" alt="" class="object-cover">
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
+}
+else
+{
+    <div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
+        <div class="h-full xl:container xl:px-0 px-4">
+            <div class="row" style="margin-left:35%">
+                <div class="col-2"></div>
+                <div class="col-4 items-center">
+                    <label style="font-size:24px; font-weight:600">@SharedLocalizer["Name in Arab"] </label>
+                    <label class="text-success" style="font-size:30px; font-weight:600">@mod.ArabName</label>
+                </div>
+                <div class=" col-4">
+                    <label style="font-size:24px; font-weight:600">@SharedLocalizer["Name in"] @mod.DictName: </label>
+                    <label class="text-success" style="font-size:30px; font-weight:600">@mod.OtherName</label>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div class="mt-8 mb-16">
+                <div class="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-y-8 sm:gap-4 pb-8">
+                    @foreach (var name in Model)
+                    {
+                        <div class="rounded flex flex-col max-w-xs relative overflow-hidden">
+                            <img src="~/images/Names/@name.ImageUri" alt="" class="object-cover">
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<input id="kartik" class="rating" data-stars="5" data-step="0.1" title="" />
+<div class="form-group" style="margin-top:10px">
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-default btn-secondary">Reset</button>
+    <button type="button" class="btn btn-danger">Destroy</button>
+    <button type="button" class="btn btn-success">Create</button>
 </div>
+@section Scripts{
+    <script>
+        jQuery(document).ready(function () {
+            $("#input-21f").rating({
+                starCaptions: function (val) {
+                    if (val < 3) {
+                        return val;
+                    } else {
+                        return 'high';
+                    }
+                },
+                starCaptionClasses: function (val) {
+                    if (val < 3) {
+                        return 'label label-danger';
+                    } else {
+                        return 'label label-success';
+                    }
+                },
+                hoverOnClear: false
+            });
+            var $inp = $('#rating-input');
+
+            $inp.rating({
+                min: 0,
+                max: 5,
+                step: 1,
+                size: 'lg',
+                showClear: false
+            });
+
+            $('#btn-rating-input').on('click', function () {
+                $inp.rating('refresh', {
+                    showClear: true,
+                    disabled: !$inp.attr('disabled')
+                });
+            });
+
+
+            $('.btn-danger').on('click', function () {
+                $("#kartik").rating('destroy');
+            });
+
+            $('.btn-success').on('click', function () {
+                $("#kartik").rating('create');
+            });
+
+            $inp.on('rating.change', function () {
+                alert($('#rating-input').val());
+            });
+
+
+            $('.rb-rating').rating({
+                'showCaption': true,
+                'stars': '3',
+                'min': '0',
+                'max': '3',
+                'step': '1',
+                'size': 'xs',
+                'starCaptions': { 0: 'status:nix', 1: 'status:wackelt', 2: 'status:geht', 3: 'status:laeuft' }
+            });
+            $("#input-21c").rating({
+                min: 0, max: 8, step: 0.5, size: "xl", stars: "8"
+            });
+        });
+    </script>
+}

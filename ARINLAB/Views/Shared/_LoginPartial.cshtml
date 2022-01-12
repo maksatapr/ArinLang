@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @using DAL.Models
 @using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization;
 @using DAL.Data
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -47,8 +48,8 @@
         }
 
     </div>
-    <a  class="text-gray-200 select-none flex items-center cursor-pointer hover:text-white mr-4" asp-area="Identity" asp-page="/Account/Logout" title="@SharedLocalizer["Registerd User's office"]">
-        <i class="fa fa-sign-out" style="padding-left:10px;" >Sign out</i>
+    <a class="text-gray-200 select-none flex items-center cursor-pointer hover:text-white mr-4" asp-area="Identity" asp-page="/Account/Logout" title="@SharedLocalizer["Registerd User's office"]">
+        <i class="fa fa-sign-out" style="padding-left:10px;">Sign out</i>
     </a>
 }
 else
@@ -60,10 +61,20 @@ else
                   fill-opacity="0.54" />
         </svg>
     </a>
-    <a asp-area="Identity" asp-page="/Account/Register" title="Register" style="margin-left:10px;" class="text-gray-200 select-none flex items-center cursor-pointer hover:text-white">
+    @if (CultureInfo.CurrentCulture.Name.StartsWith("ar"))
+    {
+        <a asp-area="Identity" asp-page="/Account/Register" title="Register" style="margin-left:10px;" class="text-gray-200 select-none flex items-center cursor-pointer hover:text-white">
 
-        <i  aria-hidden="true"> Register </i>
-    </a>
+            <i aria-hidden="true"  > @SharedLocalizer["Register"] </i>
+        </a>
+    }
+    else
+    {
+        <a asp-area="Identity" asp-page="/Account/Register" title="Register" style="margin-left:10px;" class="text-gray-200 select-none flex items-center cursor-pointer hover:text-white">
+
+            <i aria-hidden="true"> @SharedLocalizer["Register"] </i>
+        </a>
+    }
     @*<ul class="nav navbar-nav navbar-right">
             <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
             <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>

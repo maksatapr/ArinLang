@@ -217,6 +217,27 @@ namespace ARINLAB.Services
             
         }
 
+        public List<WordDto> GetAllWords(string userId, int pageNumber, int count)
+        {
+            try
+            {
+                var result = _mapper.Map<List<WordDto>>(_dbContext.Words.Where(p => p.UserId == userId).Skip((pageNumber - 1) * count).Take(count).AsNoTracking());
+                int n = 1 + (pageNumber - 1) * count;
+                foreach (var item in result)
+                {
+                    item.Dictionary = _dbContext.Dictionaries.Find(item.DictionaryId).Language;
+                    item.Number = n;
+                    ++n;
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+                return new List<WordDto>();
+            }
+
+        }
+
         public List<WordDto> GetAllWordsByUserId(string userId)
         {
             var result = _mapper.Map<List<WordDto>>(_dbContext.Words.Where(p => p.UserId == userId).Include(p => p.AudioFiles).Include(p => p.WordSentences).AsNoTracking());

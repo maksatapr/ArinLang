@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@using System.Globalization
 @{
     ViewData["Title"] = SharedLocalizer["Word Clauses"];
 
@@ -10,8 +11,15 @@
 @model UserDictionaryModel;
 <div class="flex justify-between flex-col xl:flex-row py-10 h-full xl:mb-0 blog">
     <div class="xl:w-8/12 xl:px-0 px-4 flex-grow">
-        <h2 class="md:text-4xl text-2xl font-semibold mb-10" style="font:900">@SharedLocalizer["Word Clauses Collection"] </h2>
-        <div class="row">
+        @if (CultureInfo.CurrentCulture.Name.StartsWith("ar"))
+        {
+            <h2 dir="rtl" class="md:text-4xl text-2xl font-semibold mb-10" style="font:900; padding-right:5%;">@SharedLocalizer["Word Clauses Collection"] </h2>
+        }
+        else
+        {
+            <h2 class="md:text-4xl text-2xl font-semibold mb-10" style="font:900; padding-left:5%;">@SharedLocalizer["Word Clauses Collection"] </h2>
+        }
+        <div class="row" style="padding-left: 5%; padding-right: 5%;">
             <div id="gridContainer">
             </div>
         </div>
@@ -44,7 +52,8 @@
                 "export": {
                     enabled: true,
                     fileName: "Documents",
-                    allowExportSelectedData: true
+                    allowExportSelectedData: true,
+                    OnClick : "exportToPDF"
                 },
                 filterPanel: {
                     visible: false
@@ -87,7 +96,7 @@
                 },
 
                 stateStoring: {
-                    enabled: true,
+                    enabled: false,
                     type: "localStorage",
                     storageKey: "partnersAdmin"
                 },
@@ -137,6 +146,17 @@
                     }
                 ]
             });
+            
+    function exportToPDF() {
+        var doc = new jsPDF();
+        var dataGrid = $("#gridContainer").dxDataGrid("instance");
+        DevExpress.pdfExporter.exportDataGrid({
+            jsPDFDocument: doc,
+            component: dataGrid
+        }).then(function() {
+            doc.save("WordClauses.pdf");
+        });
+    }    
         });
     </script>
 }
