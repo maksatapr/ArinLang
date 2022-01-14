@@ -16,10 +16,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace ARINLAB.Areas.Admin.Controllers
+namespace ARINLAB.Areas.ApprovedUser.Controllers
 {
-    [Area(Roles.Admin)]
-    [Authorize(Roles = Roles.Admin)]
+    [Area("ApprovedUser")]
+    [Authorize(Roles = Roles.Trusted)]
     public class WordController : Controller
     {
         private readonly IWordServices _wordsService;
@@ -48,7 +48,7 @@ namespace ARINLAB.Areas.Admin.Controllers
             return View(new List<WordDto>(result));
         }
 
-        [HttpGet("/Admin/[controller]/{id}/{approve}/{returnPage}")]
+        [HttpGet("/ApprovedUser/[controller]/{id}/{approve}/{returnPage}")]
         public async Task<IActionResult> EditApproveAsync(int id, bool approve, int returnPage) {
 
             var resp = await _wordsService.EditWordApproveByIdAsync(id, approve);
@@ -68,7 +68,7 @@ namespace ARINLAB.Areas.Admin.Controllers
             return View("Index", new List<WordDto>(res));
         }
 
-        [HttpGet("/Admin/[controller]/Sentence/{id}/{approve}")]
+        [HttpGet("/ApprovedUser/[controller]/Sentence/{id}/{approve}")]
         public async Task<IActionResult> EditApproveWordAsync(int id, bool approve)
         {
             var resp = await _wordsService.EditWordSentenceApproveByIdAsync(id, approve);
@@ -113,52 +113,7 @@ namespace ARINLAB.Areas.Admin.Controllers
             }
         }
 
-        
-        [HttpGet("/Admin/[controller]/DeleteSentence/{id}")]
-        public async Task<IActionResult> DeleteWordSentence(int id)
-        {
-            var res = await _wordsService.DeleteSentence(id);
-            if (res.IsSuccess)
-            {
-                try
-                {
-                    var res1 = await _wordsService.GetWordByIdAsync(((WordSentences)res.Data).WordId);
-                    if (res1 != null)
-                    {
-                        WordSentencesViewModel model = new();
-                        model.Word = res1;
-                        model.WordSentences = _wordsService.GetAllWordSentencesByWordId(res1.Id);
-                        model.AudioFiles = _audoFileServise.GetAudioFilesByWordId(res1.Id);
-                        ViewBag.dict = _dictService.GetAllDictionaries().Data;
-                        ViewBag.text = "Success";
-                        return View("EditWord", model);
-                    }
-                    else
-                    {
-                        ViewBag.page = 1;
-                        ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                        var result = _wordsService.GetAllWords(1, SD.pageSize);
-                        ViewBag.text = text;
-                        return View("Index", result);
-                    }
-                }
-                catch (Exception e)
-                {
-                    ViewBag.page = 1;
-                    ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                    var result = _wordsService.GetAllWords(1, SD.pageSize);
-                    ViewBag.text = text;
-                    return View("Index", result);
-                }
-            }
-            ViewBag.page = 1;
-            ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-            var r = _wordsService.GetAllWords(1, SD.pageSize);
-            ViewBag.text = text;
-            return View("Index", r);
-        }
-
-        [HttpGet("/Admin/[controller]/List/{page}/{count}")]
+        [HttpGet("/ApprovedUser/[controller]/List/{page}/{count}")]
         public IActionResult List(int page, int count)
         {
             var result = _wordsService.GetAllWords(page, count);
@@ -211,7 +166,7 @@ namespace ARINLAB.Areas.Admin.Controllers
             return View(new CreateWordDto());
         }
 
-        [HttpGet("/Admin/[controller]/Edit/{id}")]
+        [HttpGet("/ApprovedUser/[controller]/Edit/{id}")]
         public async Task<IActionResult> EditAsync(int id)
         {
             if (id < 0) {
@@ -261,23 +216,6 @@ namespace ARINLAB.Areas.Admin.Controllers
                 return View(model);
             }
         }
-
-        [HttpGet("/Admin/[controller]/Delete/{id}")]
-        [Authorize(Roles=Roles.Admin)]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var res = await _wordsService.Delete(id);
-            if (res.IsSuccess)
-            {
-                ViewBag.text = "Success";
-            }
-            ViewBag.page = 1;
-            ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-            var data = _wordsService.GetAllWords(1, SD.pageSize);            
-            ViewBag.Dictionaries = new List<Dictionary>((IEnumerable<Dictionary>)_dictService.GetAllDictionaries().Data);
-            return View("Index", new List<WordDto>(data));
-        }
-
      
         public async Task<IActionResult> EditWordAsync(int id)
         {
@@ -557,51 +495,5 @@ namespace ARINLAB.Areas.Admin.Controllers
             ViewBag.Error = "Could not add";
             return View(model);
         }
-
-        [HttpGet("/Admin/[controller]/DeleteVoice/{id}/{page}")]
-        [Authorize(Roles = Roles.Admin)]
-        public async Task<IActionResult> DeleteWord(int id, int page)
-        {
-            var res = await _audoFileServise.DeleteVoiceFile(id);
-            if (res.IsSuccess)
-            {
-                ViewBag.successs = "Success";
-                try
-                {
-                    var res1 = await _wordsService.GetWordByIdAsync(page);
-                    if (res != null)
-                    {
-                        WordSentencesViewModel model1 = new();
-                        model1.Word = res1;
-                        model1.WordSentences = _wordsService.GetAllWordSentencesByWordId(page);
-                        model1.AudioFiles = _audoFileServise.GetAudioFilesByWordId(page);
-                        ViewBag.dict = _dictService.GetAllDictionaries().Data;
-                        return View("EditVoice", model1);
-                    }
-                    else
-                    {
-                        ViewBag.page = 1;
-                        ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                        var result = _wordsService.GetAllWords(1, SD.pageSize);
-                        ViewBag.text = text;
-                        return View("Index", result);
-                    }
-                }
-                catch (Exception e)
-                {
-                    ViewBag.page = 1;
-                    ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                    var result = _wordsService.GetAllWords(1, SD.pageSize);
-                    ViewBag.text = text;
-                    return View("Index", result);
-                }
-            }
-            ViewBag.page = 1;
-            ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-            var data = _wordsService.GetAllWords(1, SD.pageSize);
-            ViewBag.Dictionaries = new List<Dictionary>((IEnumerable<Dictionary>)_dictService.GetAllDictionaries().Data);
-            return View("Index", new List<WordDto>(data));
-        }
-
     }
 }

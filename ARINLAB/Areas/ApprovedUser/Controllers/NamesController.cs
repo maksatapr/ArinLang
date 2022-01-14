@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace ARINLAB.Areas.Admin.Controllers
+namespace ARINLAB.Areas.ApprovedUser.Controllers
 {
-    [Area(Roles.Admin)]
-    [Authorize(Roles = Roles.Admin)]
+    [Area("ApprovedUser")]
+    [Authorize(Roles = Roles.Trusted)]
     public class NamesController : Controller
     {
         private readonly INamesService _nameService;
@@ -87,7 +87,7 @@ namespace ARINLAB.Areas.Admin.Controllers
             return View(voices);
         }
 
-        [HttpGet("/Admin/[controller]/AddImage/{id}")]
+        [HttpGet("/ApprovedUser/[controller]/AddImage/{id}")]
         public async Task<IActionResult> AddImageAsync(int id)
         {
             var res = await _nameService.GetNameByIdAsync(id);

@@ -149,6 +149,11 @@ namespace ARINLAB
                     pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapAreaControllerRoute(
+                    name: "areas",
+                    areaName: "ApprovedUser",
+                    pattern: "ApprovedUser/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapAreaControllerRoute(
                               name: "areas",
                               areaName: "Search",
                               pattern: "Search/{controller=Search}/{action=Index}/{id?}");

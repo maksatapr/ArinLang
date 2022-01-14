@@ -132,10 +132,12 @@ namespace ARINLAB.Areas.Identity.Pages.Account
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,  FirstName = Input.Name, 
                                 FamilyName = Input.FamilyName, CountryId = Input.CountryId, PhoneNumber = Input.PhoneNumber, 
                                 Gender = Input.Gender, IsApproved = false };
+
                 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, Roles.Registered);
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

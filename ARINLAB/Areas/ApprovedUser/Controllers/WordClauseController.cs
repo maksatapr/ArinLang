@@ -11,10 +11,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace ARINLAB.Areas.Admin.Controllers
+namespace ARINLAB.Areas.ApprovedUser.Controllers
 {
-    [Area(Roles.Admin)]
-    [Authorize(Roles = Roles.Admin)]
+    [Area("ApprovedUser")]
+    [Authorize(Roles = Roles.Trusted)]
     public class WordClauseController : Controller
     {
         private readonly IWordClauseService _wordClauseService;
@@ -121,20 +121,7 @@ namespace ARINLAB.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpGet("/Admin/[controller]/DeleteVoice/{id}/{clauseId}")]
-        [Authorize(Roles = Roles.Admin)]
-        public async Task<IActionResult> DeleteVoice(int id, int clauseId)
-        {
-            var res = await _wordClauseService.DeleteVoice(id);
-            if (res.IsSuccess)
-            {
-                return RedirectToAction("EditClauseVoice", new { id = clauseId });
-            }
-         
-            return View();
-        }
-
-        [HttpGet("/Admin/[controller]/Approve/{id}/{approve}/{clauseId}")]
+        [HttpGet("/ApprovedUser/[controller]/Approve/{id}/{approve}/{clauseId}")]
         public async Task<IActionResult> Approve(int id, bool approve, int clauseId)
         {
             var res = await _wordClauseService.ApproveVoice(id, approve);

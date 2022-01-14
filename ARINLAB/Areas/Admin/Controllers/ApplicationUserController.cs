@@ -85,6 +85,7 @@ namespace ARINLAB.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateUserModel model)
         {
+            ViewBag.Countries = new List<Country>(_dbContex.Countries);
             if (ModelState.IsValid)
             {
                 ApplicationUser user = new ApplicationUser
@@ -102,7 +103,7 @@ namespace ARINLAB.Areas.Admin.Controllers
                     UserName = model.UserName
                 };
 
-              
+                
                 var existing_user = await _userManager.FindByEmailAsync(user.Email);
                 
                 if (existing_user != null)
@@ -110,15 +111,20 @@ namespace ARINLAB.Areas.Admin.Controllers
                     ModelState.AddModelError("Email", "This email already in use");                   
                     // If we got this far, something failed, redisplay form
                     return View(model);
-                }
+                }               
 
                 var result = await _userManager.CreateAsync(user, model.Password);
+                
                 if (result.Succeeded)
                 {
+                    if (user.IsApproved)
+                        await _userManager.AddToRoleAsync(user, Roles.Trusted);
+                    else
+                        await _userManager.AddToRoleAsync(user, Roles.Registered);
                     return RedirectToAction("Index");
                 }               
             }
-            ViewBag.Countries = new List<Country>(_dbContex.Countries);
+            
             return View(model);
         }
 
