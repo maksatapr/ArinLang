@@ -11,6 +11,10 @@
 @model List<DAL.Models.Dto.NamesDTO.NameImagesDto>
 @{
     NamesImagesViewModel mod = (NamesImagesViewModel)ViewBag.Model;
+    bool res = false;
+    if (ViewBag.RatingResult != null)
+        res = (bool)ViewBag.RatingResult;
+
 }
 @if (CultureInfo.CurrentCulture.Name.StartsWith("ar"))
 {
@@ -27,6 +31,20 @@
                     <label class="text-success" style="font-size:30px; font-weight:600">@mod.OtherName</label>
                 </div>
                 <div class="col-2"></div>
+            </div>
+            <div dir="ltr" style="margin-top:20px;margin-left:40%">
+                <h2 dir="rtl" style="margin-top:20px;margin-right:55%">@SharedLocalizer["Current rating:"]</h2>
+                <input id="kartik" disabled name="Rating" class="rating" value="@ViewBag.Rating" data-stars="5" data-step="0.1" title="" />
+            </div>
+
+            <div dir="ltr" style="margin-top:30px;margin-left:40%">
+                <form asp-controller="Names" asp-action="SetRating" method="post">
+                    <input id="kartik" name="Rating" class="rating" data-stars="5" data-step="0.1" title="" />
+                    <input type="hidden" value="@mod.Id" name="NameId" />
+                    <div class="form-group" style="margin-top:10px">
+                        <button type="submit" class="bg-secondary text-white sm:rounded-none rounded px-8 py-3 font-semibold text-center cursor-pointer select-none">@SharedLocalizer["Submit your Rating"]</button>
+                    </div>
+                </form>
             </div>
             <div class="mt-8 mb-16">
                 <div class="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-y-8 sm:gap-4 pb-8">
@@ -57,6 +75,22 @@ else
                 </div>
                 <div class="col-2"></div>
             </div>
+            <div style="margin-top:20px;margin-left:40%">
+                <h2>@SharedLocalizer["Current rating:"]</h2>
+                <input id="kartik" disabled name="Rating" class="rating" value="@ViewBag.Rating" data-stars="5" data-step="0.1" title="" />
+            </div>
+
+            <div style="margin-top:30px;margin-left:40%">
+                <form asp-controller="Names" asp-action="SetRating" method="post">
+                    <input id="kartik" name="Rating" class="rating" data-stars="5" data-step="0.1" title="" />
+                    <input type="hidden" value="@mod.Id" name="NameId" />
+                    <div class="form-group" style="margin-top:10px">
+                        <button type="submit" class="bg-secondary text-white sm:rounded-none rounded px-8 py-3 font-semibold text-center cursor-pointer select-none">@SharedLocalizer["Submit your Rating"]</button>
+                    </div>
+                </form>
+            </div>
+
+
             <div class="mt-8 mb-16">
                 <div class="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-y-8 sm:gap-4 pb-8">
                     @foreach (var name in Model)
@@ -71,76 +105,45 @@ else
     </div>
 }
 
-<input id="kartik" class="rating" data-stars="5" data-step="0.1" title="" />
-<div class="form-group" style="margin-top:10px">
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <button type="reset" class="btn btn-default btn-secondary">Reset</button>
-    <button type="button" class="btn btn-danger">Destroy</button>
-    <button type="button" class="btn btn-success">Create</button>
-</div>
+
+<button id="btn" hidden></button>
 @section Scripts{
+    <!-- <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.4/dist/simple-notify.min.js"></script> -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/simple-notify@0.5.4/dist/simple-notify.min.js"></script> -->
+    <script src="/dist/simple-notify.min.js"></script>
+    <script src="/assets/js/prism.js"></script>
+    <script src="/assets/js/OverlayScrollbars.min.js"></script>
+    <script src="/assets/js/main.js"></script>
     <script>
-        jQuery(document).ready(function () {
-            $("#input-21f").rating({
-                starCaptions: function (val) {
-                    if (val < 3) {
-                        return val;
-                    } else {
-                        return 'high';
-                    }
-                },
-                starCaptionClasses: function (val) {
-                    if (val < 3) {
-                        return 'label label-danger';
-                    } else {
-                        return 'label label-success';
-                    }
-                },
-                hoverOnClear: false
-            });
-            var $inp = $('#rating-input');
+         const btn = document.querySelector('#btn')
 
-            $inp.rating({
-                min: 0,
-                max: 5,
-                step: 1,
-                size: 'lg',
-                showClear: false
-            });
-
-            $('#btn-rating-input').on('click', function () {
-                $inp.rating('refresh', {
-                    showClear: true,
-                    disabled: !$inp.attr('disabled')
-                });
-            });
-
-
-            $('.btn-danger').on('click', function () {
-                $("#kartik").rating('destroy');
-            });
-
-            $('.btn-success').on('click', function () {
-                $("#kartik").rating('create');
-            });
-
-            $inp.on('rating.change', function () {
-                alert($('#rating-input').val());
-            });
-
-
-            $('.rb-rating').rating({
-                'showCaption': true,
-                'stars': '3',
-                'min': '0',
-                'max': '3',
-                'step': '1',
-                'size': 'xs',
-                'starCaptions': { 0: 'status:nix', 1: 'status:wackelt', 2: 'status:geht', 3: 'status:laeuft' }
-            });
-            $("#input-21c").rating({
-                min: 0, max: 8, step: 0.5, size: "xl", stars: "8"
-            });
+        btn.addEventListener('click', () => {
+            new Notify({
+                status: 'success',
+                title: '@SharedLocalizer["Thank you"]',
+                text: '@SharedLocalizer["Your rating have been successfully recorded"]',
+                effect: 'fade',
+                speed: 300,
+                customClass: '',
+                customIcon: '',
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: false,
+                autotimeout: 3000,
+                gap: 60,
+                distance: 20,
+                type: 1,
+                position: 'right top',
+                customWrapper: '',
+            })
         });
+
     </script>
+    @if (res)
+    {
+        <script>
+            document.getElementById("btn").click();
+        </script>
+    }
 }

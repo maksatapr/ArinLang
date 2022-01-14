@@ -1,6 +1,7 @@
 ﻿using ARINLAB.Models;
 using ARINLAB.Services;
 using ARINLAB.Services.ImageService;
+using ARINLAB.Services.Ratings;
 using ARINLAB.Services.SessionService;
 using AutoMapper;
 using DAL.Models;
@@ -22,16 +23,18 @@ namespace ARINLAB.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly FileServices _audoFileServise;
         private readonly IImageService _fileService;
+        private readonly IRatingService _ratingServices;
         private static string text = "";
         private readonly IMapper _mapper;
 
         public WordsController(UserDictionary userDictionary, IWordServices wordServices, Services.IDictionaryService dictionaryService
-                                , FileServices fileServices)
+                                , FileServices fileServices, IRatingService ratingServices)
         {
             _userDictionary = userDictionary;
             _wordsService = wordServices;
             _dictService = dictionaryService;
             _audoFileServise = fileServices;
+            _ratingServices = ratingServices;
         }
         public IActionResult Indexall()
         {
@@ -60,6 +63,7 @@ namespace ARINLAB.Controllers
                     model.WordSentences = _wordsService.GetAllWordSentencesByWordId(id);
                     model.AudioFiles = _audoFileServise.GetAudioFilesByWordId(id);
                     ViewBag.dict = _dictService.GetAllDictionaries().Data;
+                    ViewBag.Rating = _ratingServices.GetRatingForWord(id);
                     return View(model);
                 }
                 else
@@ -74,9 +78,33 @@ namespace ARINLAB.Controllers
         }
 
         [HttpPost]
-        public IActionResult SetRating(float Rating, int WordId)
+        public async Task<IActionResult> SetRatingAsync(float Rating, int WordId)
         {
-            return RedirectToAction("Details", WordId);
+            var responce = await _ratingServices.SetRatingForWordAsync(Rating, WordId);
+            try
+            {
+                var res = await _wordsService.GetWordByIdAsync(WordId);
+                
+                if (res != null)
+                {
+                    WordSentencesViewModel model = new();
+                    model.Word = res;
+                    model.WordSentences = _wordsService.GetAllWordSentencesByWordId(WordId);
+                    model.AudioFiles = _audoFileServise.GetAudioFilesByWordId(WordId);
+                    ViewBag.dict = _dictService.GetAllDictionaries().Data;
+                    ViewBag.RatingResult = responce.IsSuccess;
+                    ViewBag.Rating = _ratingServices.GetRatingForWord(WordId);
+                    return View("Details",model);
+                }
+                else
+                {
+                    return RedirectToAction("Indexall");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Indexall");
+            }           
         }
     }
 }

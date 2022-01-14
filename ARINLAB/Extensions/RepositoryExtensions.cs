@@ -7,6 +7,7 @@ using ARINLAB.Services.Menu;
 using ARINLAB.Services.News;
 using ARINLAB.Services.NewsCategory;
 using ARINLAB.Services.Pages;
+using ARINLAB.Services.Ratings;
 using ARINLAB.Services.SessionService;
 using ARINLAB.Services.Settings;
 using ARINLAB.Services.Statistic;
@@ -50,6 +51,7 @@ namespace ARINLAB.Extensions
             services.AddScoped<ISubscribeService, SubscribeService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddTransient<IApplicationUserService, ApplicationUserService>();
+            services.AddTransient<IRatingService, RatingService>();
             //Add Scoped Services
 
 

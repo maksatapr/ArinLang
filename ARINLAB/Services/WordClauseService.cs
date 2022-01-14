@@ -344,9 +344,15 @@ namespace ARINLAB.Services
                 Random rnd = new Random(DateTime.UtcNow.Millisecond);
                 int rn = rnd.Next();
                 var res = _dbContext.WordClauses.Where(p => p.DictionaryId == dictId && p.IsApproved == true).OrderBy(p => rn).Take(n).ToList();
+                string DictName = _dbContext.Dictionaries.Find(dictId)?.Language;
                 if (res != null)
                 {
-                    return _mapper.Map<List<WordClauseDto>>(res);
+                    var r = _mapper.Map<List<WordClauseDto>>(res);
+                    foreach(var item in r)
+                    {
+                        item.DictionaryName = DictName;
+                    }
+                    return r;
                 }
                 else
                 {

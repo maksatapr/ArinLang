@@ -243,7 +243,13 @@ namespace ARINLAB.Services
                 var res = _dbContext.Names.Where(p => p.DictionaryId == dictId && p.IsApproved == true).OrderBy(p => rn).Take(n).ToList();
                 if (res != null)
                 {
-                    return _mapper.Map<List<NamesDto>>(res);
+                   
+                    var r = _mapper.Map<List<NamesDto>>(res);
+                    foreach(var item in r)
+                    {
+                        item.DictionaryName = _dbContext.Dictionaries.FirstOrDefault(p => p.Id == item.DictionaryId)?.Language;
+                    }
+                    return r;
                 }
                 else
                 {

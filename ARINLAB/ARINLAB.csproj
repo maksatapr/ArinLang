@@ -13,6 +13,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Areas\ApprovedUser\Views\ApplicationUser\ChangePassword.cshtml" />
+    <Content Remove="Areas\ApprovedUser\Views\ApplicationUser\Create.cshtml" />
+    <Content Remove="Areas\ApprovedUser\Views\ApplicationUser\Edit.cshtml" />
+    <Content Remove="Areas\ApprovedUser\Views\ApplicationUser\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Areas\ApprovedUser\Views\ApplicationUser\ChangePassword.cshtml" />
+    <None Include="Areas\ApprovedUser\Views\ApplicationUser\Create.cshtml" />
+    <None Include="Areas\ApprovedUser\Views\ApplicationUser\Edit.cshtml" />
+    <None Include="Areas\ApprovedUser\Views\ApplicationUser\Index.cshtml" />
+    <None Include="Areas\Admin\Views\ApplicationUser\ChangePassword.cshtml" />
+    <None Include="Areas\Admin\Views\ApplicationUser\Create.cshtml" />
+    <None Include="Areas\Admin\Views\ApplicationUser\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\ApplicationUser\Index.cshtml" />
+    <None Include="wwwroot\assets\js\main.js" />
+    <None Include="wwwroot\assets\js\OverlayScrollbars.min.js" />
+    <None Include="wwwroot\assets\js\prism.js" />
+    <None Include="wwwroot\assets\logo.svg" />
     <None Include="wwwroot\client\assets\account.svg" />
     <None Include="wwwroot\client\assets\arrow-down.svg" />
     <None Include="wwwroot\client\Chart\Chart.bundle.js" />
@@ -1456,6 +1475,9 @@
     <None Include="wwwroot\devextreme\transpiled-renovation-npm\renovation\utils\noop.js" />
     <None Include="wwwroot\devextreme\transpiled-renovation-npm\renovation\utils\render_template.js" />
     <None Include="wwwroot\devextreme\transpiled-renovation-npm\renovation\utils\subscribe_to_event.js" />
+    <None Include="wwwroot\dist\index.js" />
+    <None Include="wwwroot\dist\simple-notify.es.js" />
+    <None Include="wwwroot\dist\simple-notify.min.js" />
     <None Include="wwwroot\js\axios.min.js" />
     <None Include="wwwroot\js\custom.js" />
     <None Include="wwwroot\js\CustomStore.js" />
@@ -2084,11 +2106,15 @@
     <TypeScriptCompile Include="wwwroot\devextreme\ts\globalize.d.ts" />
     <TypeScriptCompile Include="wwwroot\devextreme\ts\jquery.d.ts" />
     <TypeScriptCompile Include="wwwroot\devextreme\ts\knockout.d.ts" />
+    <TypeScriptCompile Include="wwwroot\dist\effects.d.ts" />
+    <TypeScriptCompile Include="wwwroot\dist\index.d.ts" />
+    <TypeScriptCompile Include="wwwroot\dist\types.d.ts" />
+    <TypeScriptCompile Include="wwwroot\dist\utils.d.ts" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\ApprovedUser\Data\" />
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="wwwroot\Admin\assets\js\plugins\plugins-related\" />
     <Folder Include="wwwroot\images\Advertisement\" />
     <Folder Include="wwwroot\images\Banner\" />

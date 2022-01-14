@@ -19,11 +19,12 @@ using DAL.Data;
 using ARINLAB.Services.ImageService;
 using ARINLAB;
 using ARINLAB.Areas.Admin.Models;
+using DAL.Models.Configs;
 
-namespace TSTB.Web.Areas.Admin.Controllers
+namespace ARINLAB.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin, Registration-Manager")]
+    [Authorize(Roles = Roles.Admin)]
     public class ApplicationUserController : Controller
     {
         
@@ -79,7 +80,49 @@ namespace TSTB.Web.Areas.Admin.Controllers
             }            
         }
 
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateUserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = new ApplicationUser
+                {
+                    FirstName = model.FirstName,
+                    FamilyName = model.FamilyName,
+                    Accupation = model.Accupation,
+                    CountryId = model.CountryId,
+                    Email = model.Email,
+                    EmailConfirmed = true,
+                    Gender = model.Gender,
+                    IsApproved = model.IsApproved,
+                    PhoneNumber = model.PhoneNumber,
+                    PhoneNumberConfirmed = true,
+                    UserName = model.UserName
+                };
+
+              
+                var existing_user = await _userManager.FindByEmailAsync(user.Email);
+                
+                if (existing_user != null)
+                {                   
+                    ModelState.AddModelError("Email", "This email already in use");                   
+                    // If we got this far, something failed, redisplay form
+                    return View(model);
+                }
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }               
+            }
+            ViewBag.Countries = new List<Country>(_dbContex.Countries);
+            return View(model);
+        }
+
+            [HttpPost]
         // GET: Admin/ApplicationUser/Edit/5
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {
@@ -105,9 +148,17 @@ namespace TSTB.Web.Areas.Admin.Controllers
             {
                 ViewBag.ErrorList = result.Errors.ToList();
                 return View(model);
-            }
-           
+            }           
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            ViewBag.Countries = new List<Country>(_dbContex.Countries);
+            return View(new CreateUserModel());
+        }
+
+
 
         // GET: Admin/ApplicationUser/Delete/5
         public IActionResult Delete(string id)

@@ -95,8 +95,6 @@ namespace ARINLAB.Controllers
             return View();
         }
 
-
-
         public async Task<IActionResult> Unsubscribed(string email)
         {
             List<Settings> settings = new List<Settings>(_settings.GetAllSettings());
@@ -109,11 +107,11 @@ namespace ARINLAB.Controllers
             {
                 SingleEmailDTO sEmail = new SingleEmailDTO();
                 sEmail.Header = _localizer["TSTB Unsubscribe"];
-                sEmail.Message = _localizer["Please Follow the link below to unsubscribe from TSTB : "] + UnsubLink + "?id=" + id;
+                sEmail.Message = _localizer["Please Follow the link below to unsubscribe from ARINLANG: "] + UnsubLink + "?id=" + id;
                 sEmail.Password = AdminEmailPassword;
                 sEmail.AdminEmail = AdminEmail;
                 sEmail.EmailTo = email;
-                sEmail.Subject = _localizer["Unsubscribe Link from TSTB Web Site"];
+                sEmail.Subject = _localizer["Unsubscribe Link from ARINLANG Web Site"];
                 bool isSend = await _emailService.SendSingleEmail(sEmail);
                 if (isSend)
                     ViewBag.Email = _localizer["Dateiled instructions was send to "] + email + _localizer[" email to unsubscribed."];

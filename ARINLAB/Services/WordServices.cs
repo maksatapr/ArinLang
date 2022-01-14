@@ -269,7 +269,9 @@ namespace ARINLAB.Services
         {
             try
             {
-                return _mapper.Map<WordDto>(await _dbContext.Words.FindAsync(id));
+                var r = _mapper.Map<WordDto>(await _dbContext.Words.FindAsync(id));
+                r.Dictionary = (await _dbContext.Dictionaries.FindAsync(r.DictionaryId))?.Language;
+                return r;
             }catch(Exception e)
             {
                 return null;
@@ -292,7 +294,12 @@ namespace ARINLAB.Services
 
         public List<WordDto> GetWordsWithApproval(bool isApproved)
         {
-            return _mapper.Map<List<WordDto>>(_dbContext.Words.Where(p => p.IsApproved == true).Include(p => p.AudioFiles).Include(p => p.WordSentences));
+            var res = _mapper.Map<List<WordDto>>(_dbContext.Words.Where(p => p.IsApproved == true).Include(p => p.AudioFiles).Include(p => p.WordSentences));
+            foreach(var r in res)
+            {
+                r.Dictionary = _dbContext.Dictionaries.Find(r.DictionaryId)?.Language;
+            }
+            return res;
         }
 
         public List<WordDto> GetRandom_N_Words(int n)
@@ -305,7 +312,12 @@ namespace ARINLAB.Services
                 var res = _dbContext.Words.Where(p => p.DictionaryId == dictId && p.IsApproved == true).OrderBy(p => rn).Take(n).ToList();
                 if (res != null)
                 {
-                    return _mapper.Map<List<WordDto>>(res);
+                    var r = _mapper.Map<List<WordDto>>(res);
+                    foreach(var item in r)
+                    {
+                        item.Dictionary = _dbContext.Dictionaries.Find(item.DictionaryId)?.Language;
+                    }
+                    return r;
                 }
                 else
                 {
@@ -321,8 +333,13 @@ namespace ARINLAB.Services
         {
             try
             {
-                var res = _dbContext.Words.Where(p => p.DictionaryId == id && p.IsApproved == true);
-                return _mapper.Map<List<WordDto>>(res);
+                var res1 = _dbContext.Words.Where(p => p.DictionaryId == id && p.IsApproved == true);
+                var res = _mapper.Map<List<WordDto>>(res1);
+                foreach (var r in res)
+                {
+                    r.Dictionary = _dbContext.Dictionaries.Find(r.DictionaryId)?.Language;
+                }
+                return res;
             }
             catch (Exception e)
             {

@@ -32,13 +32,14 @@ namespace ARINLAB.Areas.Admin.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Create(string dictName)
+        public IActionResult Create(string dictName, string arabName)
         {
             var result = ((IEnumerable<DAL.Models.Dictionary>)_dictService.GetAllDictionaries().Data).Where(p => p.Language.CompareTo(dictName) == 0);
             if (result != null && result.Count() > 0 || string.IsNullOrEmpty(dictName))
                 return RedirectToAction("Index");
             CreateDictionaryDto newDict = new CreateDictionaryDto();
             newDict.Language = dictName;
+            newDict.ArabTranslate = arabName;
             var responce = _dictService.CreateDictionary(newDict);
             return RedirectToAction("Index");
         }

@@ -15,6 +15,7 @@ namespace ARINLAB.Services.ApplicationUser
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
 
+
         public ApplicationUserService(UserManager<DAL.Models.ApplicationUser> userManager,RoleManager<IdentityRole> roleManager, IMapper mapper)
         {
             _userManager = userManager;

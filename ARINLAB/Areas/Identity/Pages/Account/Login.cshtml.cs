@@ -44,7 +44,7 @@ namespace ARINLAB.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]      
-            [DataType(DataType.EmailAddress)]
+            //[DataType(DataType.EmailAddress)]
             public string Email { get; set; }
 
             [Required]
@@ -77,17 +77,23 @@ namespace ARINLAB.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        
+            
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var user = await _userManager.FindByEmailAsync(Input.Email);
+                if(user == null)
+                {
+                    user = await _userManager.FindByNameAsync(Input.Email);
+                }
+
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
+
                 var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {                    

@@ -5,6 +5,7 @@ using DAL.Models.Dto;
 using DAL.Models.ResponceModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -86,8 +87,14 @@ namespace ARINLAB.Services
         public string GetDictionaryNameById(int id)
         {
             var dict = _dbContext.Dictionaries.Find(id);
+            string culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
             if (dict != null)
-                return dict.Language;
+            {
+                if (culture == "ar")
+                    return dict.ArabTranslate;
+                else
+                    return dict.Language;
+            }
             return "";
         }
     }
