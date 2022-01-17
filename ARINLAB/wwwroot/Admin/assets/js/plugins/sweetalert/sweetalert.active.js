@@ -322,6 +322,47 @@
             });
         });
     }
+
+    if ($('.delete-sentence1').length) {
+        $('.delete-sentence1').on('click', function () {
+            swal({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "Cancel",
+                        value: false,
+                        visible: true,
+                        className: "button button-primary",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Yes Delete It",
+                        value: true,
+                        visible: true,
+                        className: "button button-danger",
+                        closeModal: true
+                    }
+                },
+            }).then((willDelete) => {
+                if (willDelete) {
+                    var id = $(this).attr('id');
+
+                    if (id) {
+                        window.location.href = "/Registered/Word/DeleteSentence/" + id;
+                    }
+                } else {
+                    swal({
+                        text: "Your imaginary file is safe!",
+                        button: {
+                            className: "button button-primary"
+                        }
+                    });
+                }
+            });
+        });
+    }
     if ($('.delete-voice').length) {
         $('.delete-voice').on('click', function () {
             swal({
@@ -350,6 +391,47 @@
                     var page = $(this).attr('name');
                     if (id) {
                         window.location.href = "/Admin/Word/DeleteVoice/" + id+"/"+page;
+                    }
+                } else {
+                    swal({
+                        text: "Your imaginary file is safe!",
+                        button: {
+                            className: "button button-primary"
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    if ($('.delete-voice1').length) {
+        $('.delete-voice1').on('click', function () {
+            swal({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                buttons: {
+                    cancel: {
+                        text: "Cancel",
+                        value: false,
+                        visible: true,
+                        className: "button button-primary",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "Yes Delete It",
+                        value: true,
+                        visible: true,
+                        className: "button button-danger",
+                        closeModal: true
+                    }
+                },
+            }).then((willDelete) => {
+                if (willDelete) {
+                    var id = $(this).attr('id');
+                    var page = $(this).attr('name');
+                    if (id) {
+                        window.location.href = "/Registered/Word/DeleteVoice/" + id + "/" + page;
                     }
                 } else {
                     swal({

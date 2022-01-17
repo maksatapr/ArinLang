@@ -41,7 +41,7 @@ namespace ARINLAB.Areas.Admin.Controllers.API
         {
             var user = await _userManager.GetUserAsync(User);
             var selectedRoleNames = await _userManager.GetRolesAsync(user);
-            if (selectedRoleNames.FirstOrDefault() == Roles.Admin)
+            if (selectedRoleNames.Contains(Roles.Admin))
                 return DataSourceLoader.Load<ApplicationUser>(_userService.GetAllUsers().AsQueryable(), loadOptions);
             else return null;
             

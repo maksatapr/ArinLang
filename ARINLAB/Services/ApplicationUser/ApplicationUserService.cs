@@ -35,7 +35,7 @@ namespace ARINLAB.Services.ApplicationUser
         public IEnumerable<DAL.Models.ApplicationUser> GetAllUsers()
         {
             
-            var appUsers = _userManager.Users.Where(o=>o.UserName!="Admin").OrderBy(o => o.FirstName);
+            var appUsers = _userManager.Users.AsNoTracking().Where(o=>o.UserName!="Admin").OrderBy(o => o.FirstName);
             //var users = _mapper.ProjectTo<ApplicationUserDTO>(appUsers).AsQueryable();
             return appUsers;//users;
         }

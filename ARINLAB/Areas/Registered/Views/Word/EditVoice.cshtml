@@ -38,7 +38,7 @@
             <h2>@SharedLocalizer["Voices Related to the Word"]</h2>
         </div>
         <div class="col-4">
-            <a asp-area="ApprovedUser" asp-controller="Word" asp-action="AddWordVoice" asp-route-id="@Model.Word.Id" asp-route-arabWord="@Model.Word.ArabWord" asp-route-otherWord="@Model.Word.OtherWord" asp-route-dictId="@dictName"><button class="btn btn-success"><i class="fa fa-plus"></i></button></a>
+            <a asp-area="Registered" asp-controller="Word" asp-action="AddWordVoice" asp-route-id="@Model.Word.Id" asp-route-arabWord="@Model.Word.ArabWord" asp-route-otherWord="@Model.Word.OtherWord" asp-route-dictId="@dictName"><button class="btn btn-success"><i class="fa fa-plus"></i></button></a>
         </div>
     </div>
 
@@ -76,7 +76,7 @@
                                 </td>
 
                                 <td>
-                                  <button type="button" id="@(item.Id)" name="@(Model.Word.Id)" class="sweetalert delete-voice btn button-danger"><i class="fa fa-trash"></i></button>
+                                  <button type="button" id="@(item.Id)" name="@(Model.Word.Id)" class="sweetalert delete-voice1 btn button-danger"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
 

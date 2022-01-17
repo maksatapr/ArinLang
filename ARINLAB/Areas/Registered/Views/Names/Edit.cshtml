@@ -49,11 +49,11 @@
                                             <label class="adomx-switch success">
                                                 @if (Model.IsApproved)
                                                 {
-                                                    <input type="checkbox" asp-for="@Model.IsApproved" checked>
+                                                    <input disabled type="checkbox" asp-for="@Model.IsApproved" checked>
                                                 }
                                                 else
                                                 {
-                                                    <input type="checkbox" asp-for="@Model.IsApproved">
+                                                    <input disabled type="checkbox" asp-for="@Model.IsApproved">
                                                 }
                                                 <i class="lever"></i>
 
@@ -167,22 +167,7 @@
                                 .append($("<img>", { "src": "/images/Names/"+options.value }))
                                 .appendTo(container);
                         }
-                    },
-                    {
-                        type: "buttons",
-                        width: 110,
-                        buttons: [
-                            {
-                                hint: '@SharedLocalizer["Approve"]',
-                                icon: "toggle-on",
-                                onClick: function (e) {
-                                    var idString = e.row.data.id;
-                                    var url = `@Url.Action("EditApprove", "Names", new { Area = "Registered" })`;
-                                    window.location = url + '?id=' + idString + '&approve=@(!Model.IsApproved)'
-                                }
-                            },                           
-                        ]
-                    }
+                    },                   
                 ]
             });
         });

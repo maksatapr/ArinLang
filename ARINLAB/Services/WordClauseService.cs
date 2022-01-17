@@ -5,12 +5,14 @@ using DAL.Data;
 using DAL.Models;
 using DAL.Models.Dto;
 using DAL.Models.ResponceModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ARINLAB.Services
@@ -204,6 +206,32 @@ namespace ARINLAB.Services
                     var userName = _useManager.FindByIdAsync(clause.UserId)?.Result.Email;
                     var dto = _mapper.Map<WordClauseDto>(clause);
                     dto.UserName = userName==null?"":userName;
+
+                    var catName = _dbContext.WordClauseCategories.Include(p => p.WordClauseCategoryTranslates).FirstOrDefault(p => p.Id == clause.CategoryId);
+                    dto.CategoryName = catName == null ? "" : catName.WordClauseCategoryTranslates.FirstOrDefault(p => p.LanguageCulture == culture)?.CategoryName;
+
+                    var dict = await _dbContext.Dictionaries.FindAsync(clause.DictionaryId);
+                    dto.DictionaryName = dict == null ? "" : dict.Language;
+                    result.Add(dto);
+                }
+                return result;
+            }
+            return null;
+        }
+
+        public async Task<List<WordClauseDto>> GetAllWordClausesbyUserAsync(string userId)
+        {
+            
+            string culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+            var res = _dbContext.WordClauses.Where(p => p.UserId == userId);
+            List<WordClauseDto> result = new List<WordClauseDto>();
+            if (res != null)
+            {
+                foreach (var clause in res)
+                {
+                    var userName = _useManager.FindByIdAsync(clause.UserId)?.Result.Email;
+                    var dto = _mapper.Map<WordClauseDto>(clause);
+                    dto.UserName = userName == null ? "" : userName;
 
                     var catName = _dbContext.WordClauseCategories.Include(p => p.WordClauseCategoryTranslates).FirstOrDefault(p => p.Id == clause.CategoryId);
                     dto.CategoryName = catName == null ? "" : catName.WordClauseCategoryTranslates.FirstOrDefault(p => p.LanguageCulture == culture)?.CategoryName;

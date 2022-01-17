@@ -22,7 +22,7 @@
 @section Scripts{
     <script>
         $(function () {
-            let url = `@API.GetAllWordClauses`;
+            let url = `@API.GetAllWordClausesByUser`;
             var returnUrl = '@Context.Request.Path@Context.Request.QueryString';
             $("#gridContainer").dxDataGrid({
                 dataSource: DevExpress.data.AspNet.createStore({
@@ -36,7 +36,7 @@
                     }
                 }),
                 onInitNewRow: function(e) {
-                    var url = `@Url.Action("Create", "WordClause", new { Area = "ApprovedUser" })`;
+                    var url = `@Url.Action("Create", "WordClause", new { Area = "Registered" })`;
                     window.location = url;
                 },
                 selection: {
@@ -134,7 +134,7 @@
                                 icon: "edit",
                                 onClick: function (e) {
                                     var idString = e.row.data.id;
-                                    var url = `@Url.Action("Edit", "WordClause", new { Area = "ApprovedUser" })`;
+                                    var url = `@Url.Action("Edit", "WordClause", new { Area = "Registered" })`;
                                     window.location = url + '?id=' + idString;
                                 }
                             },
@@ -143,11 +143,11 @@
                                  icon: "fa fa-volume-up",
                                 onClick: function (e) {
                                     var idString = e.row.data.id;
-                                    var url = `@Url.Action("EditClauseVoice", "WordClause", new { Area = "ApprovedUser" })`;
+                                    var url = `@Url.Action("EditClauseVoice", "WordClause", new { Area = "Registered" })`;
                                     window.location = url + '?id=' + idString;
                                 }
                             },
-                           
+                           "delete"
                         ]
                     }
                 ]

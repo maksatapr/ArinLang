@@ -133,13 +133,14 @@ namespace ARINLAB.Services
         {
             if (editWordDto == null)
                 return ResponceGenerator.GetResponceModel(false, "Data is being modifyed is null", null);
-            Word _word = new Word { 
-            ArabWord = editWordDto.ArabWord,
-            DictionaryId = editWordDto.DictionaryId,
-            Id = editWordDto.Id,
-            IsApproved = editWordDto.IsApproved,
-            UserId = editWordDto.UserId,
-            OtherWord = editWordDto.OtherWord            
+            Word _word = new Word {
+                ArabWord = editWordDto.ArabWord,
+                DictionaryId = editWordDto.DictionaryId,
+                Id = editWordDto.Id,
+                IsApproved = editWordDto.IsApproved,
+                UserId = editWordDto.UserId,
+                OtherWord = editWordDto.OtherWord,
+                ImageForShare = editWordDto.ImageForShare
             };
 
             Responce result = new Responce();

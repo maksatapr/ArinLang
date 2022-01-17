@@ -59,7 +59,7 @@
             <h2>@SharedLocalizer["Voices"]</h2>
         </div>
         <div class="col-4">
-            <a asp-area="ApprovedUser" asp-controller="WordClause" asp-action="CreateVoice" asp-route-id="@m.Id" asp-route-arabClause="@m.ArabClause" asp-route-otherClause="@m.OtherClause" asp-route-dictName="@dictName"><button class="btn btn-success"><i class="fa fa-plus"></i></button></a>
+            <a asp-area="Registered" asp-controller="WordClause" asp-action="CreateVoice" asp-route-id="@m.Id" asp-route-arabClause="@m.ArabClause" asp-route-otherClause="@m.OtherClause" asp-route-dictName="@dictName"><button class="btn btn-success"><i class="fa fa-plus"></i></button></a>
         </div>
     </div>
 
@@ -96,16 +96,7 @@
                                     <button onclick="playAudio('myAudio@(item.Id)_o')">PLAY</button>
                                     <button onclick="pauseAudio('myAudio@(item.Id)_o')">STOP</button>
                                 </td>
-                                <td>
-                                    <div class="adomx-checkbox-radio-group inline">
-                                        <label class="adomx-switch success">
-                                            <input id="approve@(item.Id)" type="checkbox" @(item.IsApproved ? "checked" : "")>
-
-                                            <i class="lever"></i>
-                                        </label>
-                                    </div>
-                                </td>
-                               
+                              
                             </tr>
 
                         }
@@ -129,23 +120,6 @@
             document.getElementById("AlertButton1").click();
         }
     </script>
-}
-
-@if (Model != null)
-{
-    @foreach (var item in Model)
-    {
-        <script>
-            const checkbox@(item.Id) = document.getElementById('approve@(item.Id)')
-            checkbox@(item.Id).addEventListener('change', (event) => {
-                if (event.currentTarget.checked) {
-                    window.location.href = "/Admin/WordClause/Approve/@item.Id/true/@m.Id";
-                } else {
-                    window.location.href = "/Admin/WordClause/Approve/@item.Id/false/@m.Id";
-                }
-            })
-        </script>
-    }
 }
 
 <script>

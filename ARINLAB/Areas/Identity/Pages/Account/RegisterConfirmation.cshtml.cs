@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using DAL.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ARINLAB.Areas.Identity.Pages.Account
 {
@@ -16,12 +17,25 @@ namespace ARINLAB.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _sender;
 
+       
+
         public RegisterConfirmationModel(UserManager<ApplicationUser> userManager, IEmailSender sender)
         {
             _userManager = userManager;
             _sender = sender;
         }
 
+        [BindProperty]
+        public InputModel Input { get; set; }
+
+        public class InputModel
+        {
+            public string Email { get; set; }
+
+            [Required]
+            public int ECode { get; set; }
+
+        }
         public string Email { get; set; }
 
         public bool DisplayConfirmAccountLink { get; set; }
@@ -40,7 +54,7 @@ namespace ARINLAB.Areas.Identity.Pages.Account
             {
                 return NotFound($"Unable to load user with email '{email}'.");
             }
-
+            
             Email = email;
             // Once you add a real email sender, you should remove this code that lets you confirm the account
             DisplayConfirmAccountLink = false;
@@ -57,6 +71,13 @@ namespace ARINLAB.Areas.Identity.Pages.Account
             }
 
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        {
+            var user = await _userManager.FindByEmailAsync(Input.Email);            
+            
+            return RedirectToPage("./ConfirmEmail", new {  userId = Input.Email, code = Input.ECode, returnUrl = returnUrl });
         }
     }
 }

@@ -17,7 +17,7 @@
                 <div class="smart-wizard">
                     <div>
                         <div id="step-1">
-                            <form asp-area="ApprovedUser" asp-controller="Word" asp-action="Edit" method="post">
+                            <form asp-area="Registered" asp-controller="Word" asp-action="Edit" method="post">
                                 <div class="row mbn-20">
                                     <div class="col-12 mb-20">
                                         <h4>@SharedLocalizer["Edit new word"]</h4>
@@ -42,25 +42,7 @@
                                             }
                                         </select>
                                     </div>
-                                    <div class="col-12 mb-20">
-                                        <h6 class="mb-15">@SharedLocalizer["Approve Word:"]</h6>
-                                        <div class="adomx-checkbox-radio-group inline">
-
-                                            <label class="adomx-switch success">
-                                                @if (Model.IsApproved)
-                                                {
-                                                    <input type="checkbox" asp-for="@Model.IsApproved" checked>
-                                                }
-                                                else
-                                                {
-                                                    <input type="checkbox" asp-for="@Model.IsApproved" >
-                                                }
-                                                <i class="lever"></i>
-                                                
-                                            </label>
-
-                                        </div>
-                                    </div>
+                                    
                                     <div class="col-lg-6 col-12 mb-20"><input type="submit" class="button button-primary" value="@SharedLocalizer["Save"]"></div>
                                 </div>
                             </form>

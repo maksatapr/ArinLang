@@ -25,15 +25,15 @@ namespace ARINLAB.Extensions
         {
             services.AddTransient<IEmailSender, MailKitEmailSender>();
             services.AddSingleton<IImageService, ImageService>();
-            services.Configure<MailKitEmailSenderOptions>(options =>
-            {
-                options.Host_Address = "smtp.mail.ru";
-                options.Host_Port = 465;
-                options.Host_Username = "tazedowur@mail.ru";
-                options.Host_Password = "tdta2020";
-                options.Sender_EMail = "tazedowur@mail.ru";
-                options.Sender_Name = "ARINLANG";
-            });
+            //services.Configure<MailKitEmailSenderOptions>(options =>
+            //{
+            //    options.Host_Address = "smtp.mail.ru";
+            //    options.Host_Port = 465;
+            //    options.Host_Username = "tazedowur@mail.ru";
+            //    options.Host_Password = "tdta2020";
+            //    options.Sender_EMail = "tazedowur@mail.ru";
+            //    options.Sender_Name = "ARINLANG";
+            //});
 
             services.AddScoped<IWordServices, WordServices>();
             services.AddScoped<IDictionaryService, DictionaryService>();

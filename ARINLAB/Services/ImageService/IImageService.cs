@@ -13,5 +13,7 @@ namespace ARINLAB.Services.ImageService
 
         public Task<string> _UploadImage(IFormFile formFile, string pClass);
         public bool _DeleteImage(string pictureName, string pClass);
+
+        public string CreateImageForExport(string first, string second);
     }
 }

@@ -2081,6 +2081,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="MySqlConnector" Version="2.1.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />
+    <PackageReference Include="SkiaSharp" Version="2.80.3" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -2104,10 +2108,9 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="wwwroot\Admin\assets\js\plugins\plugins-related\" />
-    <Folder Include="wwwroot\images\Advertisement\" />
-    <Folder Include="wwwroot\images\Banner\" />
-    <Folder Include="wwwroot\images\MembershipRequests\" />
     <Folder Include="wwwroot\images\Names\" />
+    <Folder Include="wwwroot\images\Exported\" />
+    <Folder Include="wwwroot\images\News\" />
     <Folder Include="wwwroot\NewFolder\" />
     <Folder Include="wwwroot\Sounds\Words\" />
   </ItemGroup>

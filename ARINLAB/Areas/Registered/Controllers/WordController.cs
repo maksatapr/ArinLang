@@ -74,67 +74,6 @@ namespace ARINLAB.Areas.Registered.Controllers
             return View("Index", new List<WordDto>(res));
         }
 
-        [HttpGet("/Registered/[controller]/Sentence/{id}/{approve}")]
-        public async Task<IActionResult> EditApproveWordAsync(int id, bool approve)
-        {
-            var r = await _wordsService.GetWordSentencesById(id);
-            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            Responce resp = null;
-            if (r.UserId == userId)
-            {
-                 resp = await _wordsService.EditWordSentenceApproveByIdAsync(id, approve);
-                if (resp.IsSuccess)
-                {
-                    ViewBag.text = "Success";
-                }
-                else
-                {
-                    ViewBag.text = "";
-                }
-            }
-
-            try
-            {
-                var res = await _wordsService.GetWordByIdAsync(((WordSentences)resp.Data).WordId);
-                if (res != null)
-                {
-                    WordSentencesViewModel model = new();
-                    model.Word = res;
-                    model.WordSentences = _wordsService.GetAllWordSentencesByWordId(res.Id);
-                    model.AudioFiles = _audoFileServise.GetAudioFilesByWordId(res.Id);
-                    ViewBag.dict = _dictService.GetAllDictionaries().Data;
-                    return View("EditWord", model);
-                }
-                else
-                {
-                    ViewBag.page = 1;
-                    ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                    var result = _wordsService.GetAllWords(1, SD.pageSize);
-                    ViewBag.text = text;
-                    return View("Index", result);
-                }
-            }
-            catch (Exception e)
-            {
-                ViewBag.page = 1;
-                ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                var result = _wordsService.GetAllWords(1, SD.pageSize);
-                ViewBag.text = text;
-                return View("Index", result);
-            }
-        }
-
-        [HttpGet("/Registered/[controller]/List/{page}/{count}")]
-        public IActionResult List(int page, int count)
-        {
-            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var result = _wordsService.GetAllWords(userId, page, count);
-            ViewBag.text = "";
-            ViewBag.page = page;           
-            ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
-            return View( "Index", new List<WordDto>(result));
-        }
-
         [HttpGet]
         public IActionResult Create()
         {
@@ -152,7 +91,7 @@ namespace ARINLAB.Areas.Registered.Controllers
             {
                 var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 newW.UserId = userId;
-                newW.IsApproved = true;
+                newW.IsApproved = false;
                 if (ModelState.IsValid)
                 {
                     Responce result = await _wordsService.addWordAsync(newW);
@@ -160,15 +99,15 @@ namespace ARINLAB.Areas.Registered.Controllers
                     {
                         ViewBag.text = $"Word {newW.ArabWord} <-> {newW.OtherWord} added successfully";
                         ViewBag.page = 1;
-                        ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                        var rt = _wordsService.GetAllWords(1, SD.pageSize);
+                        ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                        var rt = _wordsService.GetAllWords(userId, 1, SD.pageSize);
                         return View("Index", rt);
                     }
                 }
                 newW.IsApproved = false;
                 ViewBag.Dicts = r;
                 ViewBag.page = 1;
-                ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
+                ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
                 return View(newW);
             }
            
@@ -217,8 +156,8 @@ namespace ARINLAB.Areas.Registered.Controllers
                     if (result.IsSuccess)
                     {
                         ViewBag.page = 1;
-                        ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                        var data = _wordsService.GetAllWords(1, SD.pageSize);
+                        ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                        var data = _wordsService.GetAllWords(userId, 1, SD.pageSize);
                         ViewBag.text = "Success";
                         ViewBag.Dictionaries = new List<Dictionary>((IEnumerable<Dictionary>)_dictService.GetAllDictionaries().Data);
                         return View("Index", new List<WordDto>(data));
@@ -239,9 +178,10 @@ namespace ARINLAB.Areas.Registered.Controllers
      
         public async Task<IActionResult> EditWordAsync(int id)
         {
+            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             try
             {
-                string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;                
+                        
                 var res = await _wordsService.GetWordByIdAsync(id);
                 if (res != null || res.UserId == userId)
                 {
@@ -255,16 +195,16 @@ namespace ARINLAB.Areas.Registered.Controllers
                 else
                 {
                     ViewBag.page = 1;
-                    ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                    var result = _wordsService.GetAllWords(1, SD.pageSize);
+                    ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                    var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
                     ViewBag.text = text;
                     return View("Index",result);
                 }
             }catch(Exception e)
             {
                 ViewBag.page = 1;
-                ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                var result = _wordsService.GetAllWords(1, SD.pageSize);
+                ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
                 ViewBag.text = text;
                 return View("Index", result);
             }
@@ -277,7 +217,7 @@ namespace ARINLAB.Areas.Registered.Controllers
                 Id = id,
                 ArabWord = arabWord,
                 OtherWord = otherWord,
-                DictID = dictId
+                DictID = dictId,                                
             };
             ViewBag.dict = _dictService.GetAllDictionaries().Data;
             ViewBag.model = model;
@@ -314,6 +254,7 @@ namespace ARINLAB.Areas.Registered.Controllers
                 string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 if (userId == model1.UserId)
                 {
+                    model1.IsApproved = false;
                     var resu = await _wordsService.EditWordSentenceAsync(model1);
                     if (resu.IsSuccess)
                     {
@@ -333,8 +274,8 @@ namespace ARINLAB.Areas.Registered.Controllers
                             else
                             {
                                 ViewBag.page = 1;
-                                ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                                var result = _wordsService.GetAllWords(1, SD.pageSize);
+                                ViewBag.total = _wordsService.GetAllWords(userId,1, int.MaxValue).Count;
+                                var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
                                 ViewBag.text = text;
                                 return View("Index", result);
                             }
@@ -342,8 +283,8 @@ namespace ARINLAB.Areas.Registered.Controllers
                         catch (Exception e)
                         {
                             ViewBag.page = 1;
-                            ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                            var result = _wordsService.GetAllWords(1, SD.pageSize);
+                            ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                            var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
                             ViewBag.text = text;
                             return View("Index", result);
                         }
@@ -366,11 +307,11 @@ namespace ARINLAB.Areas.Registered.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AddWordSentenceAsync(CreateWordSentencesDto model1)
         {
+            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             try
-            {
-                var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            {                
                 model1.UserId = userId;
-                model1.IsApproved = true;
+                model1.IsApproved = false;
                 var resu = await _wordsService.CreateWordSentenceAsync(model1);
                 if (resu.IsSuccess)
                 {
@@ -390,8 +331,8 @@ namespace ARINLAB.Areas.Registered.Controllers
                         else
                         {
                             ViewBag.page = 1;
-                            ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                            var result = _wordsService.GetAllWords(1, SD.pageSize);
+                            ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                            var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
                             ViewBag.text = text;
                             return View("Index", result);
                         }
@@ -399,8 +340,8 @@ namespace ARINLAB.Areas.Registered.Controllers
                     catch (Exception e)
                     {
                         ViewBag.page = 1;
-                        ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                        var result = _wordsService.GetAllWords(1, SD.pageSize);
+                        ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                        var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
                         ViewBag.text = text;
                         return View("Index", result);
                     }                                           
@@ -436,7 +377,7 @@ namespace ARINLAB.Areas.Registered.Controllers
                 
                 if (res != null && res.UserId == userId)
                 {
-                    WordSentencesViewModel model = new();
+                    WordSentencesViewModel model = new();                    
                     model.Word = res;
                     model.WordSentences = _wordsService.GetAllWordSentencesByWordId(id);
                     model.AudioFiles = _audoFileServise.GetAudioFilesByWordId(id);
@@ -446,8 +387,8 @@ namespace ARINLAB.Areas.Registered.Controllers
                 else
                 {
                     ViewBag.page = 1;
-                    ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                    var result = _wordsService.GetAllWords(1, SD.pageSize);
+                    ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                    var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
                     ViewBag.text = text;
                     return View("Index", result);
                 }
@@ -471,7 +412,8 @@ namespace ARINLAB.Areas.Registered.Controllers
                 Id = id,
                 ArabWord = arabWord,
                 OtherWord = otherWord,
-                DictID = dictId,
+                DictID = dictId
+                
             };
             ViewBag.dict = _dictService.GetAllDictionaries().Data;
             ViewBag.model = model;
@@ -480,8 +422,8 @@ namespace ARINLAB.Areas.Registered.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> AddWordVoiceAsync(SimpleWordVoiceModel model)
-        {
+        public async Task<IActionResult> AddWordVoiceAsync(SimpleWordVoiceModel model) 
+        {            
             string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var r = await _wordsService.GetWordByIdAsync(model.Id);
             if (userId != r.UserId)
@@ -518,8 +460,8 @@ namespace ARINLAB.Areas.Registered.Controllers
                     else
                     {
                         ViewBag.page = 1;
-                        ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                        var result = _wordsService.GetAllWords(1, SD.pageSize);
+                        ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                        var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
                         ViewBag.text = text;
                         return View("Index", result);
                     }
@@ -527,8 +469,8 @@ namespace ARINLAB.Areas.Registered.Controllers
                 catch (Exception e)
                 {
                     ViewBag.page = 1;
-                    ViewBag.total = _wordsService.GetAllWords(1, int.MaxValue).Count;
-                    var result = _wordsService.GetAllWords(1, SD.pageSize);
+                    ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                    var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
                     ViewBag.text = text;
                     return View("Index", result);
                 }
@@ -537,6 +479,100 @@ namespace ARINLAB.Areas.Registered.Controllers
             _fileService.DeleteImage(file.OtherVoice);
             ViewBag.Error = "Could not add";
             return View(model);
+        }
+
+        [HttpGet("/Registered/[controller]/DeleteSentence/{id}")]
+        public async Task<IActionResult> DeleteWordSentence(int id)
+        {
+            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var w = await _wordsService.GetWordSentencesById(id);
+            if (userId != w.UserId)
+                return RedirectToAction("Index");
+
+            var res = await _wordsService.DeleteSentence(id);
+            if (res.IsSuccess)
+            {
+                try
+                {
+                    var res1 = await _wordsService.GetWordByIdAsync(((WordSentences)res.Data).WordId);
+                    if (res1 != null)
+                    {
+                        WordSentencesViewModel model = new();
+                        model.Word = res1;
+                        model.WordSentences = _wordsService.GetAllWordSentencesByWordId(res1.Id);
+                        model.AudioFiles = _audoFileServise.GetAudioFilesByWordId(res1.Id);
+                        ViewBag.dict = _dictService.GetAllDictionaries().Data;
+                        ViewBag.text = "Success";
+                        return View("EditWord", model);
+                    }
+                    else
+                    {
+                        ViewBag.page = 1;
+                        ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                        var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
+                        ViewBag.text = text;
+                        return View("Index", result);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewBag.page = 1;
+                    ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                    var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
+                    ViewBag.text = text;
+                    return View("Index", result);
+                }
+            }
+            ViewBag.page = 1;
+            ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+            var r = _wordsService.GetAllWords(userId, 1, SD.pageSize);
+            ViewBag.text = text;
+            return View("Index", r);
+        }
+
+        [HttpGet("/Registered/[controller]/DeleteVoice/{id}/{page}")]       
+        public async Task<IActionResult> DeleteWord(int id, int page)
+        {
+            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var res = await _audoFileServise.DeleteVoiceFile(id);
+            if (res.IsSuccess)
+            {
+                ViewBag.successs = "Success";
+                try
+                {
+                    var res1 = await _wordsService.GetWordByIdAsync(page);
+                    if (res != null)
+                    {
+                        WordSentencesViewModel model1 = new();
+                        model1.Word = res1;
+                        model1.WordSentences = _wordsService.GetAllWordSentencesByWordId(page);
+                        model1.AudioFiles = _audoFileServise.GetAudioFilesByWordId(page);
+                        ViewBag.dict = _dictService.GetAllDictionaries().Data;
+                        return View("EditVoice", model1);
+                    }
+                    else
+                    {
+                        ViewBag.page = 1;
+                        ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                        var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
+                        ViewBag.text = text;
+                        return View("Index", result);
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewBag.page = 1;
+                    ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+                    var result = _wordsService.GetAllWords(userId, 1, SD.pageSize);
+                    ViewBag.text = text;
+                    return View("Index", result);
+                }
+            }
+            ViewBag.page = 1;
+            ViewBag.total = _wordsService.GetAllWords(userId, 1, int.MaxValue).Count;
+            var data = _wordsService.GetAllWords(userId, 1, SD.pageSize);
+            ViewBag.Dictionaries = new List<Dictionary>((IEnumerable<Dictionary>)_dictService.GetAllDictionaries().Data);
+            return View("Index", new List<WordDto>(data));
         }
     }
 }

@@ -128,7 +128,66 @@ namespace ARINLAB.Areas.Admin.Controllers
             return View(model);
         }
 
-            [HttpPost]
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            ViewBag.Countries = new List<Country>(_dbContex.Countries);
+            var user = await _userManager.FindByIdAsync(id);            
+            if(user != null)
+            {
+                return View(user);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ApplicationUser model)
+        {
+            ViewBag.Countries = new List<Country>(_dbContex.Countries);
+            if (ModelState.IsValid)
+            {
+                model.EmailConfirmed = true;
+                model.PhoneNumberConfirmed = true;
+                var user = await _userManager.FindByIdAsync(model.Id);
+                
+                user.Id = model.Id;
+                user.FirstName = model.FirstName;
+                user.Email = model.Email;
+                user.EmailConfirmed = true;
+                user.IsApproved = model.IsApproved;
+                user.FamilyName = model.FamilyName;
+                user.PasswordHash = model.PasswordHash;
+                user.UserName = model.UserName;
+                user.PhoneNumber = model.PhoneNumber;
+                user.Accupation = model.Accupation;
+                user.CountryId = model.CountryId;
+                user.Gender = model.Gender;
+                user.PhoneNumberConfirmed = true;
+
+                var result = await _userManager.UpdateAsync(user);
+                await _userManager.RemoveFromRoleAsync(user, Roles.Trusted);
+                if (result.Succeeded)
+                {
+                    if (model.IsApproved)
+                        await _userManager.AddToRoleAsync(user, Roles.Trusted);
+                    else
+                        await _userManager.AddToRoleAsync(user, Roles.Registered);
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Stats()
+        {
+            return View();
+        }
+
+        [HttpPost]
         // GET: Admin/ApplicationUser/Edit/5
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
         {

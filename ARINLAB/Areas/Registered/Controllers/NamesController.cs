@@ -40,7 +40,7 @@ namespace ARINLAB.Areas.Registered.Controllers
             if (ModelState.IsValid)
             {
                 model.UserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                model.IsApproved = true;
+                model.IsApproved = false;
                 var res = await _nameService.CreateNameAsync(model);
                 if (res.IsSuccess)
                 {
@@ -104,7 +104,7 @@ namespace ARINLAB.Areas.Registered.Controllers
             return View(voices);
         }
 
-        [HttpGet("/ApprovedUser/[controller]/AddImage/{id}")]
+        [HttpGet("/Registered/[controller]/AddImage/{id}")]
         public async Task<IActionResult> AddImageAsync(int id)
         {
             string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -138,26 +138,6 @@ namespace ARINLAB.Areas.Registered.Controllers
             }
             return RedirectToAction("Index");
         }
-
-        public async Task<IActionResult> EditApprove(int id, bool approve)
-        {
-            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var r = await _nameService.GetNameImageByImageIdAsync(id);
-            if(r==null)
-                return View("Index");
-
-            if(r.UserId != userId)
-                return View("Index");
-
-            var res = await _nameService.ApproveImage(id, approve);
-            if(res != null && res.IsSuccess)
-            {
-                return RedirectToAction("EditImageAsync", new { id = ((NameImages)res.Data).Id });
-            }
-            return View("Index");
-
-        }
-
 
     }
 }

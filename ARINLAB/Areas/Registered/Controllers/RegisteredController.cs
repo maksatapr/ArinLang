@@ -15,12 +15,12 @@ namespace ARINLAB.Areas.Registered.Controllers
 {
     [Area(Roles.Registered)]
     [Authorize(Roles = Roles.Registered)]
-    public class ApprovedUser : Controller
+    public class RegisteredController : Controller
     {
         private readonly IWordServices _wordsService;
         private readonly IStatisticsService _statService;
         private readonly UserManager<ApplicationUser> _userManager;
-        public ApprovedUser(IWordServices wordServices, IStatisticsService statisticsService, UserManager<ApplicationUser> userM)
+        public RegisteredController(IWordServices wordServices, IStatisticsService statisticsService, UserManager<ApplicationUser> userM)
         {
             _statService = statisticsService;
             _wordsService = wordServices;

@@ -11,7 +11,7 @@
 <div class="container">
     
     <div class="col-12 mb-30">
-        <form asp-area="ApprovedUser" asp-controller="WordClause" asp-action="Edit" method="post">            
+        <form asp-area="Registered" asp-controller="WordClause" asp-action="Edit" method="post">            
             <input type="hidden" asp-for="Id" value="@Model.Id">            
             <input type="hidden" asp-for="UserId" value="@Model.UserId">
             <div class="box">
@@ -43,24 +43,7 @@
                                 <div class="col-12 mb-15"><textarea asp-for="ArabReader" value="@Model.ArabReader" class="form-control" placeholder="@SharedLocalizer["Reads in Arab "]"></textarea></div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-12 mb-20">
-                            <div class="row adomx-checkbox-radio-group inline">
-                                <div class="col-12 mb-15">
-                                    <label for="IsApproved">@SharedLocalizer["Approved?"]</label>
-                                    <label class="adomx-switch success">
-                                        @if (Model.IsApproved)
-                                        {
-                                            <input class="form-control" asp-for="IsApproved" type="checkbox" checked>
-                                        }
-                                        else
-                                        {
-                                            <input class="form-control" asp-for="IsApproved" type="checkbox">
-                                        }
-                                        <i class="lever"></i>
-                                    </label>
-                                    </div>
-                                </div>
-                            </div>
+                        
                             <div class="col-12 mb-15">
                                 <label>@SharedLocalizer["Category"]</label>
                                 <select class="form-control form-control-lg" asp-for="CategoryId">

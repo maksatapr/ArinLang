@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ARINLAB.Areas.Admin.Controllers.API
@@ -29,11 +30,29 @@ namespace ARINLAB.Areas.Admin.Controllers.API
         {
             return DataSourceLoader.Load<WordClauseDto>((await _wordClauseServices.GetAllWordClausesAsync()).AsQueryable(), loadOptions);
         }
+        
+
+        [HttpGet("MyWord")]
+        public async Task<object> GetWordByUser(DataSourceLoadOptions loadOptions)
+        {
+            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return DataSourceLoader.Load<WordClauseDto>((await _wordClauseServices.GetAllWordClausesbyUserAsync(userId)).AsQueryable(), loadOptions);
+        }
 
         [HttpGet("RandomWordClauses")]
         public object RandomWordClauses(DataSourceLoadOptions loadOptions)
         {
             return DataSourceLoader.Load<WordClauseDto>(_wordClauseServices.GetRandomWordClauses(SD.Home_table_Count).AsQueryable(), loadOptions);
+        }
+
+        [HttpDelete("MyWord/{id}")]
+        [Authorize(Roles = Roles.Registered)]
+        public async Task DeleteMyWordAsync(int id)
+        {
+            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var res = await _wordClauseServices.GetWordClauseByIdAsync(id);
+            if (res.UserId == userId)               
+                await _wordClauseServices.DeleteWordClause(id);
         }
 
         [HttpDelete("{id}")]

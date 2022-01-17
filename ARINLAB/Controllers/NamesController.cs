@@ -1,7 +1,10 @@
 ﻿using ARINLAB.Models;
 using ARINLAB.Services;
+using ARINLAB.Services.ImageService;
 using ARINLAB.Services.Ratings;
 using ARINLAB.Services.SessionService;
+using AutoMapper;
+using DAL.Models.Dto.NamesDTO;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,13 +24,18 @@ namespace ARINLAB.Controllers
         private readonly INamesService _nameService;
         private readonly Services.IDictionaryService _dictService;
         private readonly IRatingService _ratingServices;
+        private readonly IImageService _imageService;
+        private readonly IMapper _mapper;
         public NamesController(UserDictionary userDict, INamesService namesService, 
-                            Services.IDictionaryService dictionaryService, IRatingService ratingServices)
+                            Services.IDictionaryService dictionaryService, IMapper mapper,
+                            IRatingService ratingServices, IImageService imageService)
         {
             _nameService = namesService;
             _dictService = dictionaryService;
             _userDictionary = userDict;
             _ratingServices = ratingServices;
+            _imageService = imageService;
+            _mapper = mapper;
         }
        
 
@@ -51,7 +59,11 @@ namespace ARINLAB.Controllers
             var res = await _nameService.GetNameByIdAsync(id);
             if (res == null)
                 return RedirectToAction("Indexall");
-
+            if (string.IsNullOrEmpty(res.ImageForShare))
+            {
+                res.ImageForShare = _imageService.CreateImageForExport(res.ArabName, res.OtherName);
+                _nameService.EditName(_mapper.Map<NamesDto>(res));
+            }
             NamesImagesViewModel model = new();
             model.Id = id;
             model.ArabName = res.ArabName;
@@ -60,6 +72,7 @@ namespace ARINLAB.Controllers
             var file = _nameService.GetAllNamesImagesByNameId(id);
             ViewBag.Rating = _ratingServices.GetRatingForName(id);
             ViewBag.Model = model;
+            ViewBag.ExportImage = res.ImageForShare;
             return View(file);
         }
 

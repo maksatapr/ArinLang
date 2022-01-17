@@ -27,7 +27,7 @@
 @section Scripts{
     <script>
         $(function () {
-            let url = `@API.GetAllNames`;
+            let url = `@API.GetAllNamesByUser`;
             var returnUrl = '@Context.Request.Path@Context.Request.QueryString';
             $("#gridContainer").dxDataGrid({
                 dataSource: DevExpress.data.AspNet.createStore({
@@ -41,7 +41,7 @@
                     }
                 }),
                 onInitNewRow: function(e) {
-                    var url = `@Url.Action("Create", "Names", new { Area = "ApprovedUser" })`;
+                    var url = `@Url.Action("Create", "Names", new { Area = "Registered" })`;
                     window.location = url;
                 },
                 selection: {
@@ -118,11 +118,12 @@
                                 icon: "edit",
                                 onClick: function (e) {
                                     var idString = e.row.data.id;
-                                    var url = `@Url.Action("Edit", "Names", new { Area = "ApprovedUser" })`;
+                                    var url = `@Url.Action("Edit", "Names", new { Area = "Registered" })`;
                                     window.location = url + '?id=' + idString;
                                 }
                             },
-                        ]
+                            "delete"
+                        ]                      
                     }
                 ]
             });

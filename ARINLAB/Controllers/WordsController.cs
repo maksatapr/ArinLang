@@ -5,6 +5,7 @@ using ARINLAB.Services.Ratings;
 using ARINLAB.Services.SessionService;
 using AutoMapper;
 using DAL.Models;
+using DAL.Models.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,19 +23,23 @@ namespace ARINLAB.Controllers
         private readonly Services.IDictionaryService _dictService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly FileServices _audoFileServise;
-        private readonly IImageService _fileService;
+        private readonly IImageService _imageService;
         private readonly IRatingService _ratingServices;
         private static string text = "";
         private readonly IMapper _mapper;
+        
 
         public WordsController(UserDictionary userDictionary, IWordServices wordServices, Services.IDictionaryService dictionaryService
-                                , FileServices fileServices, IRatingService ratingServices)
+                                , FileServices fileServices, IRatingService ratingServices, IImageService imageService,
+                                IMapper mapper)
         {
             _userDictionary = userDictionary;
             _wordsService = wordServices;
             _dictService = dictionaryService;
             _audoFileServise = fileServices;
             _ratingServices = ratingServices;
+            _imageService = imageService;
+            _mapper = mapper;
         }
         public IActionResult Indexall()
         {
@@ -58,12 +63,18 @@ namespace ARINLAB.Controllers
                 var res = await _wordsService.GetWordByIdAsync(id);
                 if (res != null)
                 {
+                    if (string.IsNullOrEmpty(res.ImageForShare))
+                    {
+                        res.ImageForShare = _imageService.CreateImageForExport(res.ArabWord, res.OtherWord);
+                        await _wordsService.editWordAsync(_mapper.Map<EditWordDto>(res));
+                    }
                     WordSentencesViewModel model = new();
                     model.Word = res;
                     model.WordSentences = _wordsService.GetAllWordSentencesByWordId(id);
                     model.AudioFiles = _audoFileServise.GetAudioFilesByWordId(id);
                     ViewBag.dict = _dictService.GetAllDictionaries().Data;
                     ViewBag.Rating = _ratingServices.GetRatingForWord(id);
+                    ViewBag.ExportImage = res.ImageForShare;
                     return View(model);
                 }
                 else

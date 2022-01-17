@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ARINLAB.Areas.Admin.Controllers.API
@@ -27,17 +28,41 @@ namespace ARINLAB.Areas.Admin.Controllers.API
             return DataSourceLoader.Load<NamesDto>(_namesService.GetAllNames().AsQueryable(), loadOptions);
         }
 
+        [HttpGet("MyNames")]
+        public object MyNames(DataSourceLoadOptions loadOptions)
+        {
+            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return DataSourceLoader.Load<NamesDto>(_namesService.GetAllNames(userId).AsQueryable(), loadOptions);
+        }
+
         [HttpGet("GetImage/{id}")]
         public object GetImageAsync(DataSourceLoadOptions loadOptions, int id)
         {
             return DataSourceLoader.Load<NameImagesDto>(_namesService.GetAllNamesImagesByNameId(id).AsQueryable(), loadOptions);
         }
-
+        
         [HttpDelete("{id}")]
         [Authorize(Roles = Roles.Admin)]
         public async Task DeleteAsync(int id)
         {
+            await _namesService.DeleteNameAsync(id);
+        }
+        [HttpDelete("DeleteImage/{id}")]
+        [Authorize(Roles = "Admin, Registered, Trusted")]
+        public async Task DeleteImageAsync(int id)
+        {
             await _namesService.DeleteImageforNameAsync(id);
+        }
+        
+
+       [HttpDelete("MyNames/{id}")]
+        [Authorize(Roles = Roles.Registered)]
+        public async Task DeleteMyWordAsync(int id)
+        {
+            string userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var r = await _namesService.GetNameByIdAsync(id);
+            if(userId == r.UserId)
+                await _namesService.DeleteNameAsync(id);
         }
 
         [HttpGet("GetRandomNames")]

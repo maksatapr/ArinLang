@@ -5,6 +5,8 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using System.Drawing;
+using SkiaSharp;
 
 namespace ARINLAB.Services.ImageService
 {
@@ -84,6 +86,91 @@ namespace ARINLAB.Services.ImageService
             }
 
             return fileName;
+        }
+        private int GetLen(string text)
+        {
+            int l = text.Length;
+            if (l > 0 && l < 6)
+                return 180;
+            if (l >= 6 && l < 10)
+                return 130;
+            if (l >= 10 && l < 13)
+                return 100;
+            if (l >= 13 && l < 20)
+                return 90;
+            return 70;
+        }
+
+        private int GetPos(string text)
+        {
+            int l = text.Length;
+            if (l > 0 && l < 6)
+                return 400;
+            if (l >= 6 && l < 10)
+                return 300;
+            if (l >= 10 && l < 13)
+                return 200;
+            if (l >= 13 && l < 20)
+                return 150;
+            return 100;
+        }
+        public string CreateImageForExport(string first, string second)
+        {
+            try
+            {
+                var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(".bmp");
+                string imageFile = _appEnvironment.WebRootPath + "/images/export.bmp";
+                var resizeFactor = 1f;
+                var bitmap = SKBitmap.Decode(imageFile);
+                var toBitmap = new SKBitmap((int)Math.Round(bitmap.Width * resizeFactor), (int)Math.Round(bitmap.Height * resizeFactor), bitmap.ColorType, bitmap.AlphaType);
+
+                var canvas = new SKCanvas(toBitmap);
+                // Draw a bitmap rescaled
+                canvas.SetMatrix(SKMatrix.MakeScale(resizeFactor, resizeFactor));
+                canvas.DrawBitmap(bitmap, 0, 0);
+                canvas.ResetMatrix();
+
+                var font = SKTypeface.FromFamilyName("Arial");
+                var brush1 = new SKPaint
+                {
+                    Typeface = font,
+                    TextSize = GetLen(first),
+                    IsAntialias = true,
+                    Color = new SKColor(255, 0, 0, 255)
+
+                };
+                var brush2 = new SKPaint
+                {
+                    Typeface = font,
+                    TextSize = GetLen(first),
+                    IsAntialias = true,
+                    Color = new SKColor(6, 108, 30, 255),
+
+                };
+                canvas.DrawText(first, GetPos(first), 1200, brush1);
+                canvas.DrawText(second, 200, 1450, brush2);
+
+                canvas.Flush();
+
+                var image = SKImage.FromBitmap(toBitmap);
+
+                var data = image.Encode();
+                using (var stream = new FileStream(_appEnvironment.WebRootPath + "/images/Exported/" + fileName, FileMode.Create, FileAccess.Write))
+                    data.SaveTo(stream);
+
+                data.Dispose();
+                image.Dispose();
+                canvas.Dispose();
+                brush1.Dispose();
+                brush2.Dispose();
+                font.Dispose();
+                toBitmap.Dispose();
+                bitmap.Dispose();
+                return "/images/Exported/" + fileName;
+            }catch(Exception e)
+            {
+                return "";
+            }
         }
     }
 }

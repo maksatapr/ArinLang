@@ -121,7 +121,6 @@ namespace ARINLAB.Services
             }
             return ResponceGenerator.GetResponceModel(false, $"Failed to find Name with id={id}", null);
         }
-
         public Responce EditName(NamesDto name)
         {
             try
@@ -153,7 +152,23 @@ namespace ARINLAB.Services
                 return null;
             }
         }
-
+        public List<NamesDto> GetAllNames(string userId)
+        {
+            try
+            {
+                var res = _mapper.Map<List<NamesDto>>(_dbContext.Names.Where(p => p.UserId == userId));
+                var dicts = new List<Dictionary>((IEnumerable<Dictionary>)_dictionaryService.GetAllDictionaries().Data);
+                foreach (var name in res)
+                {
+                    name.DictionaryName = dicts.SingleOrDefault(p => p.Id == name.DictionaryId)?.Language;
+                }
+                return res;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
         public List<NameImagesDto> GetAllNamesImagesByNameId(int id)
         {
             try
@@ -259,6 +274,26 @@ namespace ARINLAB.Services
             {
                 return null;
             }
+        }
+
+        public async Task<Responce> SetNameImageForShare(int nameId, string ImageLocation)
+        {
+            try
+            {
+                var res = await _dbContext.Names.FindAsync(nameId);
+                if (res != null && string.IsNullOrEmpty(res.ImageForShare))
+                {
+                    res.ImageForShare = ImageLocation;
+                    _dbContext.Names.Update(res);
+                    await _dbContext.SaveChangesAsync();
+                    return ResponceGenerator.GetResponceModel(true, "", res);
+                }
+            }catch(Exception e)
+            {
+
+            }
+            return ResponceGenerator.GetResponceModel(false, "Unknown eror", null);
+
         }
     }
 }

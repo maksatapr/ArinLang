@@ -32,15 +32,27 @@ namespace ARINLAB.Areas.Identity.Pages.Account
                 return RedirectToPage("/Index");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByEmailAsync(userId);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{userId}'.");
             }
 
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            //code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            //var result = await _userManager.ConfirmEmailAsync(user, code);
+            int Ecode = 0;
+            foreach (char c in userId)
+            {
+                Ecode += char.ToUpper(c) * 7;
+            }
+            Ecode = 100000 + (Ecode % 89999);
+            if(Ecode == int.Parse(code))
+            {
+                user.EmailConfirmed = true;
+                user.PhoneNumberConfirmed = true;
+                await _userManager.UpdateAsync(user);
+            }
+            StatusMessage = Ecode==int.Parse(code) ? "1" : "0";
             return Page();
         }
     }

@@ -34,6 +34,7 @@ namespace ARINLAB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddLocalization(options => options.ResourcesPath = "Resources");
+            //services.AddDbContextPool<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDistributedMemoryCache();
@@ -103,12 +104,13 @@ namespace ARINLAB
             services.AddTransient<IEmailSender, MailKitEmailSender>();
             services.Configure<MailKitEmailSenderOptions>(options =>
             {
-                options.Host_Address = "smtp.mail.ru";
-                options.Host_Port = 465;
-                options.Host_Username = "m.allakyyev@turkmen-tranzit.com";
-                options.Host_Password = "Maksat7159";
-                options.Sender_EMail = "m.allakyyev@turkmen-tranzit.com";
+                options.Host_Address = "smtp.hostinger.com";
+                options.Host_Port = 465;                
+                options.Host_Username = "info@arinlang.com";
+                options.Host_Password = "7BM@mV@s2GkLxaN";
+                options.Sender_EMail = "info@arinlang.com";
                 options.Sender_Name = "ARINLANG";
+                options.Host_SecureSocketOptions = MailKit.Security.SecureSocketOptions.StartTlsWhenAvailable;               
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
@@ -152,6 +154,12 @@ namespace ARINLAB
                     name: "areas",
                     areaName: "ApprovedUser",
                     pattern: "ApprovedUser/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapAreaControllerRoute(
+                   name: "areas",
+                   areaName: "Registered",
+                   pattern: "Registered/{controller=Home}/{action=Index}/{id?}");
+
 
                 endpoints.MapAreaControllerRoute(
                               name: "areas",
